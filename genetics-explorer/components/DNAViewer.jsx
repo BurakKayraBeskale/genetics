@@ -1,346 +1,422 @@
 'use client';
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
+import { OrbitControls, Sparkles, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { COMPLEMENT } from '../lib/genetics';
 
 const BASE_COLORS = {
-  A: '#ff4fd8',
-  T: '#ffc857',
-  G: '#4da3ff',
-  C: '#52f5b2'
+  A: '#ff5bd8',
+  T: '#ffd164',
+  G: '#58a7ff',
+  C: '#62ffbc'
 };
 
 const REGION_COLORS = {
-  promoter: '#4be6ff',
-  exon: '#9a7cff',
-  intron: '#ff62c7',
-  gene: '#6dffbd'
+  promoter: '#56ecff',
+  exon: '#9976ff',
+  intron: '#ff68cb',
+  gene: '#69ffc9'
 };
 
+const UP = new THREE.Vector3(0, 1, 0);
 const tmpA = new THREE.Vector3();
 const tmpB = new THREE.Vector3();
-const tmpMid = new THREE.Vector3();
 const tmpDir = new THREE.Vector3();
+const tmpMid = new THREE.Vector3();
 const tmpQuat = new THREE.Quaternion();
-const UP = new THREE.Vector3(0, 1, 0);
 
-function getEndpoint(index, total, side, separation = 0, explosion = 0) {
-  const angle = index * 0.58;
-  const y = (index - (total - 1) / 2) * 0.36;
-  const layerOffset = ((index % 3) - 1) * 0.13;
-  const radial = 1.12 + separation * 0.98 + explosion * (0.76 + (index % 4) * 0.11);
-  const sideAngle = angle + (side > 0 ? 0 : Math.PI) + explosion * layerOffset * side;
-  const horizontalKick = explosion * side * (0.20 + (index % 2) * 0.12);
-  const explodeY = explosion * (layerOffset * 1.2 + (index - total / 2) * 0.012);
-  return [
-    Math.cos(sideAngle) * radial + horizontalKick,
-    y + explodeY,
-    Math.sin(sideAngle) * radial + explosion * layerOffset * 0.6
-  ];
-}
-
-function updateCylinder(mesh, start, end, radiusScale = 1) {
+function updateBetween(mesh, start, end, radius = 1) {
   if (!mesh) return;
-  tmpA.set(...start);
-  tmpB.set(...end);
+  tmpA.copy(start);
+  tmpB.copy(end);
   tmpMid.copy(tmpA).add(tmpB).multiplyScalar(0.5);
   tmpDir.copy(tmpB).sub(tmpA);
-  const length = Math.max(0.001, tmpDir.length());
-  tmpQuat.setFromUnitVectors(UP, tmpDir.normalize());
+  const length = Math.max(0.0001, tmpDir.length());
+  tmpQuat.setFromUnitVectors(UP, tmpDir.clone().normalize());
   mesh.position.copy(tmpMid);
   mesh.quaternion.copy(tmpQuat);
-  mesh.scale.set(radiusScale, length, radiusScale);
+  mesh.scale.set(radius, length, radius);
 }
 
 function makeLetterTexture(letter, color) {
   if (typeof document === 'undefined') return null;
   const canvas = document.createElement('canvas');
-  canvas.width = 128;
-  canvas.height = 128;
+  canvas.width = 256;
+  canvas.height = 256;
   const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, 128, 128);
-  ctx.font = '900 76px Arial';
+  ctx.clearRect(0, 0, 256, 256);
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 26;
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 150px Arial';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 18;
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText(letter, 64, 68);
+  ctx.fillText(letter, 128, 138);
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.needsUpdate = true;
   return texture;
 }
 
-function HologramPlatform() {
+function helixCore(index, total) {
+  const t = index;
+  const angle = t * 0.56;
+  const y = (t - (total - 1) / 2) * 0.41;
+  return { angle, y };
+}
+
+function getBasePosition(index, total, side, separation = 0, explosion = 0) {
+  const { angle, y } = helixCore(index, total);
+  const baseAngle = angle + (side === -1 ? Math.PI : 0);
+  const radius = 1.18 + separation * 0.94;
+  const localScatter = ((index % 4) - 1.5) * 0.10;
+  const explodeRadial = explosion * (1.20 + (index % 3) * 0.22);
+  const explodeY = explosion * (((index % 5) - 2) * 0.15);
+  const explodeZ = explosion * side * localScatter * 0.8;
+
+  return new THREE.Vector3(
+    Math.cos(baseAngle) * (radius + explodeRadial),
+    y + explodeY,
+    Math.sin(baseAngle) * (radius + explodeRadial) + explodeZ
+  );
+}
+
+function getBackbonePosition(index, total, side, separation = 0, explosion = 0) {
+  const p = getBasePosition(index, total, side, separation, explosion).clone();
+  const radialDir = p.clone().setY(0).normalize();
+  return p.add(radialDir.multiplyScalar(0.55));
+}
+
+function HologramPlatform({ total }) {
   const root = useRef();
   const ring1 = useRef();
   const ring2 = useRef();
+  const ring3 = useRef();
+
   useFrame((_, delta) => {
-    if (root.current) root.current.rotation.z += delta * 0.04;
-    if (ring1.current) ring1.current.rotation.z += delta * 0.22;
-    if (ring2.current) ring2.current.rotation.z -= delta * 0.15;
+    if (root.current) root.current.rotation.z += delta * 0.03;
+    if (ring1.current) ring1.current.rotation.z += delta * 0.20;
+    if (ring2.current) ring2.current.rotation.z -= delta * 0.10;
+    if (ring3.current) ring3.current.rotation.z += delta * 0.06;
   });
 
   return (
-    <group ref={root} position={[0, -4.45, 0]} rotation={[Math.PI / 2, 0, 0]}>
+    <group ref={root} position={[0, -(total - 1) * 0.205 - 0.9, 0]} rotation={[Math.PI / 2, 0, 0]}>
       <mesh>
-        <torusGeometry args={[2.45, 0.035, 12, 128]} />
-        <meshBasicMaterial color="#41dcff" transparent opacity={0.9} />
+        <ringGeometry args={[2.35, 2.80, 96]} />
+        <meshBasicMaterial color="#37deff" transparent opacity={0.22} side={THREE.DoubleSide} />
       </mesh>
       <mesh ref={ring1}>
-        <torusGeometry args={[1.95, 0.018, 10, 128]} />
-        <meshBasicMaterial color="#826dff" transparent opacity={0.72} />
+        <torusGeometry args={[2.55, 0.03, 10, 128]} />
+        <meshBasicMaterial color="#5df2ff" transparent opacity={0.85} />
       </mesh>
       <mesh ref={ring2}>
-        <torusGeometry args={[2.95, 0.014, 8, 128]} />
-        <meshBasicMaterial color="#41dcff" transparent opacity={0.36} />
+        <torusGeometry args={[2.08, 0.018, 10, 128]} />
+        <meshBasicMaterial color="#9f83ff" transparent opacity={0.75} />
+      </mesh>
+      <mesh ref={ring3}>
+        <torusGeometry args={[3.02, 0.015, 8, 128]} />
+        <meshBasicMaterial color="#5df2ff" transparent opacity={0.35} />
       </mesh>
       <mesh position={[0, 0, -0.02]}>
-        <circleGeometry args={[2.30, 72]} />
-        <meshBasicMaterial color="#0a5b79" transparent opacity={0.11} side={THREE.DoubleSide} />
+        <circleGeometry args={[2.28, 72]} />
+        <meshBasicMaterial color="#0b2137" transparent opacity={0.44} side={THREE.DoubleSide} />
       </mesh>
-      {Array.from({ length: 16 }).map((_, i) => (
-        <mesh key={i} rotation={[0, 0, (Math.PI * 2 * i) / 16]} position={[0, 0, 0.01]}>
-          <boxGeometry args={[0.025, i % 4 === 0 ? 0.42 : 0.20, 0.01]} />
-          <meshBasicMaterial color="#65e9ff" transparent opacity={i % 4 === 0 ? 0.65 : 0.28} />
+      {Array.from({ length: 18 }).map((_, i) => (
+        <mesh key={i} position={[0, 0, 0.02]} rotation={[0, 0, (Math.PI * 2 * i) / 18]}>
+          <boxGeometry args={[0.028, i % 3 === 0 ? 0.36 : 0.16, 0.01]} />
+          <meshBasicMaterial color="#7af1ff" transparent opacity={i % 3 === 0 ? 0.65 : 0.22} />
         </mesh>
       ))}
     </group>
   );
 }
 
-function BaseBlock({ innerRef, base, selected, dimmed, onSelect }) {
+function GlowColumn() {
+  const mat = useRef();
+  useFrame((state) => {
+    if (mat.current) {
+      mat.current.opacity = 0.08 + Math.sin(state.clock.elapsedTime * 1.2) * 0.02;
+    }
+  });
+  return (
+    <mesh position={[0, -0.3, 0]} rotation={[0, 0, 0]}>
+      <cylinderGeometry args={[1.9, 3.0, 9.2, 32, 1, true]} />
+      <meshBasicMaterial ref={mat} color="#3ae6ff" transparent opacity={0.09} side={THREE.DoubleSide} />
+    </mesh>
+  );
+}
+
+function Nucleotide({ base, selected, dimmed, positionRef, rotationY, onSelect }) {
+  const group = useRef();
+  const halo = useRef();
   const [hovered, setHovered] = useState(false);
   const texture = useMemo(() => makeLetterTexture(base, BASE_COLORS[base]), [base]);
 
   useEffect(() => () => texture?.dispose(), [texture]);
 
+  useFrame((_, delta) => {
+    if (!group.current) return;
+    group.current.position.lerp(positionRef.current, 1 - Math.exp(-delta * 8));
+    group.current.rotation.y = THREE.MathUtils.damp(group.current.rotation.y, rotationY.current, 7.5, delta);
+    const targetScale = selected ? 1.12 : hovered ? 1.06 : 1;
+    group.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 1 - Math.exp(-delta * 10));
+    if (halo.current) {
+      halo.current.material.opacity = dimmed ? 0.05 : selected ? 0.18 : hovered ? 0.12 : 0.08;
+    }
+  });
+
   return (
-    <group ref={innerRef}>
+    <group ref={group}>
       <mesh
+        rotation={[0, 0, Math.PI / 2]}
         onClick={(e) => { e.stopPropagation(); onSelect(); }}
         onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
         onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
-        scale={selected ? 1.22 : hovered ? 1.10 : 1}
       >
-        <boxGeometry args={[0.56, 0.22, 0.34]} />
+        <capsuleGeometry args={[0.12, 0.42, 6, 14]} />
         <meshPhysicalMaterial
           color={BASE_COLORS[base]}
           emissive={BASE_COLORS[base]}
-          emissiveIntensity={selected ? 3.1 : hovered ? 2.25 : 1.25}
-          roughness={0.16}
-          metalness={0.24}
-          transmission={0.10}
+          emissiveIntensity={selected ? 4.3 : hovered ? 3.0 : 2.1}
+          roughness={0.08}
+          metalness={0.10}
+          transmission={0.30}
           transparent
-          opacity={dimmed ? 0.25 : 0.96}
+          opacity={dimmed ? 0.22 : 0.95}
+          thickness={0.4}
         />
       </mesh>
+
+      <mesh ref={halo} rotation={[0, 0, Math.PI / 2]} scale={[1.28, 1.28, 1.28]}>
+        <capsuleGeometry args={[0.12, 0.44, 4, 10]} />
+        <meshBasicMaterial color={BASE_COLORS[base]} transparent opacity={0.08} side={THREE.DoubleSide} />
+      </mesh>
+
       {texture && (
-        <sprite position={[0, 0, 0.20]} scale={[0.32, 0.32, 0.32]}>
-          <spriteMaterial map={texture} transparent opacity={dimmed ? 0.26 : 0.98} depthTest={false} />
+        <sprite position={[0, 0, 0.16]} scale={[0.24, 0.24, 0.24]}>
+          <spriteMaterial map={texture} transparent opacity={dimmed ? 0.25 : 1} depthTest={false} />
         </sprite>
-      )}
-      {selected && (
-        <mesh>
-          <boxGeometry args={[0.72, 0.34, 0.47]} />
-          <meshBasicMaterial color={BASE_COLORS[base]} transparent opacity={0.09} wireframe />
-        </mesh>
       )}
     </group>
   );
 }
 
-function BasePair({ index, total, base, selected, progressRef, onSelect, dimmed, regionKind }) {
-  const left = useRef();
-  const right = useRef();
-  const bond = useRef();
-  const leftStub = useRef();
-  const rightStub = useRef();
-  const marker = useRef();
+function BasePair({ index, total, base, selected, progress, onSelect, dimmed, regionKind }) {
   const pair = COMPLEMENT[base] || 'T';
-  const currentLeft = useRef(new THREE.Vector3(...getEndpoint(index, total, 1, 0, 0)));
-  const currentRight = useRef(new THREE.Vector3(...getEndpoint(index, total, -1, 0, 0)));
+  const leftRef = useRef(new THREE.Vector3());
+  const rightRef = useRef(new THREE.Vector3());
+  const leftRot = useRef(0);
+  const rightRot = useRef(0);
+  const bond = useRef();
+  const leftAnchor = useRef();
+  const rightAnchor = useRef();
+  const selectedRing = useRef();
 
-  useFrame((_, delta) => {
-    const separation = progressRef.current.separation;
-    const explosion = progressRef.current.explosion;
-    const targetLeft = tmpA.set(...getEndpoint(index, total, 1, separation, explosion));
-    const targetRight = tmpB.set(...getEndpoint(index, total, -1, separation, explosion));
-    const factor = 1 - Math.exp(-delta * 6.4);
-    currentLeft.current.lerp(targetLeft, factor);
-    currentRight.current.lerp(targetRight, factor);
+  useFrame((state, delta) => {
+    const left = getBasePosition(index, total, 1, progress.current.separation, progress.current.explosion);
+    const right = getBasePosition(index, total, -1, progress.current.separation, progress.current.explosion);
+    const leftBack = getBackbonePosition(index, total, 1, progress.current.separation, progress.current.explosion);
+    const rightBack = getBackbonePosition(index, total, -1, progress.current.separation, progress.current.explosion);
 
-    if (left.current) {
-      left.current.position.copy(currentLeft.current);
-      left.current.rotation.y = index * 0.58 + Math.PI / 2;
+    leftRef.current.lerp(left, 1 - Math.exp(-delta * 8));
+    rightRef.current.lerp(right, 1 - Math.exp(-delta * 8));
+    leftRot.current = -index * 0.56;
+    rightRot.current = -index * 0.56 - Math.PI;
+
+    if (leftAnchor.current) updateBetween(leftAnchor.current, leftRef.current, leftBack, 1);
+    if (rightAnchor.current) updateBetween(rightAnchor.current, rightRef.current, rightBack, 1);
+    if (bond.current) {
+      updateBetween(bond.current, leftRef.current, rightRef.current, 1);
+      bond.current.material.opacity = dimmed ? 0.06 : THREE.MathUtils.lerp(0.58, 0.02, Math.min(1, progress.current.separation * 0.92 + progress.current.explosion * 0.5));
+      bond.current.visible = progress.current.explosion < 0.95;
     }
-    if (right.current) {
-      right.current.position.copy(currentRight.current);
-      right.current.rotation.y = index * 0.58 - Math.PI / 2;
-    }
 
-    const c1 = [currentLeft.current.x, currentLeft.current.y, currentLeft.current.z];
-    const c2 = [currentRight.current.x, currentRight.current.y, currentRight.current.z];
-    const radialLeft = currentLeft.current.clone().multiply(new THREE.Vector3(1.13, 1, 1.13));
-    const radialRight = currentRight.current.clone().multiply(new THREE.Vector3(1.13, 1, 1.13));
-    updateCylinder(bond.current, c1, c2, 1);
-    updateCylinder(leftStub.current, c1, [radialLeft.x, radialLeft.y, radialLeft.z], 1);
-    updateCylinder(rightStub.current, c2, [radialRight.x, radialRight.y, radialRight.z], 1);
-
-    if (bond.current) bond.current.visible = separation < 0.83 && explosion < 0.70;
-
-    if (marker.current) {
-      marker.current.position.copy(currentLeft.current).add(currentRight.current).multiplyScalar(0.5);
-      marker.current.rotation.z += delta * 0.32;
+    if (selectedRing.current) {
+      selectedRing.current.position.copy(leftRef.current).lerp(rightRef.current, 0.5);
+      selectedRing.current.rotation.z += delta * 0.24;
+      selectedRing.current.visible = selected;
     }
   });
 
   return (
     <group>
-      <BaseBlock innerRef={left} base={base} selected={selected} dimmed={dimmed} onSelect={onSelect} />
-      <BaseBlock innerRef={right} base={pair} selected={selected} dimmed={dimmed} onSelect={onSelect} />
+      <Nucleotide base={base} selected={selected} dimmed={dimmed} positionRef={leftRef} rotationY={leftRot} onSelect={onSelect} />
+      <Nucleotide base={pair} selected={selected} dimmed={dimmed} positionRef={rightRef} rotationY={rightRot} onSelect={onSelect} />
 
       <mesh ref={bond}>
-        <cylinderGeometry args={[0.021, 0.021, 1, 8]} />
-        <meshStandardMaterial color="#9af0ff" emissive="#9af0ff" emissiveIntensity={1.5} transparent opacity={dimmed ? 0.10 : 0.70} />
-      </mesh>
-      <mesh ref={leftStub}>
-        <cylinderGeometry args={[0.045, 0.045, 1, 10]} />
-        <meshStandardMaterial color={BASE_COLORS[base]} emissive={BASE_COLORS[base]} emissiveIntensity={1.35} transparent opacity={dimmed ? 0.20 : 0.88} />
-      </mesh>
-      <mesh ref={rightStub}>
-        <cylinderGeometry args={[0.045, 0.045, 1, 10]} />
-        <meshStandardMaterial color={BASE_COLORS[pair]} emissive={BASE_COLORS[pair]} emissiveIntensity={1.35} transparent opacity={dimmed ? 0.20 : 0.88} />
+        <cylinderGeometry args={[0.016, 0.016, 1, 12]} />
+        <meshBasicMaterial color="#c0fbff" transparent opacity={0.58} />
       </mesh>
 
-      {selected && (
-        <mesh ref={marker} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.78, 0.028, 8, 72]} />
-          <meshBasicMaterial color="#e4fcff" transparent opacity={0.86} />
-        </mesh>
-      )}
+      <mesh ref={leftAnchor}>
+        <cylinderGeometry args={[0.034, 0.034, 1, 12]} />
+        <meshPhysicalMaterial color={BASE_COLORS[base]} emissive={BASE_COLORS[base]} emissiveIntensity={1.5} transparent opacity={dimmed ? 0.16 : 0.82} roughness={0.10} transmission={0.28} />
+      </mesh>
+      <mesh ref={rightAnchor}>
+        <cylinderGeometry args={[0.034, 0.034, 1, 12]} />
+        <meshPhysicalMaterial color={BASE_COLORS[pair]} emissive={BASE_COLORS[pair]} emissiveIntensity={1.5} transparent opacity={dimmed ? 0.16 : 0.82} roughness={0.10} transmission={0.28} />
+      </mesh>
 
-      {!dimmed && regionKind && (
-        <pointLight position={[0, (index - (total - 1) / 2) * 0.36, 0]} intensity={selected ? 0.85 : 0.10} distance={2.4} color={REGION_COLORS[regionKind] || '#4be6ff'} />
-      )}
+      <mesh ref={selectedRing} rotation={[Math.PI / 2, 0, 0]} visible={selected}>
+        <torusGeometry args={[0.82, 0.025, 8, 60]} />
+        <meshBasicMaterial color={regionKind ? (REGION_COLORS[regionKind] || '#e0ffff') : '#e0ffff'} transparent opacity={0.75} />
+      </mesh>
     </group>
   );
 }
 
-function BackboneSegment({ index, total, side, progressRef, dimmed, color }) {
+function BackboneSegment({ index, total, side, progress, dimmed, color }) {
   const mesh = useRef();
+  const glow = useRef();
+
   useFrame(() => {
-    const separation = progressRef.current.separation;
-    const explosion = progressRef.current.explosion;
-    const start = getEndpoint(index, total, side, separation, explosion);
-    const end = getEndpoint(index + 1, total, side, separation, explosion);
-    const s = new THREE.Vector3(...start).multiply(new THREE.Vector3(1.18, 1, 1.18));
-    const e = new THREE.Vector3(...end).multiply(new THREE.Vector3(1.18, 1, 1.18));
-    updateCylinder(mesh.current, [s.x, s.y, s.z], [e.x, e.y, e.z], 1);
+    const s = getBackbonePosition(index, total, side, progress.current.separation, progress.current.explosion);
+    const e = getBackbonePosition(index + 1, total, side, progress.current.separation, progress.current.explosion);
+    if (mesh.current) updateBetween(mesh.current, s, e, 1);
+    if (glow.current) {
+      updateBetween(glow.current, s, e, 1.1);
+      glow.current.material.opacity = dimmed ? 0.06 : 0.12 + progress.current.explosion * 0.03;
+    }
   });
 
   return (
-    <mesh ref={mesh}>
-      <cylinderGeometry args={[0.095, 0.095, 1, 14]} />
-      <meshPhysicalMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={1.55}
-        transparent
-        opacity={dimmed ? 0.16 : 0.82}
-        roughness={0.16}
-        metalness={0.20}
-      />
-    </mesh>
+    <group>
+      <mesh ref={mesh}>
+        <cylinderGeometry args={[0.075, 0.075, 1, 16]} />
+        <meshPhysicalMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={1.75}
+          roughness={0.08}
+          metalness={0.05}
+          transmission={0.45}
+          transparent
+          opacity={dimmed ? 0.16 : 0.78}
+        />
+      </mesh>
+      <mesh ref={glow}>
+        <cylinderGeometry args={[0.12, 0.12, 1, 12]} />
+        <meshBasicMaterial color={color} transparent opacity={0.12} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
+function BackboneBundle({ total, side, progress, dimIndices, regions }) {
+  return (
+    <group>
+      {Array.from({ length: Math.max(0, total - 1) }).map((_, index) => {
+        const region = regions.find((r) => index >= r.from && index <= r.to);
+        const dimmed = dimIndices(index);
+        const color = region ? REGION_COLORS[region.kind] : side === 1 ? '#42e8ff' : '#7e85ff';
+        return (
+          <BackboneSegment
+            key={`${side}-${index}`}
+            index={index}
+            total={total}
+            side={side}
+            progress={progress}
+            dimmed={dimmed}
+            color={color}
+          />
+        );
+      })}
+    </group>
   );
 }
 
 function DNAModel({ sequence, selectedIndex, onSelect, separated, exploded, activeRegion, regions }) {
   const root = useRef();
-  const progressRef = useRef({ separation: 0, explosion: 0 });
-  const visibleSequence = useMemo(() => sequence.slice(0, 30), [sequence]);
+  const progress = useRef({ separation: 0, explosion: 0 });
+  const visibleSequence = sequence;
   const total = visibleSequence.length;
 
   useFrame((state, delta) => {
-    const sepTarget = separated ? 1 : 0;
-    const expTarget = exploded ? 1 : 0;
-    progressRef.current.separation = THREE.MathUtils.damp(progressRef.current.separation, sepTarget, 5.2, delta);
-    progressRef.current.explosion = THREE.MathUtils.damp(progressRef.current.explosion, expTarget, 4.3, delta);
+    progress.current.separation = THREE.MathUtils.damp(progress.current.separation, separated ? 1 : 0, 4.6, delta);
+    progress.current.explosion = THREE.MathUtils.damp(progress.current.explosion, exploded ? 1 : 0, 3.8, delta);
+
     if (root.current) {
-      root.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.055;
-      root.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.28) * 0.015;
+      root.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
+      root.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.28) * 0.012;
     }
   });
 
-  const regionFor = (index) => regions.find(r => index >= r.from && index <= r.to);
-  const isDimmed = (index) => activeRegion ? !(index >= activeRegion.from && index <= activeRegion.to) : false;
+  const dimIndices = (index) => activeRegion ? !(index >= activeRegion.from && index <= activeRegion.to) : false;
+  const regionFor = (index) => regions.find((r) => index >= r.from && index <= r.to);
 
   return (
-    <group ref={root} scale={0.88}>
-      {visibleSequence.split('').map((base, index) => {
-        const region = regionFor(index);
-        return (
-          <BasePair
-            key={`${index}-${base}`}
-            index={index}
-            total={total}
-            base={base}
-            selected={selectedIndex === index}
-            progressRef={progressRef}
-            onSelect={() => onSelect(index)}
-            dimmed={isDimmed(index)}
-            regionKind={region?.kind}
-          />
-        );
-      })}
-      {Array.from({ length: Math.max(0, total - 1) }).flatMap((_, index) => {
-        const region = regionFor(index);
-        const dimmed = isDimmed(index);
-        return [
-          <BackboneSegment key={`l-${index}`} index={index} total={total} side={1} progressRef={progressRef} dimmed={dimmed} color={region ? REGION_COLORS[region.kind] : '#48dfff'} />,
-          <BackboneSegment key={`r-${index}`} index={index} total={total} side={-1} progressRef={progressRef} dimmed={dimmed} color={region ? REGION_COLORS[region.kind] : '#8b72ff'} />
-        ];
-      })}
+    <group ref={root} scale={1.0}>
+      <GlowColumn />
+      <BackboneBundle total={total} side={1} progress={progress} dimIndices={dimIndices} regions={regions} />
+      <BackboneBundle total={total} side={-1} progress={progress} dimIndices={dimIndices} regions={regions} />
+
+      {visibleSequence.split('').map((base, index) => (
+        <BasePair
+          key={`${index}-${base}`}
+          index={index}
+          total={total}
+          base={base}
+          selected={selectedIndex === index}
+          progress={progress}
+          onSelect={() => onSelect(index)}
+          dimmed={dimIndices(index)}
+          regionKind={regionFor(index)?.kind}
+        />
+      ))}
     </group>
   );
 }
 
 function Scene({ resetSignal, autoRotate, ...props }) {
   const controls = useRef();
-
+  const { camera, size } = useThree();
   useEffect(() => {
-    if (!controls.current) return;
-    controls.current.reset();
-  }, [resetSignal]);
+    controls.current?.reset();
+    const halfFov = THREE.MathUtils.degToRad(camera.fov / 2);
+    const sceneHeight = Math.max(7, (props.sequence.length - 1) * 0.41 + 3.2);
+    const distance = Math.max(sceneHeight / (2 * Math.tan(halfFov)), 4.6 / ((size.width / size.height) * Math.tan(halfFov)));
+    camera.position.set(0, 0.65, distance);
+    controls.current?.target.set(0, -0.35, 0);
+    controls.current?.update();
+  }, [camera, size.width, size.height, props.sequence.length, resetSignal]);
 
   return (
     <>
-      <ambientLight intensity={0.46} />
-      <pointLight position={[4.5, 6, 5]} intensity={34} color="#35d8ff" />
-      <pointLight position={[-5, -1, 4]} intensity={24} color="#7f55ff" />
-      <pointLight position={[0, -5, 1]} intensity={14} color="#2ce9ff" />
-      <Stars radius={70} depth={26} count={1050} factor={2.0} fade speed={0.22} />
+      <ambientLight intensity={0.75} />
+      <pointLight position={[3.6, 4.6, 3.2]} intensity={48} distance={20} color="#49ddff" />
+      <pointLight position={[-3.6, 2.2, 5.5]} intensity={36} distance={20} color="#8e6bff" />
+      <pointLight position={[0, -4, 2.2]} intensity={18} distance={16} color="#65f8ff" />
+      <spotLight position={[0, 8, 5]} intensity={55} angle={0.34} penumbra={0.7} color="#95efff" />
+      <Stars radius={75} depth={18} count={800} factor={3} saturation={0} fade speed={0.18} />
+      <Sparkles size={3} scale={[6, 12, 6]} count={90} speed={0.25} color="#8ef4ff" opacity={0.35} />
+
       <DNAModel {...props} />
-      <HologramPlatform />
+      <HologramPlatform total={props.sequence.length} />
+
       <OrbitControls
         ref={controls}
         makeDefault
         enablePan={false}
         enableZoom
         enableRotate
-        minDistance={5.7}
-        maxDistance={13}
-        minPolarAngle={0.22}
-        maxPolarAngle={Math.PI - 0.22}
-        autoRotate={autoRotate}
-        autoRotateSpeed={0.50}
-        dampingFactor={0.06}
         enableDamping
+        dampingFactor={0.08}
+        autoRotate={autoRotate}
+        autoRotateSpeed={0.42}
+        minDistance={5.8}
+        maxDistance={60}
+        minPolarAngle={0.28}
+        maxPolarAngle={Math.PI - 0.28}
       />
+
+      <EffectComposer>
+        <Bloom intensity={1.25} luminanceThreshold={0.14} luminanceSmoothing={0.75} mipmapBlur />
+        <Vignette eskil={false} offset={0.15} darkness={0.72} />
+      </EffectComposer>
     </>
   );
 }
@@ -354,10 +430,9 @@ export default function DNAViewer({ exploded, onToggleExplode, ...props }) {
   return (
     <div className="viewerShell" onContextMenu={handleContextMenu}>
       <div className="viewerScanline" />
-      <div className="viewerTopLabel"><span>CANLI MOLEKÜLER MODEL</span><b>3B DNA // ETKİLEŞİMLİ</b></div>
-      <Canvas camera={{ position: [0, 0.1, 8.8], fov: 45 }} dpr={[1, 1.75]} gl={{ antialias: true, alpha: true }}>
-        <color attach="background" args={['#020711']} />
-        <fog attach="fog" args={['#020711', 12, 24]} />
+      <div className="viewerTopLabel"><span>CANLI MOLEKÜLER MODEL</span><b>3B DNA // HOLOGRAFİK SAHNE</b></div>
+      <Canvas camera={{ position: [0, 0.15, 8.2], fov: 40 }} dpr={[1, 1.8]} gl={{ antialias: true, alpha: true }}>
+        <color attach="background" args={['#010611']} />
         <Scene {...props} exploded={exploded} />
       </Canvas>
       <div className="viewerHud hudLeft"><span /><span /><span /></div>
@@ -368,11 +443,11 @@ export default function DNAViewer({ exploded, onToggleExplode, ...props }) {
         <div className="disassemblyIcon"><span /><span /><span /></div>
         <div>
           <small>{exploded ? 'SÖKÜM MODU AÇIK' : 'YAPISAL SÖKÜM'}</small>
-          <strong>{exploded ? 'DNA parçaları ayrılmış görünümde' : 'DNA üzerinde sağ tıkla'}</strong>
+          <strong>{exploded ? 'DNA kontrollü biçimde katmanlarına ayrıldı' : 'DNA üzerinde sağ tıkla'}</strong>
           <p>
             {exploded
-              ? 'Bu görünüm öğretim amaçlıdır. Baz çiftlerini tutan hidrojen bağlarının ayrılması iki zincirin açılmasına benzer; şeker-fosfat omurgasındaki kovalent bağların gerçekten kopması ise DNA hasarıdır ve hücrede onarım mekanizmalarını tetikler.'
-              : 'Sağ tık, çift sarmalı katmanlarına ayırır. Böylece baz çiftlerini ve omurga yapısını ayrı ayrı inceleyebilirsin.'}
+              ? 'Bu görünüm eğitim amaçlı bir patlatılmış yerleşimdir. Baz çiftlerini ayıran hidrojen bağları açılabilir; fakat şeker-fosfat omurgasındaki kovalent bağların gerçekten kırılması DNA hasarı anlamına gelir ve onarım mekanizmalarını tetikler.'
+              : 'Sağ tık, çift sarmalı öğretici bir patlatılmış görünüme taşır. Böylece baz çiftlerini, omurga yapısını ve zincir organizasyonunu daha net inceleyebilirsin.'}
           </p>
         </div>
       </div>
