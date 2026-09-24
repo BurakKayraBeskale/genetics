@@ -287,7 +287,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 .pairFacts span { color: #618f9d; font-size: 7px; text-transform: uppercase; letter-spacing: .08em; }
 .pairFacts b { margin-top: 3px; font-size: 9px; }
 .pairInfo p, .quickImpact p { color: #9fc1cb; font-size: 10px; line-height: 1.5; margin: 7px 0; }
-.codonInspector { display: grid; grid-template-columns: auto auto auto auto; gap: 8px; align-items: end; border-top: 1px solid rgba(75,230,255,.12); padding-top: 9px; margin-top: 8px; }
+.codonInspector { display: grid; grid-template-columns: auto auto auto auto; gap: 8px; align-items: flex-end; border-top: 1px solid rgba(75,230,255,.12); padding-top: 9px; margin-top: 8px; }
 .codonInspector .microLabel { grid-column: 1 / -1; }
 .codonInspector strong { color: var(--cyan); letter-spacing: .16em; }.codonInspector i { color: #5f94a3; font-style: normal; }
 .microLabel { color: #648f9c; font-size: 7px; letter-spacing: .12em; text-transform: uppercase; }
@@ -315,7 +315,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 .coordinateReadout { color: #5ca4b5; font: 9px ui-monospace, SFMono-Regular, Menlo, monospace; }
 .clearRegion { margin-top: 9px; width: 100%; border: 1px solid rgba(75,230,255,.12); background: rgba(4,16,29,.7); color: #9cc0ca; padding: 8px; cursor: pointer; font-size: 8px; text-transform: uppercase; }
 
-.selectedReadout { display: flex; justify-content: space-between; align-items: end; border-bottom: 1px solid rgba(75,230,255,.12); padding-bottom: 9px; }
+.selectedReadout { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(75,230,255,.12); padding-bottom: 9px; }
 .selectedReadout strong { display: block; font-size: 25px; color: var(--cyan); }
 .selectedReadout > span { color: #6b9aa8; font-size: 8px; }
 .segmentedControl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 10px 0; }
@@ -414,3 +414,23 @@ footer { width: min(1600px, calc(100% - 28px)); margin: auto; padding: 16px 0 26
   .dnaToolbar { grid-template-columns: 1fr; }
   .effectLegend { grid-template-columns: 1fr; }
 }
+
+/* Product composition: reserve the platform instead of covering it with a card. */
+.productViewer .productMode { position: absolute; bottom: 42px; left: 50%; transform: translateX(-50%); color: #82c5db; border: 1px solid rgba(85,192,225,.18); background: rgba(2,12,22,.65); padding: 6px 11px; font-size: 8px; letter-spacing: .16em; white-space: nowrap; pointer-events: none; }
+.productViewer .viewerHint { bottom: 15px; }
+.productViewer canvas { touch-action: none; }
+.productViewer::before, .productViewer::after { opacity: .25; pointer-events: none; }
+
+@media (max-width: 820px) {
+  .centerStage { grid-row: 1; }
+  .heroIntro { grid-row: 2; padding-top: 12px; }
+  .heroIntro h1 { font-size: 30px; }
+  .dnaToolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .productViewer .productMode { bottom: 14px; }
+  .selectedBadge { width: 130px; padding: 8px; }
+}
+/* Keep the selected-base readout clear of the upper helix in the wide mode. */
+.selectedBadge { width: 128px; padding: 9px; }
+.selectedBadge b { font-size: 24px; }
