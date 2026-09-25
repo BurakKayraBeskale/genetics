@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Billboard } from "@react-three/drei";
+import { Billboard, Html } from "@react-three/drei";
 import * as THREE from "three";
 import HolographicRim from "./HolographicRim";
-import { COMPLEMENT } from "../../lib/genetics";
+import { COMPLEMENT, BASE_INFO } from "../../lib/genetics";
 import {
   DNA,
   BASE_COLORS,
@@ -131,7 +131,7 @@ function ContinuousBackbone({
         Math.round(local.y / DNA.rise + (total - 1) / 2),
         0,
         total - 1,
-      ),
+      ), side,
     );
   };
   return (
@@ -161,7 +161,7 @@ function ContinuousBackbone({
           position={helixPoint(index === 0 ? -0.15 : index + 0.15, total, side)}
           onClick={(e) => {
             e.stopPropagation();
-            onSelect(index);
+            onSelect(index, side);
           }}
         >
           <sphereGeometry args={[DNA.tube, 20, 16]} />
@@ -188,9 +188,14 @@ function Nucleotide({
   texture,
   geometries,
   onSelect,
+  onBaseContext,
+  removing,
+  abasic,
+  arriving,
 }) {
   const group = useRef(),
-    capsule = useRef();
+    capsule = useRef(), material = useRef(), letterMaterial = useRef(), orientation = useRef();
+  const extraction = useRef(arriving ? 1 : 0);
   const [hovered, setHovered] = useState(false);
   const point = useMemo(
     () => helixPoint(index, total, side),
@@ -209,12 +214,28 @@ function Nucleotide({
       ),
     [angle, center, point],
   );
+  const basePosition = useRef(refPosition.clone());
+  const initialPosition = useRef(refPosition.clone());
+  const initialAngle = useRef(angle);
   useFrame((_, delta) => {
-    const expansion = progress.current.explosion * DNA.baseExplosion;
+    extraction.current = THREE.MathUtils.clamp(extraction.current + (removing ? 1 : -1) * delta / 0.95, 0, 1);
+    const t = extraction.current;
+    // Glow, release, a small inward withdrawal, then an eased outward flight.
+    const flight = THREE.MathUtils.smoothstep(t, 0.22, 1);
+    const withdrawal = t < 0.3 ? -0.12 * Math.sin(t / 0.3 * Math.PI) : 0;
+    const displacement = withdrawal + flight * 2.65;
+    basePosition.current.lerp(refPosition, 1 - Math.exp(-delta * 7));
+    const rotationDelta = Math.atan2(Math.sin(-angle - orientation.current.rotation.y), Math.cos(-angle - orientation.current.rotation.y));
+    orientation.current.rotation.y += rotationDelta * (1 - Math.exp(-delta * 7));
+    const fade = 1 - THREE.MathUtils.smoothstep(t, 0.78, 1);
+    material.current.opacity = (dimmed ? 0.2 : 1) * fade;
+    letterMaterial.current.opacity = (dimmed ? 0.25 : 1) * fade;
+    material.current.emissiveIntensity = t > 0 && t < 0.3 ? 0.6 + Math.sin(t / 0.3 * Math.PI) * 1.2 : dimmed ? 0.025 : selected ? 0.5 : hovered ? 0.4 : 0.14;
+    const expansion = progress.current.explosion * DNA.baseExplosion + displacement;
     group.current.position.set(
-      refPosition.x + Math.cos(angle) * expansion,
-      point.y,
-      refPosition.z + Math.sin(angle) * expansion,
+      basePosition.current.x + Math.cos(angle) * expansion,
+      basePosition.current.y + flight * 0.3,
+      basePosition.current.z + Math.sin(angle) * expansion,
     );
     const scale = THREE.MathUtils.damp(
       capsule.current.scale.y,
@@ -226,12 +247,14 @@ function Nucleotide({
   });
   const select = (e) => {
     e.stopPropagation();
-    onSelect(index);
+    if (!removing) onSelect(index, side);
   };
   return (
+    <>
     <group
       ref={group}
-      position={refPosition}
+      position={initialPosition.current}
+      onContextMenu={(event) => { if (!removing) onBaseContext(index, side, event); }}
       onPointerOver={(e) => {
         e.stopPropagation();
         setHovered(true);
@@ -242,10 +265,10 @@ function Nucleotide({
         document.body.style.cursor = "auto";
       }}
     >
-      <group rotation={[0, -angle, 0]}>
+      <group ref={orientation} rotation={[0, -initialAngle.current, 0]}>
         <group ref={capsule}>
           <mesh geometry={geometries.capsule} rotation={[0, 0, Math.PI / 2]} onClick={select}>
-            <meshPhysicalMaterial
+            <meshPhysicalMaterial ref={material}
               color={BASE_COLORS[base]}
               metalness={0.1}
               roughness={0.22}
@@ -260,7 +283,7 @@ function Nucleotide({
               opacity={dimmed ? 0.2 : 1}
             />
           </mesh>
-          {selected && (
+          {selected && !removing && (
             <mesh geometry={geometries.selection} rotation={[0, 0, Math.PI / 2]} raycast={NO_RAYCAST}>
               <meshBasicMaterial
                 color={BASE_COLORS[base]}
@@ -274,7 +297,7 @@ function Nucleotide({
       </group>
       <Billboard>
         <mesh geometry={geometries.letter} position={[0, 0, 0.17]} onClick={select}>
-          <meshBasicMaterial
+          <meshBasicMaterial ref={letterMaterial}
             map={texture}
             transparent
             alphaTest={0.1}
@@ -284,7 +307,12 @@ function Nucleotide({
           />
         </mesh>
       </Billboard>
+      {removing && <Html center position={[0, 0.35, 0]} zIndexRange={[8, 0]} style={{ pointerEvents: 'none' }}><span className="removedBaseLabel">{BASE_INFO[base].name.toLocaleUpperCase('tr-TR')} ÇIKARILDI</span></Html>}
     </group>
+    {abasic && <group position={refPosition} onClick={e => { e.stopPropagation(); onSelect(index, side); }} onContextMenu={e => onBaseContext(index, side, e)}>
+      <Billboard><mesh><ringGeometry args={[0.09, 0.12, 20]} /><meshBasicMaterial color="#efc65e" transparent opacity={0.65} /></mesh></Billboard>
+    </group>}
+    </>
   );
 }
 function Strand({
@@ -294,6 +322,10 @@ function Strand({
   letters,
   geometries,
   selectedIndex,
+  selectedSide,
+  tokens,
+  pending,
+  arrivals,
   activeRegion,
   ...props
 }) {
@@ -314,23 +346,27 @@ function Strand({
       />
       {sequence.split("").map((base, index) => (
         <Nucleotide
-          key={index}
+          key={tokens[index].id}
           index={index}
           total={sequence.length}
           side={side}
           base={side ? COMPLEMENT[base] : base}
           texture={letters[side ? COMPLEMENT[base] : base]}
-          selected={selectedIndex === index}
+          selected={selectedIndex === index && selectedSide === side}
           dimmed={!inRegion(index, activeRegion)}
           progress={progress}
           geometries={geometries}
           onSelect={props.onSelect}
+          onBaseContext={props.onBaseContext}
+          removing={tokens[index].ap[side] || (pending?.id === tokens[index].id && pending.side === side)}
+          abasic={tokens[index].ap[side]}
+          arriving={arrivals?.includes(tokens[index].id)}
         />
       ))}
     </group>
   );
 }
-function HydrogenBonds({ sequence, progress, activeRegion, geometry }) {
+function HydrogenBonds({ sequence, tokens, pending, progress, activeRegion, geometry }) {
   const group = useRef();
   const rows = useMemo(
     () => sequence.split("").map((base, index) => ({
@@ -350,7 +386,7 @@ function HydrogenBonds({ sequence, progress, activeRegion, geometry }) {
     new THREE.MeshBasicMaterial({ color: "#caeefa", transparent: true, opacity: 0.12, depthWrite: false }),
   ], []);
   useEffect(() => () => materials.forEach((material) => material.dispose()), [materials]);
-  useFrame(() => {
+  useFrame((_, delta) => {
     const { separation, explosion } = progress.current;
     const fade = Math.max(0, 1 - separation * 2.2 - explosion * 1.8);
     group.current.visible = fade > 0.01;
@@ -364,10 +400,13 @@ function HydrogenBonds({ sequence, progress, activeRegion, geometry }) {
       scratch.direction.subVectors(scratch.end, scratch.start);
       const length = scratch.direction.length();
       row.position.copy(scratch.start).add(scratch.end).multiplyScalar(0.5);
-      row.visible = length > 0.0001;
+      const damaged = tokens[index].ap.some(Boolean) || pending?.id === tokens[index].id;
+      row.userData.release = THREE.MathUtils.damp(row.userData.release || 0, damaged ? 1 : 0, 18, delta);
+      const bondScale = 1 - row.userData.release;
+      row.visible = length > 0.0001 && bondScale > 0.01;
       if (row.visible) {
         row.quaternion.setFromUnitVectors(scratch.axis, scratch.direction.multiplyScalar(1 / length));
-        row.scale.set(length, 1, 1);
+        row.scale.set(length, bondScale, bondScale);
       }
     }
   });
@@ -423,6 +462,8 @@ export default function DNAModel({ separated, exploded, reduced, ...props }) {
         progress={progress}
         activeRegion={props.activeRegion}
         geometry={geometries.bond}
+        tokens={props.tokens}
+        pending={props.pending}
       />
     </group>
   );

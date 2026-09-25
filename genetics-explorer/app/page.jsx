@@ -9,112 +9,60 @@ import SequenceViewer from '../components/SequenceViewer';
 import ProteinSimulator from '../components/ProteinSimulator';
 import MutationAnalysis from '../components/MutationAnalysis';
 import Toolbar from '../components/Toolbar';
-import { BASE_INFO, COMPLEMENT, classifyMutation, codonAt } from '../lib/genetics';
+import DamagePanel from '../components/DamagePanel';
+import useDNAExperiment from '../hooks/useDNAExperiment';
+import { ORIGINAL, sequenceOf, displayedBase, regionMap, analyzeExperiment, transcribedSequence } from '../lib/experiment';
+import { BASE_INFO, COMPLEMENT, codonAt } from '../lib/genetics';
 
-const START = 'ATGGAATTTCCGAAAGCTGACCTGTAA';
-
-const REGIONS = [
-  {
-    id: 'promoter', label: 'Promotör', shortLabel: 'PROM', kind: 'promoter', from: 0, to: 4,
-    info: 'Transkripsiyonun başlaması için RNA polimeraz ve yardımcı proteinlerin bağlandığı düzenleyici DNA bölgesidir.'
-  },
-  {
-    id: 'exon-1', label: 'Ekzon 1', shortLabel: 'EKZ1', kind: 'exon', from: 5, to: 11,
-    info: 'RNA işlenmesinden sonra olgun mRNA içinde kalan ve proteine bilgi taşıyabilen dizidir.'
-  },
-  {
-    id: 'intron', label: 'İntron', shortLabel: 'İNT', kind: 'intron', from: 12, to: 17,
-    info: 'Ön-mRNA içinde bulunur; RNA kesilip birleştirilirken çıkarılan araya giren dizidir.'
-  },
-  {
-    id: 'exon-2', label: 'Ekzon 2', shortLabel: 'EKZ2', kind: 'exon', from: 18, to: 26,
-    info: 'RNA işlenmesinden sonra olgun mRNA içinde kalan ikinci ekzon bölgesidir.'
-  },
-  {
-    id: 'gene', label: 'Gen', shortLabel: 'GEN', kind: 'gene', from: 5, to: 26,
-    info: 'Bir RNA veya protein ürününün oluşumunda kullanılan bilgiyi taşıyan işlevsel DNA birimidir.'
-  }
-];
-
-function PairInfo({ base, index, dna }) {
+function PairInfo({ base, index, dna, token, side, region }) {
   const info = BASE_INFO[base] || BASE_INFO.A;
   const codon = codonAt(dna, index);
+  const missing = token.ap[side];
   return (
     <div className="pairInfo">
       <div className="pairVisual">
-        <span className={`baseTile base-${base}`}>{base}</span>
-        <div className="bondDots">{Array.from({ length: info.bonds }).map((_, i) => <i key={i} />)}</div>
-        <span className={`baseTile base-${info.pair}`}>{info.pair}</span>
+        <span className={`baseTile base-${base}`}>{missing ? "AP" : base}</span>
+        <div className="bondDots">{Array.from({ length: token.ap.some(Boolean) ? 0 : info.bonds }).map((_, i) => <i key={i} />)}</div>
+        <span className={`baseTile base-${info.pair}`}>{token.ap[1 - side] ? "AP" : info.pair}</span>
       </div>
       <div className="pairFacts">
         <div><span>Adı</span><b>{info.name}</b></div>
         <div><span>Eşleştiği baz</span><b>{info.pair} · {BASE_INFO[info.pair].name}</b></div>
-        <div><span>Hidrojen bağı</span><b>{info.bonds}</b></div>
+        <div><span>Hidrojen bağı</span><b>{token.ap.some(Boolean) ? "0 (AP hasarı)" : info.bonds}</b></div>
         <div><span>Baz ailesi</span><b>{info.family}</b></div>
       </div>
-      <p>{info.description}</p>
+      <p>{missing ? "Seçilen zincirde bu baz çıkarıldı; omurga korunuyor." : info.description}</p><p>{region?.label} · Zincir {side + 1}</p>
       <div className="codonInspector">
         <span className="microLabel">Bulunduğu kodon</span>
-        <strong>{codon.codon || '—'}</strong>
+        <strong>{token.kind === "exon" ? codon.codon || "—" : "Kodlamayan bölge"}</strong>
         <i>→</i>
-        <b>{codon.aminoAcid === 'Stop' ? 'Dur' : codon.aminoAcid}</b>
+        <b>{token.kind === 'exon' ? codon.aminoAcid === 'Stop' ? 'Dur' : codon.aminoAcid : '—'}</b>
       </div>
     </div>
   );
 }
 
 export default function Home() {
-  const [history, setHistory] = useState([START]);
-  const [historyIndex, setHistoryIndex] = useState(0);
-  const [selectedIndex, setSelectedIndex] = useState(3);
+  const experiment = useDNAExperiment();
+  const { current, token, index: safeSelectedIndex, selection, pending } = experiment;
   const [separated, setSeparated] = useState(false);
   const [exploded, setExploded] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [resetSignal, setResetSignal] = useState(0);
-  const [activeRegion, setActiveRegion] = useState(null);
+  const [activeRegionId, setActiveRegionId] = useState(null);
   const [mutationMode, setMutationMode] = useState('substitution');
-
-  const mutated = history[historyIndex];
-  const original = START;
-  const safeSelectedIndex = Math.min(selectedIndex, Math.max(0, mutated.length - 1));
-  const selectedBase = mutated[safeSelectedIndex] || 'A';
+  const [menuRequest, setMenuRequest] = useState(null);
+  const regions = useMemo(() => regionMap(current.tokens), [current.tokens]);
+  const activeRegion = regions.find(r => r.id === activeRegionId) || null;
+  const mutated = sequenceOf(current.tokens);
+  const original = sequenceOf(ORIGINAL);
+  const selectedBase = displayedBase(token, selection.side);
   const pair = COMPLEMENT[selectedBase];
-  const mutation = useMemo(() => classifyMutation(original, mutated), [original, mutated]);
-
-  const commit = (nextSequence, nextIndex = safeSelectedIndex) => {
-    if (!nextSequence || nextSequence === mutated) return;
-    const nextHistory = history.slice(0, historyIndex + 1);
-    nextHistory.push(nextSequence);
-    setHistory(nextHistory);
-    setHistoryIndex(nextHistory.length - 1);
-    setSelectedIndex(Math.max(0, Math.min(nextIndex, nextSequence.length - 1)));
-  };
-
-  const substitute = (base) => {
-    if (!mutated[safeSelectedIndex] || base === mutated[safeSelectedIndex]) return;
-    commit(mutated.slice(0, safeSelectedIndex) + base + mutated.slice(safeSelectedIndex + 1));
-  };
-
-  const insert = (base) => {
-    if (mutated.length >= 60) return;
-    commit(mutated.slice(0, safeSelectedIndex) + base + mutated.slice(safeSelectedIndex), safeSelectedIndex);
-  };
-
-  const remove = () => {
-    if (mutated.length <= 3) return;
-    commit(mutated.slice(0, safeSelectedIndex) + mutated.slice(safeSelectedIndex + 1), Math.max(0, safeSelectedIndex - 1));
-  };
-
-  const resetMutations = () => {
-    setHistory([original]);
-    setHistoryIndex(0);
-    setSelectedIndex(3);
-  };
-
-  const selectRegion = (region) => {
-    setActiveRegion(region);
-    setSelectedIndex(Math.min(region.from, mutated.length - 1));
-  };
+  const mutation = useMemo(() => analyzeExperiment(current), [current]);
+  const selectedRegion = regions.find(r => r.id === token.regionId);
+  const codingIndex = current.tokens.slice(0, safeSelectedIndex).filter(t => t.kind === 'exon').length;
+  const selectRegion = region => { setActiveRegionId(region.id); if (!region.empty) experiment.select(region.from); };
+  const actionMenu = event => setMenuRequest({ x: event.clientX, y: event.clientY, serial: Date.now() });
 
   return (
     <main className="appShell">
@@ -147,7 +95,7 @@ export default function Home() {
           <div className="interactionGuide">
             <div><b>Sol sürükle</b><span>DNA'yı döndür</span></div>
             <div><b>Tekerlek</b><span>Yakınlaştır / uzaklaştır</span></div>
-            <div className="rightClickGuide"><b>Sağ tık</b><span>DNA'yı sök / yeniden topla</span></div>
+            <div className="rightClickGuide"><b>Sağ tık</b><span>Baz: işlem menüsü · Boş alan: sök/topla</span></div>
           </div>
           <div className="scienceNote">
             <span>ÖĞRENME NOTU</span>
@@ -160,18 +108,24 @@ export default function Home() {
             <DNAViewer
               sequence={mutated}
               selectedIndex={safeSelectedIndex}
-              onSelect={setSelectedIndex}
+              onSelect={experiment.select}
+              tokens={current.tokens}
+              selectedSide={selection.side}
+              pending={pending}
+              arrivals={experiment.arrivals}
+              onAction={experiment.act}
+              menuRequest={menuRequest}
               separated={separated}
               exploded={exploded}
               onToggleExplode={() => setExploded(v => !v)}
               autoRotate={autoRotate}
               resetSignal={resetSignal}
               activeRegion={activeRegion}
-              regions={REGIONS}
+              regions={regions}
             />
             <div className="selectedBadge">
               <span>SEÇİLİ BAZ</span>
-              <b>{selectedBase}</b>
+              <b>{token.ap[selection.side] ? "AP" : selectedBase}</b>
               <small>{BASE_INFO[selectedBase]?.name} · {selectedBase}–{pair} çifti · {safeSelectedIndex + 1}. konum</small>
             </div>
           </div>
@@ -189,7 +143,10 @@ export default function Home() {
 
         <aside className="sideStack rightStack">
           <HologramPanel eyebrow="BAZ ÇİFTİ // 01" title="Baz Çifti Bilgisi">
-            <PairInfo base={selectedBase} index={safeSelectedIndex} dna={mutated} />
+            <PairInfo base={selectedBase} index={codingIndex} dna={mutation.coding} token={token} side={selection.side} region={selectedRegion} />
+            <button className="baseActionsTrigger" onClick={actionMenu}>Baz işlemleri</button>
+            <DamagePanel tokens={current.tokens} pending={pending} onUndo={experiment.undo} canUndo={experiment.canUndo} />
+            <div className="historyControls"><button onClick={experiment.undo} disabled={!experiment.canUndo}>Geri al</button><button onClick={experiment.redo} disabled={!experiment.canRedo}>Yinele</button></div>
           </HologramPanel>
 
           <HologramPanel eyebrow="ANLIK ETKİ // 02" title="Mutasyon Önizlemesi">
@@ -197,11 +154,11 @@ export default function Home() {
               <div className={`impactPill effect-${mutation.effect.toLowerCase().replaceAll(' ', '-')}`}>{mutation.effect}</div>
               <dl>
                 <div><dt>Mutasyon</dt><dd>{mutation.type}</dd></div>
-                <div><dt>Protein değişti mi?</dt><dd>{mutation.proteinChanged ? 'EVET' : 'HAYIR'}</dd></div>
+                <div><dt>Protein değişti mi?</dt><dd>{mutation.proteinChanged === null ? 'ÖNGÖRÜLEMEZ' : mutation.proteinChanged ? 'EVET' : 'HAYIR'}</dd></div>
                 <div><dt>DNA uzunluğu</dt><dd>{mutated.length} bp</dd></div>
                 <div><dt>Yapı görünümü</dt><dd>{exploded ? 'SÖKÜLMÜŞ' : separated ? 'ZİNCİRLER AYRI' : 'BÜTÜN'}</dd></div>
               </dl>
-              <p>{mutation.explanation}</p>
+              <p>{mutation.explanation}</p>{mutation.notes.map(note => <p key={note} className="regionEffectNote">{note}</p>)}
             </div>
           </HologramPanel>
 
@@ -216,8 +173,8 @@ export default function Home() {
 
       <section className="labDeck">
         <HologramPanel id="bolgeler" eyebrow="GENOM HARİTASI // 03" title="DNA Bölgeleri" className="widePanel">
-          <GenomeRegion regions={REGIONS} activeRegion={activeRegion || REGIONS[0]} onSelect={selectRegion} sequenceLength={mutated.length} />
-          {activeRegion && <button className="clearRegion" onClick={() => setActiveRegion(null)}>Bölge odağını temizle</button>}
+          <GenomeRegion regions={regions} activeRegion={activeRegion || regions[0]} onSelect={selectRegion} sequenceLength={mutated.length} />
+          {activeRegion && <button className="clearRegion" onClick={() => setActiveRegionId(null)}>Bölge odağını temizle</button>}
         </HologramPanel>
 
         <HologramPanel id="mutasyon" eyebrow="DÜZENLEYİCİ // 04" title="Mutasyon Laboratuvarı" className="widePanel">
@@ -226,27 +183,32 @@ export default function Home() {
             selectedIndex={safeSelectedIndex}
             mode={mutationMode}
             setMode={setMutationMode}
-            onSubstitute={substitute}
-            onInsert={insert}
-            onDelete={remove}
-            canUndo={historyIndex > 0}
-            canRedo={historyIndex < history.length - 1}
-            onUndo={() => setHistoryIndex(i => Math.max(0, i - 1))}
-            onRedo={() => setHistoryIndex(i => Math.min(history.length - 1, i + 1))}
-            onReset={resetMutations}
+            onSubstitute={base => experiment.act("substitute", base)}
+            onInsert={base => experiment.act("insert", base)}
+            onDelete={() => experiment.act("delete")}
+            canUndo={experiment.canUndo}
+            canRedo={experiment.canRedo}
+            onUndo={experiment.undo}
+            onRedo={experiment.redo}
+            onReset={experiment.reset}
+            busy={!!pending}
+            missing={token.ap[selection.side]}
           />
         </HologramPanel>
 
         <HologramPanel eyebrow="KARŞILAŞTIR // 05" title="Orijinal ve Değişmiş DNA" className="widePanel">
-          <SequenceViewer original={original} mutated={mutated} />
+          <SequenceViewer original={original} mutated={mutated} tokens={current.tokens} />
+          <div className="codingComparison"><small>KODLAYAN EKZONLAR · İNTRONLAR ÇIKARILDIKTAN SONRA</small><SequenceViewer original={mutation.originalCoding} mutated={mutation.coding} compact /></div>
+          {mutation.effect === 'Çerçeve kayması' && <p className="frameshiftFlow">{mutation.type === 'Silme' ? 'Nükleotid silinmesi (Deletion)' : 'Nükleotid eklenmesi (Insertion)'} → Okuma çerçevesi değişti → Frameshift mutasyonu</p>}
+          <p className="microNote">27 bazlık kısa bir eğitim modeli. Promotör protein koduna katılmaz; intron normal splicing varsayımıyla çıkarılır. Ekzonlar burada kodlayan bölgeleri temsil eder.</p>
         </HologramPanel>
 
         <HologramPanel id="protein" eyebrow="MERKEZİ DOGMA // 06" title="DNA → mRNA → Protein" className="widePanel">
-          <ProteinSimulator dna={mutated} />
+          <ProteinSimulator dna={mutation.coding} preDna={transcribedSequence(current.tokens)} damaged={mutation.damage} />
         </HologramPanel>
 
         <HologramPanel eyebrow="SONUÇ // 07" title="Protein Etki Analizi" className="fullPanel">
-          <MutationAnalysis mutation={mutation} original={original} mutated={mutated} />
+          <MutationAnalysis mutation={mutation} original={mutation.originalCoding} mutated={mutation.coding} />
         </HologramPanel>
       </section>
 

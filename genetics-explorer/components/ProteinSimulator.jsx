@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { dnaToMrna, translateMrna } from '../lib/genetics';
 
-export default function ProteinSimulator({ dna }) {
+export default function ProteinSimulator({ dna, preDna, damaged }) {
   const [running, setRunning] = useState(false);
   const [stage, setStage] = useState(2);
   const mrna = useMemo(() => dnaToMrna(dna), [dna]);
@@ -28,7 +28,9 @@ export default function ProteinSimulator({ dna }) {
 
       <button className="simulateButton" onClick={() => setRunning(true)} disabled={running}>{running ? 'Simülasyon çalışıyor…' : 'Protein sentezini simüle et'}</button>
 
-      <div className="mrnaReadout"><span>mRNA</span><code>{mrna.match(/.{1,3}/g)?.join(' · ') || ''}</code></div>
+      {damaged && <p className="regionEffectNote">AP hasarı için üretilecek protein öngörülmez. Aşağıdaki hesap, kayıtlı baz dizisine ve normal splicing varsayımına aittir.</p>}
+      {preDna && <div className="mrnaReadout"><span>Ön-mRNA (intron dahil)</span><code>{dnaToMrna(preDna)}</code></div>}
+      <div className="mrnaReadout"><span>Olgun mRNA (kodlayan ekzonlar)</span><code>{mrna.match(/.{1,3}/g)?.join(' · ') || ''}</code></div>
       <div className="aminoStrip">
         {protein.map((item) => (
           <div key={`${item.codon}-${item.index}`} className={item.aminoAcid === 'Stop' ? 'stopCodon' : ''}>

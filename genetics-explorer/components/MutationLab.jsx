@@ -18,7 +18,9 @@ export default function MutationLab({
   canRedo,
   onUndo,
   onRedo,
-  onReset
+  onReset,
+  busy,
+  missing
 }) {
   return (
     <div className="mutationLab">
@@ -43,7 +45,7 @@ export default function MutationLab({
           <span className="microLabel">{selectedBase} bazını değiştir</span>
           <div className="baseChoiceGrid">
             {BASES.map(base => (
-              <button key={base} className={`baseChoice base-${base}`} disabled={base === selectedBase} onClick={() => onSubstitute(base)}>
+              <button key={base} className={`baseChoice base-${base}`} disabled={busy || missing || base === selectedBase} onClick={() => onSubstitute(base)}>
                 <b>{base}</b><small>{base === selectedBase ? 'mevcut' : `${selectedBase} → ${base}`}</small>
               </button>
             ))}
@@ -56,7 +58,7 @@ export default function MutationLab({
           <span className="microLabel">{selectedIndex + 1}. konumdan önce yeni baz ekle</span>
           <div className="baseChoiceGrid">
             {BASES.map(base => (
-              <button key={base} className={`baseChoice base-${base}`} onClick={() => onInsert(base)}>
+              <button key={base} className={`baseChoice base-${base}`} disabled={busy} onClick={() => onInsert(base)}>
                 <b>+{base}</b><small>ekle</small>
               </button>
             ))}
@@ -66,8 +68,8 @@ export default function MutationLab({
 
       {mode === 'deletion' && (
         <div className="deleteBox">
-          <p><strong>{selectedBase}</strong> bazı {selectedIndex + 1}. konumdan kaldırılır. Tek baz silinirse okuma çerçevesi kayabilir.</p>
-          <button className="dangerAction" onClick={onDelete}>Nükleotidi sil</button>
+          <p><strong>{selectedBase}</strong> bazı {selectedIndex + 1}. konumdan kaldırılır. Kodlayan ekzonda tek nükleotid silinirse okuma çerçevesi kayar. İntron ve promotör etkileri ayrı değerlendirilir.</p>
+          <button className="dangerAction" disabled={busy} onClick={onDelete}>Nükleotidi sil</button>
         </div>
       )}
 

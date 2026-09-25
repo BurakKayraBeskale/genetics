@@ -434,3 +434,29 @@ footer { width: min(1600px, calc(100% - 28px)); margin: auto; padding: 16px 0 26
 /* Keep the selected-base readout clear of the upper helix in the wide mode. */
 .selectedBadge { width: 128px; padding: 9px; }
 .selectedBadge b { font-size: 24px; }
+
+/* Local base operations leave the established 3D presentation unchanged. */
+.baseContextMenu { position: fixed; z-index: 100; width: 250px; padding: 8px; border: 1px solid #4be6ff88; border-radius: 10px; background: rgba(3,17,32,.98); box-shadow: 0 12px 40px #0009, 0 0 24px #1b9bca22; }
+.contextTitle { padding: 8px 10px 12px; color: #d5f7ff; font-size: 13px; border-bottom: 1px solid #4be6ff33; }
+.contextTitle small { display: block; color: #7fa8b7; font-size: 10px; margin-top: 4px; }
+.baseContextMenu button { display: block; width: 100%; border: 0; border-radius: 5px; background: transparent; text-align: left; padding: 10px; font-size: 13px; cursor: pointer; }
+.baseContextMenu button:hover, .baseContextMenu button:focus-visible { background: #14668c55; }
+.baseContextMenu button:disabled { opacity: .35; cursor: default; }
+.baseActionsTrigger, .damagePanel button { background: #092b43; border: 1px solid #4be6ff66; padding: 8px 12px; font-size: 11px; cursor: pointer; border-radius: 5px; }
+.damagePanel { margin-top: 12px; padding: 12px; border: 1px solid #efc65e66; background: #37271033; border-radius: 6px; }
+.damagePanel strong { color: #efc65e; font-size: 12px; }
+.damagePanel p, .regionEffectNote { font-size: 11px; line-height: 1.6; color: #b7ccd7; }
+.damagePanel small, .damagePanel a { display: block; font-size: 10px; line-height: 1.5; margin: 8px 0; color: #93c6d4; }
+.damagePanel button:disabled { opacity: .35; }
+.removedBaseLabel { white-space: nowrap; padding: 5px 8px; border: 1px solid #efc65e88; background: #061522dd; color: #ffe6a4; font: 10px ui-sans-serif, sans-serif; border-radius: 5px; pointer-events: none; }
+.extractionStatus { position: absolute; top: 100px; left: 50%; transform: translateX(-50%); z-index: 8; max-width: 90%; padding: 8px 12px; background: #08273ee8; border: 1px solid #4be6ff66; border-radius: 6px; font-size: 11px; pointer-events: none; }
+.codonChunk [data-ap] { outline: 1px dashed #efc65e; color: #efc65e; }
+.codingComparison { border-top: 1px solid #4be6ff33; margin-top: 16px; padding-top: 12px; }
+.codingComparison > small, .microNote { color: #87aeba; font-size: 10px; line-height: 1.6; }
+.frameshiftFlow { border-left: 2px solid #ff657d; background: #41142544; color: #ffd3dc; padding: 10px; font-size: 12px; line-height: 1.6; }
+
+/* Keep the molecule anchored when the damage explanation expands. */
+@media (min-width: 1201px) {
+  .centerStage { align-self: start; margin-top: 16px; }
+  .heroIntro { align-self: start; min-height: min(84vh, 840px); }
+}
