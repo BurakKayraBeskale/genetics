@@ -493,3 +493,23 @@ footer { width: min(1600px, calc(100% - 28px)); margin: auto; padding: 16px 0 26
   .centerStage { align-self: start; margin-top: 16px; }
   .heroIntro { align-self: start; min-height: min(84vh, 840px); }
 }
+
+/* Touch-sized controls stay outside the molecule viewport. */
+.baseNavigator { display: flex; gap: 6px; align-items: center; padding: 10px 0 4px; }
+.baseNavigator button { min-height: 44px; min-width: 44px; border: 1px solid var(--line); border-radius: 6px; background: #071e30; color: #c9f7ff; cursor: pointer; padding: 8px 10px; font-size: 12px; }
+.baseNavigator button:disabled { opacity: .35; cursor: default; }
+.navigatorReadout { flex: 1; min-width: 0; padding: 0 3px; }
+.navigatorReadout b, .navigatorReadout small { display: block; }
+.navigatorReadout b { font-size: 12px; color: var(--cyan); }
+.navigatorReadout small { color: var(--muted); font-size: 10px; margin-top: 4px; }
+.baseNavigator .navigatorActions { border-color: #4be6ff66; }
+.reportExport { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+.reportExport button { min-height: 44px; padding: 9px 14px; margin: 6px 8px 0 0; border-radius: 6px; border: 1px solid var(--line); color: #c9f7ff; background: #071e30; cursor: pointer; }
+.reportExport button:disabled { opacity: .4; cursor: default; }
+.reportExport p { font-size: 11px; color: var(--muted); line-height: 1.6; }
+@media (max-width: 560px) {
+  .baseNavigator { flex-wrap: wrap; }
+  .navigatorReadout { min-width: calc(100% - 110px); }
+  .baseNavigator .navigatorPair, .baseNavigator .navigatorActions { flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

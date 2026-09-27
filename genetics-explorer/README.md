@@ -55,3 +55,11 @@ V3 cam görünümü, hastalık senaryoları ve baz etkileşimleri korunur. Hidro
 DPR cihaz yüküne göre 0.85–1.5 arasında kademeli ayarlanır. Cam kırılma tamponu 0.75 çözünürlük ölçeğinde çizilir; Composer kenar yumuşatma korunur. Zayıf cihazlarda ince ayrıntılar hafif yumuşayabilir. Kalite değişimleri arasında en az 8 saniye beklenir.
 
 `?perf=1` eklenince yalnızca yerel ölçüm paneli açılır: tarayıcı kare aralığı, p95, bütün çizim geçişlerinin çağrı/üçgen sayısı ve DPR. Bu GPU zamanlayıcısı değildir; sonuç cihaz, sekme görünürlüğü ve yükten etkilenir. V3 ile aynı tarayıcıdaki geliştirme önizlemesinde çizim sayısı yaklaşık 316’dan 206’ya indi; bu bir sabit FPS garantisi değildir.
+
+## Baz gezinme ve deney raporu
+
+Model altındaki oklar önceki/sonraki bazı seçer; zincir düğmesi eş bazı seçer. **Baz işlemleri** dokunmatik ekranda da menüyü açar. Menü ok tuşları, Home/End ve Escape ile kullanılabilir. Değişmiş DNA dizisindeki harfler 3B seçime bağlıdır; sağ/sol ok ile dizide gezinilebilir.
+
+Protein Etki Analizi altındaki **Metin indir** / **JSON indir** düğmeleri orijinal ve güncel DNA, ekzonlar, mRNA, protein, AP hasarı, bölgeye duyarlı açıklamalar ve geçerli işlem geçmişini yerel dosya olarak kaydeder. Animasyon sürerken yarım işlem raporlanmaz. AP hasarında çeviri yalnızca kayıtlı baz dizisinin hesabı olarak etiketlenir. İndirme sunucuya veri göndermez.
+
+3B sahne ekran dışına çıktığında veya sekme gizlendiğinde çizim döngüsü duraklatılır; tekrar görünür olduğunda mevcut model ve kamera korunarak devam eder.

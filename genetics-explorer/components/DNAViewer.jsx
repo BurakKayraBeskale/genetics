@@ -15,6 +15,7 @@ import HologramPlatform from "./dna/HologramPlatform";
 import LaboratoryBackdrop from "./dna/LaboratoryBackdrop";
 import { modelHeight } from "../lib/dnaGeometry";
 import RenderPerformance from "./dna/RenderPerformance";
+import useSceneVisibility from "../hooks/useSceneVisibility";
 
 function Scene({ resetSignal, autoRotate, reduced, ...props }) {
   const controls = useRef(),
@@ -113,6 +114,8 @@ export default memo(function DNAViewer({ exploded, onToggleExplode, onAction, me
   // whenever menu/selection changes reconfigure the root.
   const [dpr, setDpr] = useState([0.85, 1.5]);
   const [menu, setMenu] = useState(null);
+  const shellRef = useRef(null);
+  const sceneVisible = useSceneVisibility(shellRef);
   const handled = useRef(false);
   const closeMenu = useCallback(() => setMenu(null), []);
   const menuToken = menu && props.tokens.find(t => t.id === menu.id);
@@ -137,6 +140,8 @@ export default memo(function DNAViewer({ exploded, onToggleExplode, onAction, me
   }, []);
   return (
     <div
+      ref={shellRef}
+      data-rendering={sceneVisible ? "active" : "paused"}
       className="viewerShell productViewer"
       onContextMenu={(event) => {
         event.preventDefault();
@@ -150,6 +155,7 @@ export default memo(function DNAViewer({ exploded, onToggleExplode, onAction, me
         <b>DNA // CAM SARMAL</b>
       </div>
       <Canvas
+        frameloop={sceneVisible ? "always" : "never"}
         camera={{ position: [0, 0, 17], fov: 30 }}
         dpr={dpr}
         gl={{ antialias: false, alpha: true }}

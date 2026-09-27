@@ -9,6 +9,8 @@ import SequenceViewer from '../components/SequenceViewer';
 import ProteinSimulator from '../components/ProteinSimulator';
 import MutationAnalysis from '../components/MutationAnalysis';
 import Toolbar from '../components/Toolbar';
+import BaseNavigator from '../components/BaseNavigator';
+import ExperimentReport from '../components/ExperimentReport';
 import DamagePanel from '../components/DamagePanel';
 import DiseaseScenarios from '../components/DiseaseScenarios';
 import useDNAExperiment from '../hooks/useDNAExperiment';
@@ -102,7 +104,10 @@ export default function Home() {
   const selectedRegion = regions.find(r => r.id === token.regionId);
   const codingIndex = current.tokens.slice(0, safeSelectedIndex).filter(t => t.kind === 'exon').length;
   const selectRegion = useCallback(region => { setActiveRegionId(region.id); if (!region.empty) select(region.from); }, [select]);
-  const actionMenu = useCallback(event => setMenuRequest({ x: event.clientX, y: event.clientY, serial: Date.now() }), []);
+  const actionMenu = useCallback(event => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setMenuRequest({ x: rect.left, y: rect.bottom + 6, serial: Date.now() });
+  }, []);
 
   return (
     <main className="appShell">
@@ -171,6 +176,7 @@ export default function Home() {
             </div>
           </div>
 
+          <BaseNavigator index={safeSelectedIndex} total={current.tokens.length} side={selection.side} base={selectedBase} missing={token.ap[selection.side]} region={selectedRegion} busy={!!pending} onSelect={select} onMenu={actionMenu} />
           <Toolbar
             separated={separated}
             exploded={exploded}
@@ -185,7 +191,7 @@ export default function Home() {
         <aside className="sideStack rightStack">
           <HologramPanel eyebrow="BAZ ÇİFTİ // 01" title="Baz Çifti Bilgisi">
             <PairInfo base={selectedBase} index={codingIndex} dna={mutation.coding} token={token} side={selection.side} region={selectedRegion} />
-            <button className="baseActionsTrigger" onClick={actionMenu}>Baz işlemleri</button>
+            <button className="baseActionsTrigger" aria-haspopup="menu" onClick={actionMenu}>Baz işlemleri</button>
             <DamagePanel tokens={current.tokens} pending={pending} onUndo={clearedUndo} canUndo={experiment.canUndo} />
             <div className="historyControls"><button onClick={clearedUndo} disabled={!experiment.canUndo}>Geri al</button><button onClick={clearedRedo} disabled={!experiment.canRedo}>Yinele</button></div>
           </HologramPanel>
@@ -248,7 +254,7 @@ export default function Home() {
         </HologramPanel>
 
         <HologramPanel eyebrow="KARŞILAŞTIR // 06" title="Orijinal ve Değişmiş DNA" className="widePanel">
-          <SequenceViewer original={original} mutated={mutated} tokens={current.tokens} />
+          <SequenceViewer original={original} mutated={mutated} tokens={current.tokens} selectedIndex={safeSelectedIndex} onSelect={select} />
           <div className="codingComparison"><small>KODLAYAN EKZONLAR · İNTRONLAR ÇIKARILDIKTAN SONRA</small><SequenceViewer original={mutation.originalCoding} mutated={mutation.coding} compact /></div>
           {mutation.effect === 'Çerçeve kayması' && <p className="frameshiftFlow">{mutation.type === 'Silme' ? 'Nükleotid silinmesi (Deletion)' : 'Nükleotid eklenmesi (Insertion)'} → Okuma çerçevesi değişti → Frameshift mutasyonu</p>}
           <p className="microNote">27 bazlık kısa bir eğitim modeli. Promotör protein koduna katılmaz; intron normal splicing varsayımıyla çıkarılır. Ekzonlar burada kodlayan bölgeleri temsil eder.</p>
@@ -260,6 +266,7 @@ export default function Home() {
 
         <HologramPanel eyebrow="SONUÇ // 08" title="Protein Etki Analizi" className="fullPanel">
           <MutationAnalysis mutation={mutation} original={mutation.originalCoding} mutated={mutation.coding} />
+          <ExperimentReport current={current} mutation={mutation} busy={!!pending || diseaseQueue.length > 0} />
         </HologramPanel>
       </section>
 
