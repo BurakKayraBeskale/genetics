@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { initialExperiment, editExperiment, displayedBase } from '../lib/experiment';
 
 export default function useDNAExperiment() {
-  const [timeline, setTimeline] = useState({ entries: [initialExperiment()], cursor: 0 });
+  const [timeline, setTimeline] = useState(() => ({ entries: [initialExperiment()], cursor: 0 }));
   const [selection, setSelection] = useState({ id: 'exon-1:4', side: 0 });
   const [pending, setPending] = useState(null);
   const [arrivals, setArrivals] = useState([]);
@@ -12,7 +12,7 @@ export default function useDNAExperiment() {
   const current = timeline.entries[timeline.cursor];
   const index = Math.max(0, current.tokens.findIndex(t => t.id === selection.id));
   const token = current.tokens[index];
-  const commit = action => {
+  const commit = useCallback(action => {
     setTimeline(previous => {
       const state = previous.entries[previous.cursor];
       const next = editExperiment(state, action);
@@ -20,7 +20,7 @@ export default function useDNAExperiment() {
       const entries = [...previous.entries.slice(0, previous.cursor + 1), next];
       return { entries, cursor: entries.length - 1 };
     });
-  };
+  }, []);
   useEffect(() => {
     if (!pending) return;
     const timer = setTimeout(() => {
@@ -29,8 +29,8 @@ export default function useDNAExperiment() {
       setPending(null); lock.current = false;
     }, 1050);
     return () => clearTimeout(timer);
-  }, [pending]);
-  const act = (kind, base, target = selection) => {
+  }, [pending, commit]);
+  const act = useCallback((kind, base, target = selection) => {
     if (lock.current) return;
     const hit = current.tokens.find(t => t.id === target.id);
     if (!hit) return;
@@ -45,24 +45,30 @@ export default function useDNAExperiment() {
       commit(action);
       if (kind === 'insert' && current.tokens.length < 60) setSelection({ id: action.newId, side: target.side });
     }
-  };
-  const travel = cursor => {
+  }, [current, selection, commit]);
+  const travel = useCallback(cursor => {
     if (lock.current) return;
     const next = timeline.entries[cursor];
     if (!next) return;
     setArrivals(next.tokens.filter(t => !current.tokens.some(old => old.id === t.id)).map(t => t.id));
     setTimeline({ ...timeline, cursor });
     if (!next.tokens.some(t => t.id === selection.id)) setSelection({ id: next.tokens[Math.min(index, next.tokens.length - 1)].id, side: selection.side });
-  };
-  const reset = () => {
+  }, [timeline, current, selection, index]);
+  const reset = useCallback(() => {
     lock.current = false; setPending(null);
     setArrivals(initialExperiment().tokens.filter(t => !current.tokens.some(old => old.id === t.id)).map(t => t.id));
     setTimeline({ entries: [initialExperiment()], cursor: 0 });
     setSelection({ id: 'exon-1:4', side: 0 });
-  };
+  }, [current]);
+  const undo = useCallback(() => travel(timeline.cursor - 1), [travel, timeline.cursor]);
+  const redo = useCallback(() => travel(timeline.cursor + 1), [travel, timeline.cursor]);
+  const select = useCallback((index, side = 0) => {
+    const id = current.tokens[index]?.id;
+    if (!id) return;
+    setSelection(previous => previous.id === id && previous.side === side ? previous : { id, side });
+  }, [current.tokens]);
   return { current, index, token, selection, setSelection, pending, arrivals, act, reset,
     canUndo: !pending && timeline.cursor > 0, canRedo: !pending && timeline.cursor < timeline.entries.length - 1,
-    undo: () => travel(timeline.cursor - 1), redo: () => travel(timeline.cursor + 1),
-    select: (index, side = 0) => setSelection({ id: current.tokens[index]?.id || token.id, side }),
+    undo, redo, select,
   };
 }

@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { dnaToMrna, translateMrna } from '../lib/genetics';
 
 function proteinText(dna) {
   return translateMrna(dnaToMrna(dna)).map(x => x.aminoAcid === 'Stop' ? 'Dur' : x.aminoAcid).join(' – ');
 }
 
-export default function MutationAnalysis({ mutation, original, mutated }) {
+function MutationAnalysis({ mutation, original, mutated }) {
   return (
     <div className="analysisCard">
       <div className={`impactAnswer ${mutation.proteinChanged ? 'yes' : 'no'}`}>
@@ -31,3 +32,5 @@ export default function MutationAnalysis({ mutation, original, mutated }) {
     </div>
   );
 }
+
+export default memo(MutationAnalysis);

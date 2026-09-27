@@ -455,6 +455,39 @@ footer { width: min(1600px, calc(100% - 28px)); margin: auto; padding: 16px 0 26
 .codingComparison > small, .microNote { color: #87aeba; font-size: 10px; line-height: 1.6; }
 .frameshiftFlow { border-left: 2px solid #ff657d; background: #41142544; color: #ffd3dc; padding: 10px; font-size: 12px; line-height: 1.6; }
 
+/* Disease Scenario Mode */
+.diseaseGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.diseaseCard { position: relative; text-align: left; border: 1px solid rgba(75,230,255,.14); background: rgba(3,14,25,.62); color: #9cc0ca; padding: 10px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; min-height: 76px; }
+.diseaseCard b { font-size: 11px; color: #d7f4fa; line-height: 1.3; }
+.diseaseCard.active { border-color: rgba(75,230,255,.5); background: rgba(4,20,34,.85); }
+.diseaseCard.applied { border-color: rgba(255,101,125,.55); }
+.diseaseTag { align-self: flex-start; font-size: 7px; letter-spacing: .08em; text-transform: uppercase; color: #8a72ff; border: 1px solid rgba(138,114,255,.4); background: rgba(138,114,255,.12); padding: 3px 6px; }
+.appliedBadge { color: #ff92a1; font-size: 7px; letter-spacing: .06em; text-transform: uppercase; }
+.diseaseDetail { margin-top: 14px; border-top: 1px solid rgba(75,230,255,.12); padding-top: 14px; }
+.diseaseDetailHeader { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+.diseaseDetailHeader h3 { margin: 0; font-size: 15px; color: #eafcff; }
+.diseaseFactGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.diseaseFactGrid div { border: 1px solid rgba(75,230,255,.1); padding: 9px; background: rgba(3,14,25,.62); }
+.diseaseFactGrid span { display: block; color: #5c8995; font-size: 7px; text-transform: uppercase; margin-bottom: 3px; }
+.diseaseFactGrid b { display: block; font-size: 11px; line-height: 1.4; color: #c8eef4; font-weight: 500; }
+.diseaseModelNote { border-left: 2px solid #4be6ff; background: #04182633; padding: 9px 11px; font-size: 11px; line-height: 1.6; color: #bfe6ee; margin: 0 0 10px; }
+.diseaseModelNote .microLabel { display: block; margin-bottom: 4px; }
+.diseaseImpactGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.diseaseImpactGrid > div { border: 1px solid rgba(75,230,255,.1); padding: 9px; background: rgba(3,14,25,.62); }
+.diseaseImpactGrid p { margin: 5px 0 0; font-size: 11px; line-height: 1.55; color: #b7ccd7; }
+.diseaseActions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.diseaseActions button:not(.dangerAction) { border: 1px solid rgba(75,230,255,.12); background: rgba(4,16,29,.7); color: #9cc0ca; padding: 9px; font-size: 9px; text-transform: uppercase; cursor: pointer; }
+.diseaseActions button:disabled { opacity: .35; cursor: default; }
+
+@media (max-width: 1180px) {
+  .diseaseGrid { grid-template-columns: repeat(3, 1fr); }
+  .diseaseFactGrid, .diseaseImpactGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .diseaseGrid { grid-template-columns: 1fr 1fr; }
+  .diseaseActions { grid-template-columns: 1fr; }
+}
+
 /* Keep the molecule anchored when the damage explanation expands. */
 @media (min-width: 1201px) {
   .centerStage { align-self: start; margin-top: 16px; }

@@ -26,3 +26,15 @@ test('reset restores unchanged protein analysis', () => {
   assert.equal(classifyMutation(original, original).proteinChanged, false);
   assert.equal(classifyMutation(original, original).effect, 'Mutasyon yok');
 });
+
+
+test('in-frame deletion preserves a shifted stop while new stop codons remain nonsense', () => {
+  const coding = 'ATGGAATTTCCGGACTAA';
+  const deletion = classifyMutation(coding, 'ATGGAATTTCCGTAA');
+  assert.equal(deletion.type, 'Silme');
+  assert.equal(deletion.effect, 'Çerçeve korunmuş değişim');
+  assert.equal(deletion.proteinChanged, true);
+  assert.equal(classifyMutation(coding, 'ATGTAA' + coding.slice(3)).effect, 'Anlamsız mutasyon');
+  // Removing ACG joins T + AA into a genuinely new premature stop codon.
+  assert.equal(classifyMutation('ATGTACGAAGACTAA', 'ATGTAAGACTAA').effect, 'Anlamsız mutasyon');
+});

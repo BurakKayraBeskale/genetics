@@ -1,11 +1,10 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   Sparkles,
   Environment,
-  Lightformer,
 } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
@@ -15,6 +14,7 @@ import DNAModel from "./dna/DNAModel";
 import HologramPlatform from "./dna/HologramPlatform";
 import LaboratoryBackdrop from "./dna/LaboratoryBackdrop";
 import { modelHeight } from "../lib/dnaGeometry";
+import RenderPerformance from "./dna/RenderPerformance";
 
 function Scene({ resetSignal, autoRotate, reduced, ...props }) {
   const controls = useRef(),
@@ -29,13 +29,13 @@ function Scene({ resetSignal, autoRotate, reduced, ...props }) {
       height / (2 * Math.tan(halfFov)),
       width / (2 * (size.width / size.height) * Math.tan(halfFov)),
     );
-    const destination = new THREE.Vector3(0, 1.1, distance);
+    const destination = new THREE.Vector3(0, 0, distance);
     if (initial.current || reduced) {
       camera.position.copy(destination);
       initial.current = false;
     }
     cameraTween.current = destination;
-    controls.current?.target.set(0, -0.5, 0);
+    controls.current?.target.set(0, 0, 0);
     controls.current?.update();
   }, [
     camera,
@@ -57,33 +57,14 @@ function Scene({ resetSignal, autoRotate, reduced, ...props }) {
   });
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[4, 6, 6]} intensity={2.5} color="#dcf5ff" />
-      <pointLight position={[-4, 1, 4]} intensity={18} color="#598eff" />
-      <pointLight position={[3, -2, -3]} intensity={12} color="#37dcff" />
-      <Environment resolution={64} frames={1}>
-        <Lightformer
-          intensity={3}
-          position={[-4, 3, 4]}
-          scale={[2, 9, 1]}
-          rotation={[0, Math.PI / 4, 0]}
-          color="#c2efff"
-        />
-        <Lightformer
-          intensity={2}
-          position={[4, 2, 1]}
-          scale={[1, 8, 1]}
-          rotation={[0, -Math.PI / 3, 0]}
-          color="#448dff"
-        />
-        <Lightformer
-          intensity={1.5}
-          position={[0, 6, -3]}
-          scale={[7, 1, 1]}
-          rotation={[Math.PI / 2, 0, 0]}
-          color="#ffffff"
-        />
-      </Environment>
+      <ambientLight intensity={0.42} />
+      <directionalLight position={[4, 6, 6]} intensity={2.8} color="#dcf5ff" />
+      <pointLight position={[-4, 1, 4]} intensity={13} color="#598eff" />
+      <pointLight position={[3, -2, -3]} intensity={8} color="#37dcff" />
+      {/* Sırt/rim ışığı: camın silüetini arka plandan ayırır (ürün çekimi hissi) */}
+      <pointLight position={[0, 2.5, -9]} intensity={11} color="#bfe8ff" />
+      {/* Gerçek HDRI: cam yüzeyde inandırıcı yansımalar için */}
+      <Environment preset="city" background={false} resolution={256} environmentIntensity={0.85} />
       <LaboratoryBackdrop total={props.sequence.length} />
       <DNAModel {...props} reduced={reduced} />
       <HologramPlatform total={props.sequence.length} reduced={reduced} />
@@ -117,9 +98,9 @@ function Scene({ resetSignal, autoRotate, reduced, ...props }) {
       />
       <EffectComposer multisampling={2}>
         <Bloom
-          intensity={0.38}
-          luminanceThreshold={1.05}
-          luminanceSmoothing={0.25}
+          intensity={0.28}
+          luminanceThreshold={1.02}
+          luminanceSmoothing={0.28}
           mipmapBlur
         />
         <Vignette eskil={false} offset={0.25} darkness={0.35} />
@@ -127,19 +108,22 @@ function Scene({ resetSignal, autoRotate, reduced, ...props }) {
     </>
   );
 }
-export default function DNAViewer({ exploded, onToggleExplode, onAction, menuRequest, ...props }) {
+export default memo(function DNAViewer({ exploded, onToggleExplode, onAction, menuRequest, ...props }) {
+  // Keep the adaptive value in the Canvas prop too: R3F reapplies this prop
+  // whenever menu/selection changes reconfigure the root.
+  const [dpr, setDpr] = useState([0.85, 1.5]);
   const [menu, setMenu] = useState(null);
   const handled = useRef(false);
   const closeMenu = useCallback(() => setMenu(null), []);
   const menuToken = menu && props.tokens.find(t => t.id === menu.id);
-  const openBaseMenu = (index, side, event) => {
+  const openBaseMenu = useCallback((index, side, event) => {
     event.stopPropagation();
     event.nativeEvent?.preventDefault();
     event.sourceEvent?.preventDefault();
     handled.current = true;
     props.onSelect(index, side);
     setMenu({ id: props.tokens[index].id, side, x: event.clientX, y: event.clientY });
-  };
+  }, [props.onSelect, props.tokens]);
   useEffect(() => {
     if (menuRequest) setMenu({ ...menuRequest, id: props.tokens[props.selectedIndex]?.id, side: props.selectedSide });
   }, [menuRequest]);
@@ -166,12 +150,13 @@ export default function DNAViewer({ exploded, onToggleExplode, onAction, menuReq
         <b>DNA // CAM SARMAL</b>
       </div>
       <Canvas
-        camera={{ position: [0, 1.55, 17], fov: 36 }}
-        dpr={[1, 1.75]}
-        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [0, 0, 17], fov: 30 }}
+        dpr={dpr}
+        gl={{ antialias: false, alpha: true }}
         fallback={<p>3B görünüm için WebGL destekli bir tarayıcı gerekiyor.</p>}
       >
         <color attach="background" args={["#020914"]} />
+        <RenderPerformance onDprChange={setDpr} />
         <Scene {...props} exploded={exploded} reduced={reduced} onBaseContext={openBaseMenu} autoRotate={props.autoRotate && !menu && !props.pending} />
       </Canvas>
       {menuToken && <BaseContextMenu key={menu.id + ':' + menu.side} menu={menu} token={menuToken} side={menu.side} base={displayedBase(menuToken, menu.side)} busy={!!props.pending} canDelete={props.sequence.length > 3} onAction={onAction} onPair={() => props.onSelect(props.tokens.findIndex(t => t.id === menu.id), 1 - menu.side)} onClose={closeMenu} />}
@@ -188,4 +173,4 @@ export default function DNAViewer({ exploded, onToggleExplode, onAction, menuReq
       </div>
     </div>
   );
-}
+});

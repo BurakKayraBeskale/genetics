@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import DNAViewer from '../components/DNAViewer';
 import HologramPanel from '../components/HologramPanel';
 import GenomeRegion from '../components/GenomeRegion';
@@ -10,6 +10,7 @@ import ProteinSimulator from '../components/ProteinSimulator';
 import MutationAnalysis from '../components/MutationAnalysis';
 import Toolbar from '../components/Toolbar';
 import DamagePanel from '../components/DamagePanel';
+import DiseaseScenarios from '../components/DiseaseScenarios';
 import useDNAExperiment from '../hooks/useDNAExperiment';
 import { ORIGINAL, sequenceOf, displayedBase, regionMap, analyzeExperiment, transcribedSequence } from '../lib/experiment';
 import { BASE_INFO, COMPLEMENT, codonAt } from '../lib/genetics';
@@ -44,7 +45,7 @@ function PairInfo({ base, index, dna, token, side, region }) {
 
 export default function Home() {
   const experiment = useDNAExperiment();
-  const { current, token, index: safeSelectedIndex, selection, pending } = experiment;
+  const { current, token, index: safeSelectedIndex, selection, pending, act, reset, undo, redo, select } = experiment;
   const [separated, setSeparated] = useState(false);
   const [exploded, setExploded] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
@@ -52,6 +53,45 @@ export default function Home() {
   const [activeRegionId, setActiveRegionId] = useState(null);
   const [mutationMode, setMutationMode] = useState('substitution');
   const [menuRequest, setMenuRequest] = useState(null);
+  const [activeDiseaseId, setActiveDiseaseId] = useState(null);
+  const [diseaseQueue, setDiseaseQueue] = useState([]);
+
+  // Hastalık senaryosu adımlarını sırayla uygular: silme/hasar işlemleri
+  // animasyon süresi boyunca "pending" kalır, bu yüzden bir sonraki adım
+  // ancak öncekinin tamamlanmasından sonra tetiklenir.
+  useEffect(() => {
+    if (!diseaseQueue.length || pending) return;
+    const [step, ...rest] = diseaseQueue;
+    act(step.kind, step.base, { id: step.id, side: step.side });
+    setDiseaseQueue(rest);
+  }, [diseaseQueue, pending, act]);
+
+  const applyDisease = useCallback(disease => {
+    reset();
+    setActiveDiseaseId(disease.id);
+    setDiseaseQueue(disease.steps);
+  }, [reset]);
+  const revertDisease = useCallback(() => {
+    reset();
+    setActiveDiseaseId(null);
+    setDiseaseQueue([]);
+  }, [reset]);
+  // Zaman çizelgesinde manuel gezinme (geri al/yinele/sıfırla) hastalık
+  // senaryosunun DNA üzerinde hâlâ uygulanmış olup olmadığını belirsizleştirir;
+  // bu yüzden "MODELDE UYGULANIYOR" rozetini de birlikte temizliyoruz.
+  const clearDisease = useCallback(() => { setActiveDiseaseId(null); setDiseaseQueue([]); }, []);
+  const clearedUndo = useCallback(() => { clearDisease(); undo(); }, [clearDisease, undo]);
+  const clearedRedo = useCallback(() => { clearDisease(); redo(); }, [clearDisease, redo]);
+  const clearedReset = useCallback(() => { clearDisease(); reset(); }, [clearDisease, reset]);
+  const manualAction = useCallback((...args) => { clearDisease(); act(...args); }, [clearDisease, act]);
+  const substitute = useCallback(base => manualAction('substitute', base), [manualAction]);
+  const insert = useCallback(base => manualAction('insert', base), [manualAction]);
+  const deleteBase = useCallback(() => manualAction('delete'), [manualAction]);
+  const toggleExplode = useCallback(() => setExploded(value => !value), []);
+  const toggleSeparate = useCallback(() => setSeparated(value => !value), []);
+  const toggleAutoRotate = useCallback(() => setAutoRotate(value => !value), []);
+  const resetCamera = useCallback(() => setResetSignal(value => value + 1), []);
+
   const regions = useMemo(() => regionMap(current.tokens), [current.tokens]);
   const activeRegion = regions.find(r => r.id === activeRegionId) || null;
   const mutated = sequenceOf(current.tokens);
@@ -61,8 +101,8 @@ export default function Home() {
   const mutation = useMemo(() => analyzeExperiment(current), [current]);
   const selectedRegion = regions.find(r => r.id === token.regionId);
   const codingIndex = current.tokens.slice(0, safeSelectedIndex).filter(t => t.kind === 'exon').length;
-  const selectRegion = region => { setActiveRegionId(region.id); if (!region.empty) experiment.select(region.from); };
-  const actionMenu = event => setMenuRequest({ x: event.clientX, y: event.clientY, serial: Date.now() });
+  const selectRegion = useCallback(region => { setActiveRegionId(region.id); if (!region.empty) select(region.from); }, [select]);
+  const actionMenu = useCallback(event => setMenuRequest({ x: event.clientX, y: event.clientY, serial: Date.now() }), []);
 
   return (
     <main className="appShell">
@@ -78,6 +118,7 @@ export default function Home() {
           <a href="#yapi">DNA Yapısı</a>
           <a href="#bolgeler">DNA Bölgeleri</a>
           <a href="#mutasyon">Mutasyon Laboratuvarı</a>
+          <a href="#hastalik">Hastalık Senaryoları</a>
           <a href="#protein">Protein</a>
         </nav>
         <div className="systemStatus"><i /> SİSTEM AKTİF</div>
@@ -108,16 +149,16 @@ export default function Home() {
             <DNAViewer
               sequence={mutated}
               selectedIndex={safeSelectedIndex}
-              onSelect={experiment.select}
+              onSelect={select}
               tokens={current.tokens}
               selectedSide={selection.side}
               pending={pending}
               arrivals={experiment.arrivals}
-              onAction={experiment.act}
+              onAction={manualAction}
               menuRequest={menuRequest}
               separated={separated}
               exploded={exploded}
-              onToggleExplode={() => setExploded(v => !v)}
+              onToggleExplode={toggleExplode}
               autoRotate={autoRotate}
               resetSignal={resetSignal}
               activeRegion={activeRegion}
@@ -134,10 +175,10 @@ export default function Home() {
             separated={separated}
             exploded={exploded}
             autoRotate={autoRotate}
-            onSeparate={() => setSeparated(v => !v)}
-            onExplode={() => setExploded(v => !v)}
-            onAutoRotate={() => setAutoRotate(v => !v)}
-            onResetCamera={() => setResetSignal(v => v + 1)}
+            onSeparate={toggleSeparate}
+            onExplode={toggleExplode}
+            onAutoRotate={toggleAutoRotate}
+            onResetCamera={resetCamera}
           />
         </section>
 
@@ -145,8 +186,8 @@ export default function Home() {
           <HologramPanel eyebrow="BAZ ÇİFTİ // 01" title="Baz Çifti Bilgisi">
             <PairInfo base={selectedBase} index={codingIndex} dna={mutation.coding} token={token} side={selection.side} region={selectedRegion} />
             <button className="baseActionsTrigger" onClick={actionMenu}>Baz işlemleri</button>
-            <DamagePanel tokens={current.tokens} pending={pending} onUndo={experiment.undo} canUndo={experiment.canUndo} />
-            <div className="historyControls"><button onClick={experiment.undo} disabled={!experiment.canUndo}>Geri al</button><button onClick={experiment.redo} disabled={!experiment.canRedo}>Yinele</button></div>
+            <DamagePanel tokens={current.tokens} pending={pending} onUndo={clearedUndo} canUndo={experiment.canUndo} />
+            <div className="historyControls"><button onClick={clearedUndo} disabled={!experiment.canUndo}>Geri al</button><button onClick={clearedRedo} disabled={!experiment.canRedo}>Yinele</button></div>
           </HologramPanel>
 
           <HologramPanel eyebrow="ANLIK ETKİ // 02" title="Mutasyon Önizlemesi">
@@ -183,31 +224,41 @@ export default function Home() {
             selectedIndex={safeSelectedIndex}
             mode={mutationMode}
             setMode={setMutationMode}
-            onSubstitute={base => experiment.act("substitute", base)}
-            onInsert={base => experiment.act("insert", base)}
-            onDelete={() => experiment.act("delete")}
+            onSubstitute={substitute}
+            onInsert={insert}
+            onDelete={deleteBase}
             canUndo={experiment.canUndo}
             canRedo={experiment.canRedo}
-            onUndo={experiment.undo}
-            onRedo={experiment.redo}
-            onReset={experiment.reset}
+            onUndo={clearedUndo}
+            onRedo={clearedRedo}
+            onReset={clearedReset}
             busy={!!pending}
             missing={token.ap[selection.side]}
           />
         </HologramPanel>
 
-        <HologramPanel eyebrow="KARŞILAŞTIR // 05" title="Orijinal ve Değişmiş DNA" className="widePanel">
+        <HologramPanel id="hastalik" eyebrow="HASTALIK SENARYOSU // 05" title="Hastalık Senaryo Modu" className="widePanel">
+          <DiseaseScenarios
+            activeDiseaseId={activeDiseaseId}
+            busy={!!pending}
+            onApply={applyDisease}
+            onRevert={revertDisease}
+            modelEffect={mutation.effect}
+          />
+        </HologramPanel>
+
+        <HologramPanel eyebrow="KARŞILAŞTIR // 06" title="Orijinal ve Değişmiş DNA" className="widePanel">
           <SequenceViewer original={original} mutated={mutated} tokens={current.tokens} />
           <div className="codingComparison"><small>KODLAYAN EKZONLAR · İNTRONLAR ÇIKARILDIKTAN SONRA</small><SequenceViewer original={mutation.originalCoding} mutated={mutation.coding} compact /></div>
           {mutation.effect === 'Çerçeve kayması' && <p className="frameshiftFlow">{mutation.type === 'Silme' ? 'Nükleotid silinmesi (Deletion)' : 'Nükleotid eklenmesi (Insertion)'} → Okuma çerçevesi değişti → Frameshift mutasyonu</p>}
           <p className="microNote">27 bazlık kısa bir eğitim modeli. Promotör protein koduna katılmaz; intron normal splicing varsayımıyla çıkarılır. Ekzonlar burada kodlayan bölgeleri temsil eder.</p>
         </HologramPanel>
 
-        <HologramPanel id="protein" eyebrow="MERKEZİ DOGMA // 06" title="DNA → mRNA → Protein" className="widePanel">
+        <HologramPanel id="protein" eyebrow="MERKEZİ DOGMA // 07" title="DNA → mRNA → Protein" className="widePanel">
           <ProteinSimulator dna={mutation.coding} preDna={transcribedSequence(current.tokens)} damaged={mutation.damage} />
         </HologramPanel>
 
-        <HologramPanel eyebrow="SONUÇ // 07" title="Protein Etki Analizi" className="fullPanel">
+        <HologramPanel eyebrow="SONUÇ // 08" title="Protein Etki Analizi" className="fullPanel">
           <MutationAnalysis mutation={mutation} original={mutation.originalCoding} mutated={mutation.coding} />
         </HologramPanel>
       </section>

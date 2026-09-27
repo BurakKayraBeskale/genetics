@@ -113,7 +113,20 @@ export function classifyMutation(originalDNA, mutatedDNA) {
 
   const oldStop = oldProtein.indexOf('Stop');
   const newStop = newProtein.indexOf('Stop');
-  if (newStop !== -1 && (oldStop === -1 || newStop < oldStop)) {
+  // An in-frame deletion can move the existing stop codon earlier without
+  // creating a new stop. Match its unchanged suffix before calling it nonsense.
+  let sharedSuffix = 0;
+  if (lengthDelta !== 0) {
+    while (sharedSuffix < Math.min(original.length, mutated.length)
+      && original[original.length - 1 - sharedSuffix] === mutated[mutated.length - 1 - sharedSuffix]) {
+      sharedSuffix += 1;
+    }
+  }
+  const preservedStop = oldStop !== -1 && lengthDelta !== 0
+    && oldStop * 3 >= original.length - sharedSuffix
+    && newStop === oldStop + lengthDelta / 3;
+  const stopComparisonIndex = oldStop + Math.max(0, lengthDelta / 3);
+  if (newStop !== -1 && !preservedStop && (oldStop === -1 || newStop < stopComparisonIndex)) {
     return {
       type: mutationType,
       effect: 'Anlamsız mutasyon',

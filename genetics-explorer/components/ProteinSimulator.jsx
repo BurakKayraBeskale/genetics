@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { dnaToMrna, translateMrna } from '../lib/genetics';
 
-export default function ProteinSimulator({ dna, preDna, damaged }) {
+function ProteinSimulator({ dna, preDna, damaged }) {
   const [running, setRunning] = useState(false);
   const [stage, setStage] = useState(2);
   const mrna = useMemo(() => dnaToMrna(dna), [dna]);
@@ -42,3 +43,5 @@ export default function ProteinSimulator({ dna, preDna, damaged }) {
     </div>
   );
 }
+
+export default memo(ProteinSimulator);

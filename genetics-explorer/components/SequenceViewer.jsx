@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { changedIndices } from '../lib/genetics';
 
 function SequenceRow({ label, value, changed, originalLength, tokens, coding }) {
@@ -30,7 +31,7 @@ function SequenceRow({ label, value, changed, originalLength, tokens, coding }) 
   );
 }
 
-export default function SequenceViewer({ original, mutated, tokens, compact }) {
+function SequenceViewer({ original, mutated, tokens, compact }) {
   const changed = changedIndices(original, mutated);
   return (
     <div className="sequenceViewer">
@@ -41,3 +42,5 @@ export default function SequenceViewer({ original, mutated, tokens, compact }) {
     </div>
   );
 }
+
+export default memo(SequenceViewer);

@@ -13,10 +13,10 @@ export const DNA = {
   combinedSeparation: 0.95,
 };
 export const BASE_COLORS = {
-  A: "#e861ca",
-  T: "#efc65e",
-  G: "#4ca6ff",
-  C: "#42dcb0",
+  A: "#ea66d6",
+  T: "#f7d167",
+  G: "#1c93ff",
+  C: "#38e8c2",
 };
 export const REGION_COLORS = {
   promoter: "#4be6ff",

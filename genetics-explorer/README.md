@@ -47,3 +47,11 @@ npm start
 ```
 
 Örnek: 8. konumdaki Adenin → sağ tık → Nükleotidi Sil. Toplam DNA 27 → 26 baz, kodlayan DNA 18 → 17 baz olur. Olgun mRNA `AUG | GAU | UUC | CGG | ACU | AA`, protein `Met – Asp – Phe – Arg – Thr` olarak hesaplanır; frameshift ve protein değişimi gösterilir. Son eksik kodon çevrilmez.
+
+## V3 performans
+
+V3 cam görünümü, hastalık senaryoları ve baz etkileşimleri korunur. Hidrojen bağları ve platform işaretleri instanced mesh kullanır; bölge seçimi yalnızca omurga renk tamponlarını günceller. Duran animasyonların hesapları atlanır, ilgisiz React güncellemeleri memoize edilir.
+
+DPR cihaz yüküne göre 0.85–1.5 arasında kademeli ayarlanır. Cam kırılma tamponu 0.75 çözünürlük ölçeğinde çizilir; Composer kenar yumuşatma korunur. Zayıf cihazlarda ince ayrıntılar hafif yumuşayabilir. Kalite değişimleri arasında en az 8 saniye beklenir.
+
+`?perf=1` eklenince yalnızca yerel ölçüm paneli açılır: tarayıcı kare aralığı, p95, bütün çizim geçişlerinin çağrı/üçgen sayısı ve DPR. Bu GPU zamanlayıcısı değildir; sonuç cihaz, sekme görünürlüğü ve yükten etkilenir. V3 ile aynı tarayıcıdaki geliştirme önizlemesinde çizim sayısı yaklaşık 316’dan 206’ya indi; bu bir sabit FPS garantisi değildir.
