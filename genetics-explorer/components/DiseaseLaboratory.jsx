@@ -1,0 +1,37 @@
+'use client';
+import { useEffect, useState } from 'react';
+import useDiseaseSimulation from '../hooks/useDiseaseSimulation';
+import { SCENARIOS } from '../lib/simulation';
+import * as archive from '../services/savedCases';
+import LaboratoryArchive from './LaboratoryArchive';
+import './DiseaseLaboratory.css';
+const METRICS={pathogenLoad:'Patojen yükü',infectedCells:'Enfekte hücreler',innateImmunity:'Doğuştan bağışıklık',adaptiveImmunity:'Kazanılmış bağışıklık',antibodyLevel:'Antikor',inflammation:'İnflamasyon',tissueDamage:'Doku hasarı'};
+export default function DiseaseLaboratory() {
+ const simulation=useDiseaseSimulation(); const {state}=simulation;
+ const [cases,setCases]=useState([]),[error,setError]=useState(''),[message,setMessage]=useState(''),[starred,setStarred]=useState(false),[saving,setSaving]=useState(false),[name,setName]=useState(''),[note,setNote]=useState(''),[description,setDescription]=useState(''),[dismissed,setDismissed]=useState(false),[report,setReport]=useState(false);
+ const scenario=SCENARIOS.find(s=>s.id===state.diseaseScenarioId);
+ function refresh(){setCases(archive.getAllCases());}
+ useEffect(()=>{try{refresh();}catch(e){setError(e.message);} const sync=()=>{try{refresh();}catch(e){setError(e.message);}}; window.addEventListener('storage',sync); return()=>window.removeEventListener('storage',sync);},[]);
+ function safely(action){try{setError('');action();refresh();}catch(e){setError(e.message||'İşlem tamamlanamadı.');}}
+ function save(){safely(()=>{const saved=archive.saveCase({state,name:name.trim()||scenario.name+' · Gün '+state.day,description,teacherNote:note,isStarred:starred});setSaving(false);setDismissed(true);setMessage(saved.code+' arşive kaydedildi.');});}
+ function restoreCase(id){const item=archive.getCase(id);safely(()=>{simulation.restore(archive.restoreSnapshot(item.snapshot));setStarred(item.isStarred);setDismissed(false);setMessage(item.code+' · Gün '+item.snapshot.day+' geri yüklendi; devam için Oynat.');document.getElementById('hastalik-laboratuvari')?.scrollIntoView({behavior:'smooth'});});}
+ function restartCase(id){const item=archive.getCase(id);safely(()=>{simulation.restore(archive.restartSavedCase(item));setDismissed(false);setMessage(item.code+' başlangıç ayarlarıyla Gün 0’dan açıldı.');document.getElementById('hastalik-laboratuvari')?.scrollIntoView({behavior:'smooth'});});}
+ function openSave(star=false){simulation.pause();if(star)setStarred(true);setName(scenario.name+' · Gün '+state.day);setSaving(true);}
+ return <div className="diseaseLaboratory">
+ <section id="hastalik-laboratuvari" className="clinicalLab">
+ <div className="clinicalHeader"><div><span className="introKicker">CANLI VAKA SİMÜLASYONU</span><h2>Hastalık Laboratuvarı</h2></div><a href="#laboratuvar-arsivi">Laboratuvar Arşivi · {cases.length}</a></div>
+ <p className="microNote">Kısa eğitim modeli · Değerler 0–100 arasında göreli birimlerdir. Senaryolar mekanizmaları tartışmak içindir; klinik tahmin veya tedavi önerisi üretmez.</p>
+ <div className="scenarioChoices" role="group" aria-label="Hastalık senaryosu">{SCENARIOS.map(s=><button key={s.id} aria-pressed={state.diseaseScenarioId===s.id} onClick={()=>{simulation.start(s.id);setDismissed(false);setStarred(false);setMessage('');}}>{s.name}</button>)}</div>
+ <div className="clinicalLayout"><div><div className="simulationDay"><strong>Gün {state.day}</strong><span>{state.finalOutcome?'Tamamlandı':state.running?'Çalışıyor':'Duraklatıldı'}</span></div>
+ <div className="simulationControls"><button disabled={!!state.finalOutcome} onClick={state.running?simulation.pause:simulation.resume}>{state.running?'Duraklat':'Oynat'}</button><button disabled={!!state.finalOutcome} onClick={()=>{simulation.pause();simulation.step();}}>Bir gün ilerle</button><button onClick={()=>{simulation.restart(state);setDismissed(false);}}>Baştan başlat</button><button aria-pressed={starred} onClick={()=>setStarred(!starred)}>{starred?'★ Yıldızlı':'☆ Yıldızla'}</button><button onClick={()=>openSave()}>Vakayı Kaydet</button></div>
+ <div className="metricGrid">{Object.entries(METRICS).map(([key,label])=><div key={key}><span>{label}</span><b>{Number(state.metrics[key]||0).toFixed(1)}</b><meter min="0" max="100" value={state.metrics[key]||0} aria-label={label}/></div>)}</div>
+ <div className="labInterventions"><h3>Eğitim müdahaleleri</h3><button disabled={!!state.finalOutcome} onClick={()=>simulation.intervene('support')}>Destek yanıtı</button><button disabled={!!state.finalOutcome} onClick={()=>simulation.intervene('immune')}>Bağışıklık desteği</button><button disabled={!!state.finalOutcome} onClick={()=>simulation.intervene('containment')}>Temas azaltma</button><small>İşlemler model parametrelerini değiştirir; etkileri zaman çizelgesinde izlenir.</small></div>
+ </div><aside className="clinicalObservations"><h3>Gözlem ve ön tanı</h3><p><b>{state.currentDiagnosis||state.preliminaryDiagnosis}</b> · Güven %{state.diagnosisConfidence}</p><p>{state.symptoms.map(s=>typeof s==='string'?s:s.name||s.label).join(' · ')||'Henüz belirti gözlenmedi.'}</p><h3>Doktor notları</h3>{state.doctorNotes.slice(-3).map((n,i)=><p key={i}>{typeof n==='string'?n:n.text||n.message}</p>)}<h3>Haber / bülten</h3>{state.bulletinHistory.slice(-3).map((n,i)=><p key={i}>{typeof n==='string'?n:n.text||n.message||n.title}</p>)}<button onClick={()=>setReport(!report)}>Sonuç / zaman çizelgesi</button></aside></div>
+ {state.finalOutcome&&!dismissed&&<div className="caseSuggestion"><p>Bu vaka ilgi çekici olabilir. Laboratuvar arşivine kaydetmek ister misiniz?</p><button onClick={()=>openSave(true)}>Yıldızla ve Kaydet</button><button onClick={()=>openSave()}>Kaydet</button><button onClick={()=>setReport(true)}>Raporu Gör</button><button onClick={()=>setDismissed(true)}>Kapat</button></div>}
+ {report&&<div className="simulationReport"><h3>Zaman çizelgesi / sonuç analizi</h3><p>{typeof state.finalOutcome==='string'?state.finalOutcome:state.finalOutcome?.summary||'Simülasyon sürüyor.'}</p><ol>{state.timeline.map((entry,i)=><li key={i}>Gün {entry.day} · Patojen {Number(entry.metrics?.pathogenLoad||0).toFixed(1)} · Doku hasarı {Number(entry.metrics?.tissueDamage||0).toFixed(1)} · {entry.diagnosis||entry.currentDiagnosis||''}</li>)}</ol><p>{state.interventions.length} müdahale · {state.publicHealthDecisions.length} toplum sağlığı kararı</p></div>}
+ {message&&<p role="status">{message}</p>}{error&&<p role="alert" className="labError">{error}</p>}
+ {saving&&<form className="saveCaseForm" onSubmit={e=>{e.preventDefault();save();}}><h3>Vakayı arşivle · Gün {state.day}</h3><label>Vaka adı<input required maxLength="120" value={name} onChange={e=>setName(e.target.value)}/></label><label>Açıklama<textarea maxLength="1000" value={description} onChange={e=>setDescription(e.target.value)}/></label><label>Öğretmen notu<textarea maxLength="2000" value={note} onChange={e=>setNote(e.target.value)}/></label><label><input type="checkbox" checked={starred} onChange={e=>setStarred(e.target.checked)}/> Yıldızlı vaka</label><button type="submit">Kaydı oluştur</button><button type="button" onClick={()=>setSaving(false)}>İptal</button></form>}
+ </section>
+ <LaboratoryArchive cases={cases} onResume={restoreCase} onRestart={restartCase} onUpdate={(id,changes)=>safely(()=>archive.updateCase(id,changes))} onToggleStar={id=>safely(()=>archive.toggleStar(id))} onDelete={id=>safely(()=>archive.deleteCase(id))}/>
+ </div>;
+}

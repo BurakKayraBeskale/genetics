@@ -63,3 +63,15 @@ Model altındaki oklar önceki/sonraki bazı seçer; zincir düğmesi eş bazı 
 Protein Etki Analizi altındaki **Metin indir** / **JSON indir** düğmeleri orijinal ve güncel DNA, ekzonlar, mRNA, protein, AP hasarı, bölgeye duyarlı açıklamalar ve geçerli işlem geçmişini yerel dosya olarak kaydeder. Animasyon sürerken yarım işlem raporlanmaz. AP hasarında çeviri yalnızca kayıtlı baz dizisinin hesabı olarak etiketlenir. İndirme sunucuya veri göndermez.
 
 3B sahne ekran dışına çıktığında veya sekme gizlendiğinde çizim döngüsü duraklatılır; tekrar görünür olduğunda mevcut model ve kamera korunarak devam eder.
+
+## Hastalık Laboratuvarı ve Laboratuvar Arşivi
+
+`lib/simulation.js` deterministik Influenza, bakteriyel ve karma eğitim senaryolarını ilerletir. `hooks/useDiseaseSimulation.js` tek canlı state'i yönetir. Soyut 0–100 metrikleri klinik tahmin değildir. DNA modülü bağımsız olarak korunur.
+
+`components/DiseaseLaboratory.jsx` gün kontrolleri, gözlemler, müdahaleler ve kayıt akışını; `components/LaboratoryArchive.jsx` cam numune tüplerini, arama/filtreleri, öğretmen notlarını, yıldızı, onaylı silmeyi ve sonuç analizini sunar.
+
+Storage servisi `services/savedCases.js`: `genetik-kesif.saved-cases.v1` anahtarında `{schemaVersion:1,counters,cases}` saklanır. Her vaka sabit kimlik/kod, tarih, kategori, ad/açıklama, öğretmen notu, isStarred ve explicit snapshot içerir. Snapshot gün/durum, seed/config ve başlangıç scenario config, metrikler, belirtiler, tanı/güven, doktor notları, olay/bülten, müdahaleler, toplum sağlığı kararları, timeline ve final outcome alanlarını doğrulayarak kopyalar. Fonksiyon veya runtime referansı kabul edilmez. Bozuk/eski kayıtlar okumada güvenle atlanır; bozuk store yazılarak ezilmez.
+
+Devam etme snapshot'ı doğrular ve aynı gün/değerlerle duraklatılmış açar; Oynat ile devam edilir. Baştan simüle et ayrı fonksiyonla kaydedilmiş seed ve başlangıç katsayılarından Gün 0 üretir, müdahale/geçmişi temizler. Kayıtlar yalnızca kullanılan tarayıcı ve origin'de saklanır; buluta aktarılmaz. JSON raporu arşiv detayından indirilebilir.
+
+Doğrulama: npm install, npm test (40 test), npm run build başarılı. Tarayıcı: Gün 4 kaydet/refresh, devam Gün 4→5, yeniden başlat Gün 0, yıldızı kaldır/filtre kontrolü; konsol hatasız. Silme kalıcılığı ve bozuk kayıt davranışı storage testlerinde doğrulandı.

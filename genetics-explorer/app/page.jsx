@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import DNAViewer from '../components/DNAViewer';
+import DiseaseLaboratory from '../components/DiseaseLaboratory';
 import HologramPanel from '../components/HologramPanel';
 import GenomeRegion from '../components/GenomeRegion';
 import MutationLab from '../components/MutationLab';
@@ -120,6 +121,8 @@ export default function Home() {
           </div>
         </div>
         <nav>
+          <a href="#hastalik-laboratuvari">Hastalık Laboratuvarı</a>
+          <a href="#laboratuvar-arsivi">Laboratuvar Arşivi</a>
           <a href="#yapi">DNA Yapısı</a>
           <a href="#bolgeler">DNA Bölgeleri</a>
           <a href="#mutasyon">Mutasyon Laboratuvarı</a>
@@ -129,6 +132,7 @@ export default function Home() {
         <div className="systemStatus"><i /> SİSTEM AKTİF</div>
       </header>
 
+      <DiseaseLaboratory />
       <section className="hero" id="yapi">
         <div className="heroBackdrop" />
 
