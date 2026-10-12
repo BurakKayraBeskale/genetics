@@ -55,3 +55,5 @@
 @media(max-width:700px) { .archiveHeading { align-items:flex-start; } .archiveCount { padding:8px;font-size:10px; } .archiveShelf { grid-template-columns:repeat(2,minmax(0,1fr)); padding:24px 0; gap:18px 0; } .archiveTube { padding:8px 4px; } .archiveSearch { width:100%; } .archiveSearch input { width:100%; } .archiveHeading p { max-width:250px; } }
 @media(max-width:380px) { .archiveShelf { grid-template-columns:1fr; } .archiveFacts { grid-template-columns:1fr; } }
 @media(prefers-reduced-motion:reduce) { .tubeAssembly { transition:none; } }
+
+.archiveTube[aria-pressed="true"] { transform: translateY(-8px) scale(1.035); border-color: var(--sample); box-shadow: 0 0 36px color-mix(in srgb,var(--sample) 18%,transparent); }

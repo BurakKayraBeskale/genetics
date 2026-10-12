@@ -83,3 +83,11 @@ Doğrulama: npm install, npm test (40 test), npm run build başarılı. Tarayıc
 `public/data/medical-catalog.json` MedlinePlus'un resmi XML dosyasından üretilir; sourceDate, fetchedAt, sourceUrl ve attribution saklanır. `scripts/import-medlineplus.ps1` en yeni veri dosyasını kaynak sayfadan bulup yeniler. Yalnızca kamuya açık sağlık başlığı özetleri ve kaynak bağlantıları alınır; lisanslı ansiklopedi/ilaç içerikleri kopyalanmaz. Özetler HTML olarak değil düz metin olarak gösterilir.
 
 Tedavi ve sonuç/komplikasyon alanları resmi kategori bağlantılarından oluşturulur. Kaynak bölümü bulunmayan konular açıkça belirtilir. Genel bakteriyel/karma modeller tek tek hastalıklarla eşleştirilmez. Sadece Influenza başlığı mevcut soyut eğitim modelini açabilir; kalan konularda simülasyon henüz desteklenmiyor bilgisi görünür.
+
+## Modüler sanal laboratuvar
+
+Next.js route'ları: `/` kontrol merkezi, `/dna` bağımsız DNA deney alanı, `/simulation` dört bölgeli simülatör, `/outbreak` toplum modeli, `/archive` numune koleksiyonu ve `/catalog` kaynak araştırma ekranı. `LabShell` ortak uygulama navigasyonunu sağlar; layout'a bağlı `SimulationProvider` tek `useDiseaseSimulation` instance'ını route değişimleri boyunca korur. Tam sayfa yenilemede aktif deney başlangıca döner; arşiv kayıtları localStorage'da korunur.
+
+`SimulationScene` dört procedural R3F görünüm sunar: molekül/RNA şeması, hücre/yanıt, vücut/doku şeması, temsili şehir. OrbitControls, zoom ve tıklanabilir açıklama işaretçileri vardır. Partikül/şehir yapıları instanced geometry kullanır; cihaz DPR'si sınırlandırılır. Modeller anatomik veya klinik doğruluk iddiası taşımaz.
+
+`lib/outbreak.js` altı kamu sağlığı kararının soyut sağlık/toplum/ekonomi etkilerini mevcut timeline'dan deterministik hesaplar. Kararlar mevcut publicHealthDecisions alanında arşivlenir. Hücresel simülasyon hesapları değiştirilmedi. Yeni belirtiler ve bağışıklık/yayılım/bakım eşikleri geçildiğinde kayıtlı danışman/bülten mesajları üretilir; kısa bülten bildirimi geçmiş panelini açar. Timeline geçmiş görünümü yalnız önizler, deney geçmişini geri sarmaz.
