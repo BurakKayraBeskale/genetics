@@ -4,6 +4,7 @@ import useDiseaseSimulation from '../hooks/useDiseaseSimulation';
 import { SCENARIOS } from '../lib/simulation';
 import * as archive from '../services/savedCases';
 import LaboratoryArchive from './LaboratoryArchive';
+import MedicalCatalog from './MedicalCatalog';
 import './DiseaseLaboratory.css';
 const METRICS={pathogenLoad:'Patojen yükü',infectedCells:'Enfekte hücreler',innateImmunity:'Doğuştan bağışıklık',adaptiveImmunity:'Kazanılmış bağışıklık',antibodyLevel:'Antikor',inflammation:'İnflamasyon',tissueDamage:'Doku hasarı'};
 export default function DiseaseLaboratory() {
@@ -32,6 +33,7 @@ export default function DiseaseLaboratory() {
  {message&&<p role="status">{message}</p>}{error&&<p role="alert" className="labError">{error}</p>}
  {saving&&<form className="saveCaseForm" onSubmit={e=>{e.preventDefault();save();}}><h3>Vakayı arşivle · Gün {state.day}</h3><label>Vaka adı<input required maxLength="120" value={name} onChange={e=>setName(e.target.value)}/></label><label>Açıklama<textarea maxLength="1000" value={description} onChange={e=>setDescription(e.target.value)}/></label><label>Öğretmen notu<textarea maxLength="2000" value={note} onChange={e=>setNote(e.target.value)}/></label><label><input type="checkbox" checked={starred} onChange={e=>setStarred(e.target.checked)}/> Yıldızlı vaka</label><button type="submit">Kaydı oluştur</button><button type="button" onClick={()=>setSaving(false)}>İptal</button></form>}
  </section>
+ <MedicalCatalog onSimulate={id=>{simulation.start(id);simulation.pause();setDismissed(false);setStarred(false);setMessage('Katalogdan eğitim modeli açıldı. Oynat ile ilerleyebilirsin.');document.getElementById('hastalik-laboratuvari')?.scrollIntoView({behavior:'smooth'});}} />
  <LaboratoryArchive cases={cases} onResume={restoreCase} onRestart={restartCase} onUpdate={(id,changes)=>safely(()=>archive.updateCase(id,changes))} onToggleStar={id=>safely(()=>archive.toggleStar(id))} onDelete={id=>safely(()=>archive.deleteCase(id))}/>
  </div>;
 }

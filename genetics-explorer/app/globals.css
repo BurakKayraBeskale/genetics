@@ -513,3 +513,10 @@ footer { width: min(1600px, calc(100% - 28px)); margin: auto; padding: 16px 0 26
   .baseNavigator .navigatorPair, .baseNavigator .navigatorActions { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* The expanding laboratory navigation stays reachable on narrow screens. */
+.topbar { grid-template-columns: minmax(210px,280px) minmax(0,1fr) auto; gap:18px; }
+.topbar nav { min-width:0; overflow-x:auto; padding:10px 2px; gap:18px; scrollbar-width:thin; }
+.topbar nav a { white-space:nowrap; flex-shrink:0; }
+.brandBlock { min-width:0; }.brand { white-space:nowrap; }.brandMark { flex-shrink:0; }
+@media(max-width:1180px) { .topbar { grid-template-columns:220px minmax(0,1fr); }.topbar nav { display:flex; }.systemStatus { display:none; } }
+@media(max-width:820px) { .topbar { height:106px; grid-template-columns:1fr; gap:0; padding-top:8px; }.topbar nav { grid-row:2; width:100%; padding:8px 2px; }.topbar nav a { font-size:10px; } }

@@ -75,3 +75,11 @@ Storage servisi `services/savedCases.js`: `genetik-kesif.saved-cases.v1` anahtar
 Devam etme snapshot'ı doğrular ve aynı gün/değerlerle duraklatılmış açar; Oynat ile devam edilir. Baştan simüle et ayrı fonksiyonla kaydedilmiş seed ve başlangıç katsayılarından Gün 0 üretir, müdahale/geçmişi temizler. Kayıtlar yalnızca kullanılan tarayıcı ve origin'de saklanır; buluta aktarılmaz. JSON raporu arşiv detayından indirilebilir.
 
 Doğrulama: npm install, npm test (40 test), npm run build başarılı. Tarayıcı: Gün 4 kaydet/refresh, devam Gün 4→5, yeniden başlat Gün 0, yıldızı kaldır/filtre kontrolü; konsol hatasız. Silme kalıcılığı ve bozuk kayıt davranışı storage testlerinde doğrulandı.
+
+## Kaynaklı hastalık / sağlık kataloğu
+
+`components/MedicalCatalog.jsx` kaynaklı sağlık başlıklarını arar, kategorilerle filtreler ve sayfalayarak gösterir. Kaynak metinleri İngilizcedir; Türkçe arayüz ve yaygın Türkçe arama eş anlamları kullanılır. Bu koleksiyon tüm bilinen hastalıklar veya tüm tedaviler olarak etiketlenmez.
+
+`public/data/medical-catalog.json` MedlinePlus'un resmi XML dosyasından üretilir; sourceDate, fetchedAt, sourceUrl ve attribution saklanır. `scripts/import-medlineplus.ps1` en yeni veri dosyasını kaynak sayfadan bulup yeniler. Yalnızca kamuya açık sağlık başlığı özetleri ve kaynak bağlantıları alınır; lisanslı ansiklopedi/ilaç içerikleri kopyalanmaz. Özetler HTML olarak değil düz metin olarak gösterilir.
+
+Tedavi ve sonuç/komplikasyon alanları resmi kategori bağlantılarından oluşturulur. Kaynak bölümü bulunmayan konular açıkça belirtilir. Genel bakteriyel/karma modeller tek tek hastalıklarla eşleştirilmez. Sadece Influenza başlığı mevcut soyut eğitim modelini açabilir; kalan konularda simülasyon henüz desteklenmiyor bilgisi görünür.

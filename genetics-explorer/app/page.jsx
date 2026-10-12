@@ -122,6 +122,7 @@ export default function Home() {
         </div>
         <nav>
           <a href="#hastalik-laboratuvari">Hastalık Laboratuvarı</a>
+          <a href="#hastalik-katalogu">Hastalık Kataloğu</a>
           <a href="#laboratuvar-arsivi">Laboratuvar Arşivi</a>
           <a href="#yapi">DNA Yapısı</a>
           <a href="#bolgeler">DNA Bölgeleri</a>
