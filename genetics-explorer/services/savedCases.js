@@ -2,8 +2,8 @@ import { createSimulation } from '../lib/simulation.js';
 
 export const STORAGE_KEY = 'genetik-kesif.saved-cases.v1';
 export const SCHEMA_VERSION = 1;
-const prefixes = ['FLU', 'GEN', 'VIR', 'BAC', 'MIX'];
-const categories = ['viral', 'genetic', 'bacterial', 'mixed'];
+const prefixes = ['FLU', 'GEN', 'VIR', 'BAC', 'MIX', 'AUT', 'MET', 'NEU', 'ONC'];
+const categories = ['viral', 'genetic', 'bacterial', 'mixed', 'autoimmune', 'metabolic', 'neurological', 'oncology'];
 const metricKeys = ['pathogenLoad', 'infectedCells', 'innateImmunity', 'adaptiveImmunity', 'antibodyLevel', 'inflammation', 'tissueDamage'];
 const fail = (message) => { throw new Error(message); };
 const object = (value) => value && typeof value === 'object' && !Array.isArray(value);
@@ -33,7 +33,9 @@ function json(value, depth = 0) {
 }
 function metrics(input) {
   if (!object(input)) fail('Vaka ölçümleri eksik.');
-  return Object.fromEntries(metricKeys.map((key) => [key, number(input[key])]));
+  const result = Object.fromEntries(metricKeys.map((key) => [key, number(input[key])]));
+  for (const key of ['proteinFunction','autoimmuneActivity','metabolicImbalance','neuralFunction','tumorBurden']) if (input[key] !== undefined) result[key] = number(input[key]);
+  return result;
 }
 function list(value, mapper) {
   if (!Array.isArray(value) || value.length > 5000) fail('Vaka geçmişi geçersiz.');
@@ -88,7 +90,7 @@ function storageOrDefault(storage) {
 function empty() { return { schemaVersion: 1, counters: Object.fromEntries(prefixes.map((key) => [key, 0])), cases: [] }; }
 function normalizeCase(input) {
   if (!object(input) || input.schemaVersion !== 1 || !categories.includes(input.category)) fail('Vaka kaydı geçersiz.');
-  if (!/^(FLU|GEN|VIR|BAC|MIX)-\d{3,}$/.test(input.code)) fail('Vaka kodu geçersiz.');
+  if (!/^(FLU|GEN|VIR|BAC|MIX|AUT|MET|NEU|ONC)-\d{3,}$/.test(input.code)) fail('Vaka kodu geçersiz.');
   number(Number(input.code.split('-')[1]), Number.MAX_SAFE_INTEGER - 2, true);
   if (!input.id || !input.name) fail('Vaka adı veya kimliği eksik.');
   if (typeof input.isStarred !== 'boolean') fail('Vaka yıldız durumu geçersiz.');
@@ -105,7 +107,7 @@ function read(storage, strict = false) {
   try {
     const data = JSON.parse(raw);
     if (!object(data) || data.schemaVersion !== 1 || !object(data.counters) || !Array.isArray(data.cases)) fail('Arşiv sürümü geçersiz.');
-    const counters = Object.fromEntries(prefixes.map((key) => [key, number(data.counters[key], Number.MAX_SAFE_INTEGER - 1, true)]));
+    const counters = Object.fromEntries(prefixes.map((key) => [key, number(data.counters[key] ?? 0, Number.MAX_SAFE_INTEGER - 1, true)]));
     const cases = []; const ids = new Set(); const codes = new Set(); let corrupt = false;
     for (const item of data.cases) {
       try {
@@ -130,7 +132,7 @@ export function getCase(id, storage) { return getAllCases(storage).find((item) =
 export function saveCase(input, storage) {
   const target = storageOrDefault(storage); const data = read(target, true); const snapshot = createSnapshot(input.state);
   const category = input.category || snapshot.scenarioConfig.category;
-  const prefix = snapshot.diseaseScenarioId === 'influenza' ? 'FLU' : ({ genetic: 'GEN', viral: 'VIR', bacterial: 'BAC', mixed: 'MIX' }[category]);
+  const prefix = snapshot.diseaseScenarioId === 'influenza' ? 'FLU' : ({ genetic: 'GEN', viral: 'VIR', bacterial: 'BAC', mixed: 'MIX', autoimmune: 'AUT', metabolic: 'MET', neurological: 'NEU', oncology: 'ONC' }[category]);
   if (!prefix) fail('Vaka kategorisi geçersiz.');
   const count = ++data.counters[prefix]; const now = new Date().toISOString();
   const id = globalThis.crypto?.randomUUID?.() || `${prefix}-${count}-${Date.now()}-${Math.random().toString(36).slice(2)}`;

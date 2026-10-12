@@ -9,6 +9,10 @@ export const PUBLIC_HEALTH_DECISIONS = [
 const bound = (value) => Math.round(Math.max(0, Math.min(100, value)) * 10) / 10;
 /** Population teaching indicators; not case counts or clinical forecasts. */
 export function computeOutbreak(state) {
+  if (state.scenarioConfig?.contagious === false || state.scenarioConfig?.category === 'genetic') {
+    const current = { day: state.day, population: 10000, spread: 0, health: 100, economy: 100, social: 100, hospitalPressure: 0, activeCases: 0, newCases: 0, recovered: 0, severeCases: 0, hospitalCapacity: 300, hospitalLoad: 0 };
+    return { ...current, contagious: false, risk: 'Bulaşıcı değil', history: (state.timeline || []).map((point) => ({ ...current, day: point.day })), decisions: [], disclaimer: 'Bu bulaşıcı olmayan mekanizma enfeksiyon salgını değildir. Bu ekran bireysel doku yükünü toplum yayılımı olarak saymaz.' };
+  }
   let spread = 12, health = 88, economy = 100, social = 100;
   const timeline = state.timeline || [];
   const history = [{ day: 0, spread, health, economy, social, hospitalPressure: 0 }];
@@ -35,14 +39,15 @@ export function computeOutbreak(state) {
     point.recovered = recovered;
     point.hospitalCapacity = 300 + 50 * (state.publicHealthDecisions || []).filter((item) => item.kind === 'care' && item.day < point.day && point.day - item.day <= 4).length;
     point.hospitalLoad = Math.round(point.hospitalPressure / 100 * 350);
+    point.severeCases = Math.min(point.activeCases, point.hospitalLoad);
     previousActive = point.activeCases;
   }
   const current = history.at(-1);
-  return { ...current, risk: current.spread >= 65 ? 'Yüksek' : current.spread >= 30 ? 'Orta' : 'Düşük', history, decisions: state.publicHealthDecisions || [], disclaimer: 'Toplum göstergeleri 0–100 arası soyut eğitim değerleridir.' };
+  return { ...current, contagious: true, risk: current.spread >= 65 ? 'Yüksek' : current.spread >= 30 ? 'Orta' : 'Düşük', history, decisions: state.publicHealthDecisions || [], disclaimer: 'Toplum göstergeleri 0–100 arası soyut eğitim değerleridir.' };
 }
 export function applyPublicHealthDecision(state, kind) {
   const policy = PUBLIC_HEALTH_DECISIONS.find((item) => item.id === kind);
-  if (!policy || state.finalOutcome || state.publicHealthDecisions.some((item) => item.kind === kind && item.day === state.day)) return state;
+  if (state.scenarioConfig?.contagious === false || !policy || state.finalOutcome || state.publicHealthDecisions.some((item) => item.kind === kind && item.day === state.day)) return state;
   const record = { day: state.day, kind, label: policy.label };
   return { ...state, publicHealthDecisions: [...state.publicHealthDecisions, record], events: [...state.events, { day: state.day, text: `Toplum kararı: ${policy.label}. Etki bir sonraki gün başlar.` }] };
 }

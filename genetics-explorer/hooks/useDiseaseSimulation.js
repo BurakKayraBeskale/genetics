@@ -11,7 +11,7 @@ export default function useDiseaseSimulation() {
     const timer = setInterval(() => setState((current) => current.running ? advance(current) : current), state.config.speedMs);
     return () => clearInterval(timer);
   }, [state.running, state.finalOutcome, state.config.speedMs]);
-  const start = useCallback((id = 'influenza', config) => { const next = setSimulationStatus(createSimulation(id, config), 'running'); setState(next); }, []);
+  const start = useCallback((id = 'influenza', config, profile) => { const next = setSimulationStatus(createSimulation(id, config, profile), 'running'); setState(next); }, []);
   const pause = useCallback(() => setState((current) => setSimulationStatus(current, 'paused')), []);
   const resume = useCallback(() => setState((current) => setSimulationStatus(current, 'running')), []);
   const step = useCallback(() => setState((current) => advance(setSimulationStatus(current, 'paused'))), []);

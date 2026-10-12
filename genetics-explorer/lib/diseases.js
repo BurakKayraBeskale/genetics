@@ -21,13 +21,13 @@ export const DISEASE_PRESETS = [
     tag: 'İn-frame delesyon',
     gene: 'CFTR (7. kromozom)',
     realMutation: 'ΔF508 — 3 bazlık (1 kodonluk) delesyon; 508. konumdaki fenilalanin aminoasidinin tamamen kaybı.',
-    modelExplanation: 'Modelde Ekzon 2\'deki GAC kodonunun 3 bazı tek tek silinir. Okuma çerçevesi korunur, ama bir aminoasit tamamen kaybolur.',
+    modelExplanation: 'Modelde Ekzon 1\'deki TTT (Fenilalanin) kodonunun 3 bazı tek tek silinir. Okuma çerçevesi korunur ve fenilalanin çıkarılır. Bu, gerçek CFTR dizisinin yerine kullanılan kısa bir eğitim benzetimidir.',
     proteinEffect: 'CFTR proteini bir aminoasit eksik üretilir; bu da proteinin yanlış katlanmasına yol açar. Hücre bu hatalı proteini hücre zarına ulaştırmadan parçalar.',
     diseaseEffect: 'Klor iyon kanalı görevini yapamaz; akciğerlerde ve pankreasta koyu, yapışkan mukus birikir. Bu da tekrarlayan solunum yolu enfeksiyonlarına ve sindirim sorunlarına yol açar.',
     steps: [
-      { kind: 'delete', id: 'exon-2:0', side: 0 },
-      { kind: 'delete', id: 'exon-2:1', side: 0 },
-      { kind: 'delete', id: 'exon-2:2', side: 0 },
+      { kind: 'delete', id: 'exon-1:6', side: 0 },
+      { kind: 'delete', id: 'exon-1:7', side: 0 },
+      { kind: 'delete', id: 'exon-1:8', side: 0 },
     ],
   },
   {

@@ -63,3 +63,15 @@ test('snapshot rejects invalid metrics/timeline/config and localStorage errors a
   const snapshot = createSnapshot({ ...state, callback: () => null, runtime: new Map() });
   assert.equal(Object.hasOwn(snapshot, 'callback'), false); assert.equal(Object.hasOwn(snapshot, 'runtime'), false);
 });
+
+test('genetic protein function and mechanism metadata survive archive and resume', () => {
+  const db = storage(); let state = createSimulation('cystic-fibrosis', {seed: 123});
+  for (let day = 0; day < 4; day++) state = advanceSimulation(state);
+  const saved = saveCase({state, name:'CFTR eğitim vakası'}, db);
+  assert.equal(saved.category, 'genetic');
+  const restored = restoreSnapshot(getCase(saved.id, db).snapshot);
+  assert.equal(restored.metrics.proteinFunction, state.metrics.proteinFunction);
+  assert.deepEqual(restored.scenarioConfig.dnaRelation, state.scenarioConfig.dnaRelation);
+  assert.deepEqual(advanceSimulation(restored), advanceSimulation(state));
+  assert.equal(restartSavedCase(saved).scenarioConfig.contagious, false);
+});

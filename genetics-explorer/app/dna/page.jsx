@@ -1,7 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import DNAViewer from '../../components/DNAViewer';
+import { useSimulation } from '../../providers/SimulationProvider';
+import { DISEASE_PRESETS } from '../../lib/diseases';
 import HologramPanel from '../../components/HologramPanel';
 import GenomeRegion from '../../components/GenomeRegion';
 import MutationLab from '../../components/MutationLab';
@@ -46,6 +48,9 @@ function PairInfo({ base, index, dna, token, side, region }) {
 }
 
 export default function Home() {
+  const { state: diseaseState } = useSimulation();
+  const linkedScenario = diseaseState.scenarioConfig;
+  const appliedScenario = useRef(null);
   const experiment = useDNAExperiment();
   const { current, token, index: safeSelectedIndex, selection, pending, act, reset, undo, redo, select } = experiment;
   const [separated, setSeparated] = useState(false);
@@ -78,6 +83,13 @@ export default function Home() {
     setActiveDiseaseId(null);
     setDiseaseQueue([]);
   }, [reset]);
+  useEffect(() => {
+    if (appliedScenario.current === linkedScenario.id) return;
+    appliedScenario.current = linkedScenario.id;
+    const preset = DISEASE_PRESETS.find(item => item.id === linkedScenario.dnaRelation?.presetId);
+    if (preset) applyDisease(preset);
+    else revertDisease();
+  }, [linkedScenario, applyDisease, revertDisease]);
   // Zaman çizelgesinde manuel gezinme (geri al/yinele/sıfırla) hastalık
   // senaryosunun DNA üzerinde hâlâ uygulanmış olup olmadığını belirsizleştirir;
   // bu yüzden "MODELDE UYGULANIYOR" rozetini de birlikte temizliyoruz.
@@ -111,7 +123,7 @@ export default function Home() {
 
   return (
     <main className="appShell">
-      <div className="moduleHeading"><span className="introKicker">MOLEKÜLER DENEY ALANI</span><h1>DNA Laboratuvarı</h1></div>
+      <div className="moduleHeading"><span className="introKicker">MOLEKÜLER DENEY ALANI</span><h1>DNA Laboratuvarı</h1><div className="linkedDiseaseNote"><b>{linkedScenario.name} · DNA bağlantısı</b><p>{linkedScenario.dnaRelation?.explanation || 'Bu enfeksiyon senaryosu doğrudan insan DNA mutasyonu olarak modellenmez. Hücresel ve bağışıklık yanıtını simülasyon ekranında inceleyebilirsin.'}</p>{linkedScenario.dnaRelation?.kind === 'genetic' && linkedScenario.dnaRelation?.presetId && <small>İlgili gen/mutasyon, 27 bazlık temsili öğretim dizisi üzerinde anlatılır; bu model gerçek genin tam dizisi değildir.</small>}{linkedScenario.dnaRelation?.sourceUrl && <a href={linkedScenario.dnaRelation.sourceUrl} target="_blank" rel="noopener noreferrer">Bilimsel kaynak ↗</a>}</div></div>
 
 <section className="hero" id="yapi">
         <div className="heroBackdrop" />
