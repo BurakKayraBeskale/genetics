@@ -20,3 +20,5 @@
 .referenceModelLoading{position:absolute;left:50%;top:48%;transform:translateX(-50%);z-index:2;background:#061c2be6;border:1px solid #317b8b;padding:14px;color:#98ddea;font-size:11px;pointer-events:none}
 
 .referenceFallbackNotice{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:2;color:#e5b788;background:#102737;padding:8px;font-size:10px;pointer-events:none}
+
+.anatomySelectionNote{position:absolute;top:98px;right:18px;z-index:2;max-width:190px;background:#061b28db;border-left:2px solid #4d9bb1;padding:9px 11px;color:#86b4c2;pointer-events:none;font-size:10px;line-height:1.5}.anatomySelectionNote strong{display:block;color:#b6e7ec;font-size:11px;margin-bottom:4px}@media(max-width:760px){.anatomySelectionNote{top:116px;max-width:140px;padding:7px;font-size:9px}}

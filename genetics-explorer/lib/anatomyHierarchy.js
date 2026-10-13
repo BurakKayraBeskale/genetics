@@ -1,6 +1,7 @@
 import { affectedOrgansFor } from './organEducation.js';
 /** Mesh keywords are lookup hints, never evidence that an asset contains a structure. */
-const part=(id,name,tissue,description,meshKeywords=[],teachingOnly=false)=>({id,name,tissue,description,meshKeywords,teachingOnly,representation:teachingOnly?'schematic':'mesh'});
+const informationOnly = new Set(['upper-airway','peripheral-nerves','arteries','veins']);
+const part=(id,name,tissue,description,meshKeywords=[],teachingOnly=false)=>({id,name,tissue,description,meshKeywords,teachingOnly,representation:informationOnly.has(id)?'information':teachingOnly?'schematic':'mesh'});
 export const ANATOMY_HIERARCHY = {
  lungs:[part('trachea','Trakea','Silli hava yolu epiteli','Soluk borusu havayı bronşlara iletir; alveol gaz değişim yüzeyi değildir.',['trachea']),part('upper-airway','Üst hava yolları','Solunum epiteli','Burun ve üst hava yolu yüzeyleri solunum hastalıklarında önemlidir; bu seçim ayrı geometri bulunduğunu varsaymaz.',[],true),part('left-lung','Sol akciğer','Solunum epiteli ve alveol dokusu','Sol akciğer, hava yolları üzerinden gelen havanın gaz değişimine katılır.',['left lung','lung_left','left_lung']),part('right-lung','Sağ akciğer','Solunum epiteli ve alveol dokusu','Sağ akciğer üç lobdan oluşur; sol akciğer iki lobludur.',['right lung','lung_right','right_lung']),part('bronchus','Bronşlar','Silli hava yolu epiteli','Bronşlar havayı akciğer içinde taşır; alveollerle aynı yapı değildir.',['bronchus','bronchi']),part('alveoli','Alveoller','Alveol epiteli ve kılcal damar ağı','Mikroskobik gaz değişim yüzeyidir. Bu alt yapı makroskobik organ meshinden çıkarılamaz.',[],true)],
  digestive:[part('liver','Karaciğer','Karaciğer hücreleri ve safra yolları','Besinlerin işlenmesi ve safra üretimiyle sindirime katkı sağlar.',['liver']),part('digestive-pancreas','Pankreas · sindirim','Ekzokrin pankreas dokusu','Sindirim enzimlerini üretir; hormonal adacıklarla aynı işlev değildir.',['pancreas']),part('intestinal-epithelium','Bağırsak epiteli','Emilim ve bariyer yüzeyi','Bağırsak iç yüzeyindeki hücresel katmanı öğretici olarak inceler; makroskobik organ meshinde tek tek hücreler çözülmez.',[],true),part('stomach','Mide','Mide epiteli ve düz kas','Besinleri karıştırır ve sindirim sürecine katkı sağlar.',['stomach']),part('small-intestine','İnce bağırsak','Bağırsak epiteli','Sindirim ve besin emiliminin önemli bölümünün gerçekleştiği yapıdır.',['small intestine','small_intestine','duodenum','jejunum','ileum']),part('colon','Kalın bağırsak','Kolon epiteli','Su emilimine ve dışkının oluşumuna katkı sağlar.',['colon','large intestine','large_intestine'])],
@@ -38,4 +39,13 @@ export function getAffectedStructures(profile = {}) {
  endocrine:['pancreas','thyroid','adrenal'], skin:['epidermis','dermis','hypodermis'], blood:['heart','aorta','arteries','veins','blood-cells'],
  };
  return [...new Set(affectedOrgansFor(profile).flatMap(organ=>targets[organ] || []))];
+}
+
+/** Resolve actual loaded geometry separately from microscopic teaching and information-only views. */
+export function getStructureRepresentation(organ, id, availableMeshNames = []) {
+ if (id === 'all') return 'mesh';
+ const structure = getStructure(organ,id);
+ if (!structure || structure.representation === 'information') return 'information';
+ if (structure.representation === 'schematic') return 'schematic';
+ return availableMeshNames.some(name => structureMatchesMesh(structure,name)) ? 'mesh' : 'information';
 }

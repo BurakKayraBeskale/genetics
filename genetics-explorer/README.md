@@ -123,3 +123,6 @@ Mide ve temsilî omuz/kol kasları BodyParts3D STL varlıklarından yalnız ayr�
 
 
 Lokal etki maskesi gerçek mesh koordinatlarında eğitimsel Gaussian dağılım kullanır; odak konumu klinik lezyon veya ölçülen inflamasyon alanı değildir. Şiddet genel vaka metriklerinden gelir. Kamera modlar arasında zaman bazlı easing kullanır; elle etkileşim otomatik hareketi keser. GLB/STL yükleme hatası procedural fallback modelini ve açık yedek-model etiketini gösterir.
+
+
+Bilgi amaçlı yapılar (üst hava yolları, periferik sinirler, ayrı sınıflandırılmamış atardamar/toplardamarlar) yanlış mikrodoku geometrisiyle temsil edilmez. Kullanıcı tam anatomik bağlamda kalır, seçim açıklaması panelde gösterilir. Ayrı geometri ve mikrodoku şeması durumları farklı etiketlenir. Referans yükleme hataları varlık türüne göre sınırlanır; yeni seçimde yeniden deneme yapılır, başarılı varlık hatayı temizler. GLB/STL dönüşmüş geometrileri kaynak nesnesi başına önbelleğe alınır; organ görünümü yalnız görünen meshlerin materyal ve uniformlarını kullanır.
