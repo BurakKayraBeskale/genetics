@@ -17,11 +17,15 @@ test('outbreak policy survives snapshot, has bounded deterministic effects and c
   assert.deepEqual(policy.metrics, plain.metrics);
 });
 test('new observations produce archived bulletins without repeated same-day additions', () => {
-  const original = createSimulation();
-  const next = enrichObservations(original, advanceSimulation(original));
-  assert.ok(next.bulletinHistory.length > 0);
-  assert.equal(enrichObservations(next, next), next);
-  assert.deepEqual(restoreSnapshot(createSnapshot(next)).bulletinHistory, next.bulletinHistory);
+  let previous=createSimulation(),next=previous;
+  while(!next.finalOutcome&&!next.bulletinHistory.some(event=>event.type==='BULLETIN')){
+    previous=next;next=enrichObservations(previous,advanceSimulation(previous));
+  }
+  assert.ok(next.bulletinHistory.some(event=>event.type==='BULLETIN'),'An observed change must produce a typed bulletin');
+  assert.deepEqual(enrichObservations(previous,next),next);
+  assert.equal(enrichObservations(next,next),next);
+  assert.equal(new Set(next.bulletinHistory.map(event=>event.id)).size,next.bulletinHistory.length);
+  assert.deepEqual(restoreSnapshot(createSnapshot(next)).bulletinHistory,next.bulletinHistory);
 });
 
 test('adaptive response bulletin follows actual profile threshold crossing exactly once', () => {
@@ -33,7 +37,7 @@ test('adaptive response bulletin follows actual profile threshold crossing exact
     if ((previous.metrics.adaptiveImmunity || 0) < 1 && state.metrics.adaptiveImmunity >= 1) crossingDay = state.day;
   }
   assert.notEqual(crossingDay, null);
-  const responses = state.bulletinHistory.filter(item => item.id?.endsWith('metric:adaptiveImmunity:rise'));
+  const responses = state.bulletinHistory.filter(item => item.type==='BULLETIN'&&item.id?.endsWith('metric:adaptiveImmunity:rise:bulletin'));
   assert.equal(responses.length, 1);
   assert.equal(responses[0].day, crossingDay);
   assert.ok(responses[0].text.includes('Kazanılmış bağışıklık'));

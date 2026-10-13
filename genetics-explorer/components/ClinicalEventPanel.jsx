@@ -1,0 +1,13 @@
+'use client';
+import { useState } from 'react';
+export const EVENT_LABELS = { CLINICAL: 'Doktor', LAB: 'Laboratuvar', ANATOMY: 'Anatomi', IMMUNE: 'Bağışıklık', PUBLIC_HEALTH: 'Toplum', BULLETIN: 'Bülten', ALERT: 'Uyarı' };
+export const EVENT_ICONS = { CLINICAL: '+', LAB: '⚗', ANATOMY: '◎', IMMUNE: '◇', PUBLIC_HEALTH: '≋', BULLETIN: '▤', ALERT: '!' };
+export const ORGAN_LABELS = { lungs:'Akciğer', brain:'Beyin', heart:'Kalp', liver:'Karaciğer', digestive:'Sindirim', renal:'Böbrek', muscle:'Kas', skin:'Deri', endocrine:'Endokrin', blood:'Dolaşım' };
+export function ClinicalEventCard({ event, onFocusOrgan, hiddenProfile }) {
+  return <article className={`clinicalEventCard clinicalSeverity-${event.severity || 'INFO'}`}><div className="clinicalEventMeta"><span>{EVENT_ICONS[event.type]} {EVENT_LABELS[event.type] || 'Gözlem'}</span><span>GÜN {event.day}</span></div><h3>{event.title || 'Vaka gözlemi'}</h3><p>{event.text}</p>{Number.isFinite(event.metricValue) && <div className="clinicalMetricReadout"><strong>{event.metricValue.toFixed(1)}</strong><span>göreli model birimi</span>{Number.isFinite(event.delta) && <b>{event.delta >= 0 ? '+' : ''}{event.delta.toFixed(1)} değişim</b>}</div>}{event.educationalNote && <small>{event.educationalNote}</small>}{event.relatedOrgan && <button className="clinicalOrganLink" onClick={() => onFocusOrgan?.(event.relatedOrgan)}>◎ {ORGAN_LABELS[event.relatedOrgan] || 'Hedef organ'} görünümüne odaklan</button>}{!hiddenProfile && event.source?.url && <a href={event.source.url} target="_blank" rel="noopener noreferrer">Kaynak ↗</a>}</article>;
+}
+export default function ClinicalEventPanel({ events = [], day, onFocusOrgan, hiddenProfile }) {
+  const [filter, setFilter] = useState('ALL');
+  const items = events.filter(event => event.day <= day && (filter === 'ALL' || event.type === filter)).slice().reverse();
+  return <section className="clinicalEventPanel"><div className="clinicalPanelHeading"><span className="simulationEyebrow">KLİNİK VAKA DOSYASI</span><h2 id="bulletin-dialog-title">Gün {day} · Olay kayıtları</h2><p>Gözlemler birlikte değerlendirilir; tek bulgu kesin tanı koymaz.</p></div><nav className="clinicalEventFilters" aria-label="Olay kategorileri"><button aria-pressed={filter==='ALL'} onClick={()=>setFilter('ALL')}>Tümü</button>{Object.entries(EVENT_LABELS).map(([type,label])=><button key={type} aria-pressed={filter===type} onClick={()=>setFilter(type)}>{label}</button>)}</nav><div className="clinicalEventList">{items.length ? items.map(event=><ClinicalEventCard key={event.id} event={event} hiddenProfile={hiddenProfile} onFocusOrgan={onFocusOrgan}/>) : <p className="clinicalEmpty">Bu güne kadar bu kategoride gözlem kaydedilmedi.</p>}</div></section>;
+}

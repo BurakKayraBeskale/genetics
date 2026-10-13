@@ -1,5 +1,5 @@
 import { applyProfileTrajectory } from './diseaseTrajectory.js';
-import { generateCaseEvents } from './caseEvents.js';
+import { applyCaseNarrative } from './CaseEventEngine.js';
 export { getProfileOrganEffects } from './diseaseTrajectory.js';
 /** Mechanism strategies use abstract learning units, never clinical predictions. */
 export const MECHANISMS = ['infectious/viral', 'infectious/bacterial', 'infectious/mixed', 'genetic', 'autoimmune', 'metabolic', 'neurological', 'oncology'];
@@ -111,13 +111,9 @@ const strategies = Object.freeze({
 export function advanceMechanism(state, day) {
   const run = strategies[mechanismOf(state.scenarioConfig)];
   if (!run) throw new Error('Desteklenmeyen hastalık mekanizması.');
-  let next = applyProfileTrajectory(state, run(state, day));
-  if(state.scenarioConfig.trajectory){
-   const generated=generateCaseEvents(state,next);
-   const append=(existing,added)=>{const ids=new Set(existing.map(x=>x.id).filter(Boolean));return [...existing,...added.filter(x=>!ids.has(x.id))];};
-   next={...next,doctorNotes:append(next.doctorNotes,generated.doctorNotes),events:append(next.events,generated.events),bulletinHistory:append(next.bulletinHistory,generated.bulletins)};
-   if(state.scenarioConfig.id==='atypical-influenza'&&next.symptoms.includes('Gastrointestinal belirtiler')&&!state.symptoms.includes('Gastrointestinal belirtiler'))next.doctorNotes=[...next.doctorNotes,{day,id:day+':atypical:gi',text:'Yeni gastrointestinal bulgular gözlendi. Solunum ağırlıklı başlangıç hipotezini yeniden değerlendirin; bu bulgu tek başına etkeni belirlemez.'}];
-  }
-  return next;
+  const biological = applyProfileTrajectory(state, run(state, day));
+  // Compatibility histories now come from observations, never daily flavor text.
+  const next={...biological,doctorNotes:state.doctorNotes||[],events:state.events||[],bulletinHistory:state.bulletinHistory||[]};
+  return applyCaseNarrative(state,next);
 }
 export const DiseaseEngine = Object.freeze({ mechanisms: MECHANISMS, strategies, mechanismOf, initialMetrics: initialMechanismMetrics, advance: advanceMechanism });

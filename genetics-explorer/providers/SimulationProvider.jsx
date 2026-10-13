@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import useDiseaseSimulation from '../hooks/useDiseaseSimulation';
 import { SCENARIOS } from '../lib/simulation';
 import { computeOutbreak } from '../lib/outbreak';
+import { getCaseAtDay } from '../lib/caseView';
 import * as archive from '../services/savedCases';
 const SimulationContext = createContext(null);
 export function useSimulation() {
@@ -38,7 +39,7 @@ export default function SimulationProvider({ children }) {
   }), [attempt, sim.start, sim.pause]);
   const restart = useCallback((snapshot = sim.state) => attempt(() => { sim.restart(snapshot); setPreviewDay(null); setActiveCaseId(null); return true; }), [attempt, sim.restart, sim.state]);
   const selectDay = useCallback((day) => { setPreviewDay(day === null || day === undefined ? null : Number.isInteger(Number(day)) ? Number(day) : null); }, []);
-  const previewState = useMemo(() => { const point = sim.state.timeline.find((item) => item.day === previewDay); return point ? { ...sim.state, ...point, timeline: sim.state.timeline.filter((item) => item.day <= point.day), publicHealthDecisions: sim.state.publicHealthDecisions.filter((item) => item.day <= point.day), doctorNotes: sim.state.doctorNotes.filter((item) => item.day <= point.day), bulletinHistory: sim.state.bulletinHistory.filter((item) => item.day <= point.day), events: sim.state.events.filter((item) => item.day <= point.day), finalOutcome: point.day === sim.state.day ? sim.state.finalOutcome : null, running: false, paused: true, status: 'paused' } : sim.state; }, [sim.state, previewDay]);
+  const previewState = useMemo(() => getCaseAtDay(sim.state, previewDay), [sim.state, previewDay]);
   const publicHealth = useMemo(() => computeOutbreak(sim.state), [sim.state]);
   const clearError = useCallback(() => setError(''), []);
   return <SimulationContext.Provider value={{ ...sim, start, restart, startVirtual, startMystery, studentView, setStudentView, isMystery, cases, error, refreshCases, saveCase, updateCase, starCase, toggleStar: starCase, deleteCase, loadCase, restoreCase: loadCase, restartCase, activeCaseId, publicHealth, outbreak: publicHealth, previewDay, previewState, selectDay, clearError }}>{children}</SimulationContext.Provider>;

@@ -1,4 +1,4 @@
-import { generateCaseEvents } from './caseEvents.js';
+import { applyCaseNarrative } from './CaseEventEngine.js';
 export const PUBLIC_HEALTH_DECISIONS = [
   { id: 'testing', label: 'Test kapasitesini artır', health: 0.10, economy: -3, social: -1 },
   { id: 'tracing', label: 'Temas takibi', health: 0.12, economy: -2, social: -2 },
@@ -55,21 +55,11 @@ export function applyPublicHealthDecision(state, kind) {
   const policy = PUBLIC_HEALTH_DECISIONS.find((item) => item.id === kind);
   if (spreadUnsupported(state.scenarioConfig) || !policy || state.finalOutcome || state.publicHealthDecisions.some((item) => item.kind === kind && item.day === state.day)) return state;
   const record = { day: state.day, kind, label: policy.label };
-  return { ...state, publicHealthDecisions: [...state.publicHealthDecisions, record], events: [...state.events, { day: state.day, text: `Toplum kararı: ${policy.label}. Etki bir sonraki gün başlar.` }] };
+  const next={ ...state, publicHealthDecisions: [...state.publicHealthDecisions, record] };
+  return applyCaseNarrative(state,next,{previousOutbreak:computeOutbreak(state),nextOutbreak:computeOutbreak(next)});
 }
 /** Merge engine and UI-hook observations once by stable day/id. */
-export function enrichObservations(previous, next) {
-  if (next.day === previous.day) return next;
-  const delta = generateCaseEvents(previous, next, { previousOutbreak: computeOutbreak(previous), nextOutbreak: computeOutbreak(next) });
-  const merge = (existing = [], incoming = []) => {
-    const keys = new Set(existing.flatMap(item => [`${item.day}:text:${item.text}`, ...(item.id ? [`${item.day}:id:${item.id}`] : [])]));
-    return [...existing, ...incoming.filter(item => {
-      const key = `${item.day}:id:${item.id}`; const textKey = `${item.day}:text:${item.text}`;
-      if (keys.has(key) || keys.has(textKey)) return false;
-      keys.add(key); keys.add(textKey); return true;
-    })];
-  };
-  return { ...next, doctorNotes: merge(next.doctorNotes, delta.doctorNotes), bulletinHistory: merge(next.bulletinHistory, delta.bulletins), events: merge(next.events, delta.events) };
+export function enrichObservations(previous,next){
+ if(next.day===previous.day)return next;
+ return applyCaseNarrative(previous,next,{previousOutbreak:computeOutbreak(previous),nextOutbreak:computeOutbreak(next)});
 }
-
-

@@ -1,3 +1,5 @@
+import { initializeCaseNarrative, applyCaseNarrative } from './CaseEventEngine.js';
+import { computeOutbreak } from './outbreak.js';
 import { applyProfileTrajectory } from './diseaseTrajectory.js';
 import { SCENARIOS } from '../data/diseaseProfiles.js';
 import { mechanismOf, initialMechanismMetrics, advanceMechanism } from './DiseaseEngine.js';
@@ -9,7 +11,7 @@ export const INTERVENTIONS = [
   { id: 'containment', label: 'Yayılımı sınırla', description: 'Sınıf modelindeki yeni maruziyet katsayısını azaltır.' },
 ];
 const clone = (value) => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
-const entry = (state) => ({ day: state.day, metrics: { ...state.metrics }, symptoms: [...state.symptoms], currentDiagnosis: state.currentDiagnosis, diagnosisConfidence: state.diagnosisConfidence });
+const entry = (state) => ({ day: state.day, metrics: { ...state.metrics }, symptoms: [...state.symptoms], currentDiagnosis: state.currentDiagnosis, diagnosisConfidence: state.diagnosisConfidence, knowledgeState: clone(state.knowledgeState) });
 export function createSimulation(scenarioId = 'influenza', input = {}, initialScenarioConfig) {
   const preset = SCENARIOS.find((item) => item.id === scenarioId) || (validateVirtualProfile(initialScenarioConfig) && initialScenarioConfig.id === scenarioId ? clone(initialScenarioConfig) : undefined);
   const scenario = preset && initialScenarioConfig?.id === scenarioId && Number.isFinite(initialScenarioConfig.growth) && Number.isFinite(initialScenarioConfig.immuneRate) ? { ...preset, ...clone(initialScenarioConfig), category: preset.category, contagious: preset.contagious, dnaRelation: clone(preset.dnaRelation), affectedSystems: clone(preset.affectedSystems) } : preset;
@@ -30,6 +32,7 @@ export function createSimulation(scenarioId = 'influenza', input = {}, initialSc
   }
   state.metrics = initialMechanismMetrics(scenario, state.metrics);
   if(scenario.trajectory)Object.assign(state,applyProfileTrajectory(state,state));
+  Object.assign(state,initializeCaseNarrative(state));
   state.timeline = [entry(state)];
   return state;
 }
@@ -41,11 +44,12 @@ export function applyIntervention(state, kind) {
   const intervention = INTERVENTIONS.find((item) => item.id === kind);
   if (!intervention || state.finalOutcome || (kind === 'containment' && state.scenarioConfig.contagious === false)) return state;
   const record = { day: state.day, kind, label: intervention.label };
-  return { ...state, interventions: [...state.interventions, record], publicHealthDecisions: kind === 'containment' ? [...state.publicHealthDecisions, record] : state.publicHealthDecisions, events: [...state.events, { day: state.day, text: intervention.label }] };
+  return applyCaseNarrative(state,{ ...state, interventions: [...state.interventions, record], publicHealthDecisions: kind === 'containment' ? [...state.publicHealthDecisions, record] : state.publicHealthDecisions });
 }
 export function advanceSimulation(state) {
   if (state.finalOutcome) return state;
   const next = advanceMechanism(state, state.day + 1);
   next.timeline = [...state.timeline, entry(next)];
-  return next.finalOutcome ? setSimulationStatus(next, 'completed') : next;
+  const observed=applyCaseNarrative(state,next,{previousOutbreak:computeOutbreak(state),nextOutbreak:computeOutbreak(next)});
+  return observed.finalOutcome ? setSimulationStatus(observed, 'completed') : observed;
 }

@@ -4302,9 +4302,9 @@
       "symptomTimeline": [
         {
           "symptom": "Öksürük",
-          "start": 0.09,
+          "start": 0.07142857142857142,
           "end": 0.84,
-          "minActivity": 0.12
+          "minActivity": 0.04
         },
         {
           "symptom": "Ateş",

@@ -57,6 +57,33 @@ function initial(input) {
   if (scenarioConfig.id !== diseaseScenarioId) fail('Senaryo kimliği tutarsız.');
   return { diseaseScenarioId, scenarioConfig, config };
 }
+
+const eventTypes=['CLINICAL','LAB','ANATOMY','IMMUNE','PUBLIC_HEALTH','BULLETIN','ALERT'];
+const severities=['INFO','NOTICE','IMPORTANT','CRITICAL'];
+function knowledge(input) {
+ if(input == null) return null;
+ if(!object(input)) fail('Vaka hipotez durumu geçersiz.');
+ return {currentHypothesis:text(input.currentHypothesis,500),confidence:number(input.confidence),
+ supportingEvidence:list(input.supportingEvidence,v=>text(v,2000)),conflictingEvidence:list(input.conflictingEvidence,v=>text(v,2000)),unknowns:list(input.unknowns,v=>text(v,2000))};
+}
+function clinicalEvent(item,day) {
+ if(!object(item)||!eventTypes.includes(item.type)||!severities.includes(item.severity)) fail('Vaka olay türü veya önceliği geçersiz.');
+ const result={...json(item),id:text(item.id,200),day:number(item.day,day,true),type:item.type,severity:item.severity,title:text(item.title,500),text:text(item.text),educationalNote:text(item.educationalNote || '',2000)};
+ if(!result.id) fail('Vaka olay kimliği eksik.');
+ for(const key of ['relatedMetric','relatedOrgan']) if(item[key]!==undefined) result[key]=text(item[key],100);
+ if(item.source!==undefined) result.source=json(item.source);
+ for(const key of ['metricValue','previousValue','delta']) if(item[key]!==undefined){if(!Number.isFinite(item[key])||Math.abs(item[key])>1000000)fail('Vaka olay ölçümü geçersiz.');result[key]=item[key];}
+ return result;
+}
+function narrativeEvents(input,day,important=false) {
+ const ids=new Set();return list(input || [],item=>{const valid=clinicalEvent(item,day);if(ids.has(valid.id))fail('Yinelenen vaka olay kimliği.');ids.add(valid.id);if(important&&!['IMPORTANT','CRITICAL'].includes(valid.severity))fail('Önemli olay önceliği tutarsız.');return valid;});
+}
+function bulletin(item,day) {
+ if(item.type!==undefined)return clinicalEvent(item,day);
+ const valid=record(item,day);
+ return {...json(item),...valid};
+}
+
 /** Explicit, detached JSON snapshot; React/runtime fields are never copied. */
 export function createSnapshot(state) {
   if (!object(state)) fail('Simülasyon durumu eksik.');
@@ -73,9 +100,10 @@ export function createSnapshot(state) {
     schemaVersion: 1, ...settings, initialScenarioConfig: initial({ ...settings, scenarioConfig: state.initialScenarioConfig || settings.scenarioConfig }).scenarioConfig, seed: number(state.seed, 4294967295, true),
     day, status, running: state.running, paused: state.paused, metrics: metrics(state.metrics),
     symptoms: list(state.symptoms, (item) => text(item, 200)), currentDiagnosis: text(state.currentDiagnosis, 500), preliminaryDiagnosis: text(state.preliminaryDiagnosis, 500), diagnosisConfidence: number(state.diagnosisConfidence),
-    doctorNotes: list(state.doctorNotes, (item) => record(item, day)), events: list(state.events, (item) => record(item, day)), bulletinHistory: list(state.bulletinHistory, (item) => record(item, day)),
+    doctorNotes: list(state.doctorNotes, (item) => bulletin(item, day)), events: list(state.events, (item) => bulletin(item, day)), bulletinHistory: list(state.bulletinHistory, (item) => bulletin(item, day)),
+    clinicalEvents:narrativeEvents(state.clinicalEvents,day),importantEvents:narrativeEvents(state.importantEvents ?? (state.clinicalEvents || []).filter(e=>['IMPORTANT','CRITICAL'].includes(e.severity)),day,true),knowledgeState:knowledge(state.knowledgeState),hypothesisHistory:list(state.hypothesisHistory || [],item=>({day:number(item.day,day,true),...knowledge(item)})),
     interventions: list(state.interventions, (item) => record(item, day, true)), publicHealthDecisions: list(state.publicHealthDecisions, (item) => record(item, day, true)),
-    timeline: list(state.timeline, (item) => ({ day: number(item.day, day, true), metrics: metrics(item.metrics), symptoms: list(item.symptoms, (symptom) => text(symptom, 200)), currentDiagnosis: text(item.currentDiagnosis, 500), diagnosisConfidence: number(item.diagnosisConfidence) })), finalOutcome: outcome,
+    timeline: list(state.timeline, (item) => ({ day: number(item.day, day, true), metrics: metrics(item.metrics), symptoms: list(item.symptoms, (symptom) => text(symptom, 200)), currentDiagnosis: text(item.currentDiagnosis, 500), diagnosisConfidence: number(item.diagnosisConfidence), knowledgeState:knowledge(item.knowledgeState) })), finalOutcome: outcome,
   };
 }
 export function restoreSnapshot(snapshot) {

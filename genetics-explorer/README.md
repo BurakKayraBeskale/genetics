@@ -135,3 +135,12 @@ Bilgi amaçlı yapılar (üst hava yolları, periferik sinirler, ayrı sınıfla
 `lib/diseaseTrajectory.js` aile/alt tip bileşimini, `DiseaseEngine.js` mekanizma cephesini ve `lib/caseEvents.js` durum değişimlerinden türetilen doktor/bülten olaylarını yönetir. Olay kimlikleri snapshotlarda korunur ve yinelenen UI/motor kayıtları engellenir. `outbreak.js` eğitimsel transmission parametresini kullanır; bulaşıcı olmayan, genel temas modeline uygun olmayan ve belirli maruziyet yolu gerektiren profiller birbirinden açıklamayla ayrılır. DNA kartı doğrudan kalıtsal ilişki ile hücresel yanıtı ayırır; enfeksiyon insan DNA dizisini değiştirmez.
 
 `tests/diseaseDifferentiation.test.mjs` talep edilen 10 temsilî vakayı, gerçek snapshot devamını, belirtileri, notları, organ pencerelerini ve DNA/toplum ilişkisini karşılaştırır. Tüm 63 profilin aynı seed ile 14 eğitim adımındaki metrik seyri ve fenotip imzası ayrıca denetlenir. `docs/disease-profile-audit.json` denetim özeti ve profil kaynaklarını içerir. Anatomi varlıkları, geometri ve holografik shaderlar korunmuştur; mevcut renderer yalnız zaman bazlı etki değerlerini alır.
+
+
+## Dinamik vaka dosyası
+
+CaseEventEngine biyolojik katsayıları değiştirmeden CLINICAL, LAB, ANATOMY, IMMUNE, PUBLIC_HEALTH, BULLETIN ve ALERT olaylarını gözlem değişimlerinden üretir. Laboratuvar değerleri mutlak model birimleri ve önceki adımla farklarıdır. Doktor hipotezi destekleyen/çatışan kanıtlarla güncellenir; güven puanı tanı olasılığı değildir. Yalnız önemli yeni olaylar bildirim oluşturur.
+
+caseView geçmiş günün tüm kanıtlarını o günle sınırlar; canlı durumu değiştirmez. Anatomi olayları mevcut organ kamerasına bağlanır. Dijital bültenler yayılım değişimi, sistem etkisi ve hastane model eşiğinden türetilir. Bulaşıcı olmayan profiller salgın haberi üretmez. caseReport tarihsel zirveleri, dönüm noktalarını ve olaylara bağlı eğitim açıklamasını simülasyonda ve arşivde gösterir.
+
+Snapshot schemaVersion 1 korunur: clinicalEvents, importantEvents, knowledgeState, hypothesisHistory ve timeline hipotezleri ek alanlardır. Eski kayıtlarda eksik anlatı boş/null yüklenir; yeni gözlemlerle devam edilir. Gizemli öğrenci görünümü profil adını ve yapılandırmayı saklar; rol ayrımı kimlik doğrulamalı sınav güvenliği değildir.

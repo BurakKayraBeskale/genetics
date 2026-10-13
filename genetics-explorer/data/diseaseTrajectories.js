@@ -146,6 +146,8 @@ export function enrichDiseaseProfile(profile) {
  data.secondary.forEach((organ,index)=>organEffectTimeline.push({organ,structureIds:[],role:index===0?'secondary':'optional',start:Math.min(.95,data.peak+.08+index*.05),end:1,weight:index===0?.32:.18}));
  const symptoms=symptomOverrides[profile.id] || (profile.typicalSymptoms?.length?profile.typicalSymptoms:['Mekanizma gözlemi']);
  const symptomTimeline=symptoms.map((symptom,index)=>({symptom,start:Math.min(.95,data.onset+index*.08),end:persistent?1:Math.min(1,data.recovery+index*.04),minActivity:.12+Math.min(index,4)*.07}));
+ // Atypical teaching case deliberately exposes a mild cough before later discordant GI evidence.
+ if(profile.id==='atypical-influenza'&&symptomTimeline[0])symptomTimeline[0]={...symptomTimeline[0],start:1/14,minActivity:.04};
  const kind=profile.mechanism==='genetic'?'direct-genetic':profile.mechanism==='oncology'?'indirect':profile.mechanism?.startsWith('infectious')?'response':'indirect';
  const denySpread=['rabies','tetanus','lyme','shingles','avian-flu-like'].includes(profile.id);
  const restricted=['hepatitis-b','hepatitis-c','hiv','gonorrhea','syphilis'].includes(profile.id);
