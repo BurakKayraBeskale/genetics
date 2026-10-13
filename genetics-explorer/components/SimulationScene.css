@@ -18,3 +18,5 @@
 .anatomyProjectedTag{position:absolute;top:0;left:0;z-index:1;pointer-events:none;opacity:0;will-change:transform;width:135px}
 
 .referenceModelLoading{position:absolute;left:50%;top:48%;transform:translateX(-50%);z-index:2;background:#061c2be6;border:1px solid #317b8b;padding:14px;color:#98ddea;font-size:11px;pointer-events:none}
+
+.referenceFallbackNotice{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:2;color:#e5b788;background:#102737;padding:8px;font-size:10px;pointer-events:none}

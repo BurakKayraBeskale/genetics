@@ -120,3 +120,6 @@ Holografik anatomi görünümünde normal yapılar cyan, açıkça hedeflenen si
 `ReferenceAnatomy` yerel HRA GLB varlığını (27 semantik mesh, 286.429 üçgen, 5,7 MB) yükler. Seçimler organ/alt yapı hiyerarşisindeki gerçek mesh adlarına bağlanır. Sol/sağ akciğer, bronşlar, böbrek korteksi/medullası ve bağırsak alt bölümleri ayrı yakın görünüme geçer. Holografik clearcoat/emissive ve Fresnel kenar efekti, orijinal geometrilerin yerleşimini değiştirmez.
 
 Mide ve temsilî omuz/kol kasları BodyParts3D STL varlıklarından yalnız ayrı organ görünümünde gösterilir; erkek BodyParts3D ile kadın HRA koordinatları birlikte kayıtlı değildir. Mikroskobik alveol/nefron/deri tabakaları ayrı öğretici şemalardır; gerçek histoloji veya organ meshinden çıkarılan doku değildir. Tam veri atıfları ve lisanslar `public/models/anatomy/` içinde ve hiyerarşi panelinde bulunur. HRA CC BY 4.0, BodyParts3D varlıkları CC BY-SA 2.1 JP koşullarını korur.
+
+
+Lokal etki maskesi gerçek mesh koordinatlarında eğitimsel Gaussian dağılım kullanır; odak konumu klinik lezyon veya ölçülen inflamasyon alanı değildir. Şiddet genel vaka metriklerinden gelir. Kamera modlar arasında zaman bazlı easing kullanır; elle etkileşim otomatik hareketi keser. GLB/STL yükleme hatası procedural fallback modelini ve açık yedek-model etiketini gösterir.
