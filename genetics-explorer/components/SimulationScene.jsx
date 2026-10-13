@@ -67,7 +67,7 @@ function SceneCamera({mode,view,reducedMotion,controlsRef,focusRequest}) {
  useEffect(()=>{const control=controlsRef.current;const stop=()=>{moving.current=false;};control?.addEventListener('start',stop);return()=>control?.removeEventListener('start',stop);},[controlsRef]);
  useFrame((_,delta)=>{if(!moving.current)return;camera.position.lerp(destination.current,reducedMotion?1:1-Math.exp(-Math.min(delta,.05)*5));camera.lookAt(0,0,0);controlsRef.current?.target.set(0,0,0);if(camera.position.distanceTo(destination.current)<.015)moving.current=false;});return null;
 }
-export default function SimulationScene({state,mode='cell',outbreak,selectedOrgan,onOrganSelect,selectedStructure,onSelectStructure,onAssetStatus,assetStatus,focusRequest=0}){
+export default function SimulationScene({state,mode='cell',outbreak,selectedOrgan,onOrganSelect,selectedStructure,onSelectStructure,onAssetStatus,assetStatus,focusRequest=0,preview=false}){
  const hudLabel=useRef(null);const controlsRef=useRef(null);
  const [selected,setSelected]=useState(null);const [bodyView,setBodyView]=useState('body');const [organ,setOrgan]=useState(null);
  const metrics=state?.metrics??{pathogenLoad:18,infectedCells:8,innateImmunity:12,adaptiveImmunity:0,inflammation:5,tissueDamage:0};
@@ -95,7 +95,7 @@ export default function SimulationScene({state,mode='cell',outbreak,selectedOrga
  const select=key=>{setSelected(key);if(ORGAN_INFO[key]){setOrgan(key);onOrganSelect?.(key);}};
  const info=ORGAN_INFO[selected]??INFO[selected];
  const wholeBody=mode==='body'&&bodyView==='body';
- if(mode==='society')return <SocietyPeople outbreak={outbreak} day={state?.day||0}/>;
+ if(mode==='society')return <SocietyPeople caseKey={state?.diseaseScenarioId+':'+state?.seed} animate={!preview} outbreak={outbreak} day={state?.day||0}/>;
  return <div className={"biomedicalScene"+(mode==='body'?' holographicAnatomy':'')}><div className="sceneCaption"><span>{titles[mode]}</span><small>Gün {state?.day??0} · Etkileşimli 3B</small></div>
  {mode==='body'&&<div ref={hudLabel} className={'anatomyDataTag anatomyProjectedTag'+(organEffect.affected?' is-affected':'')}><small>SEÇİLİ SİSTEM</small><strong>{structureDefinition&&selectedStructure!=='all'?structureDefinition.name:ORGAN_EDUCATION[target]?.name}</strong><span>{organEffect.affected?'ETKİ VURGUSU · '+Math.round(organEffect.severity)+'/100':'ANATOMİK KEŞİF'}</span></div>}
  {mode==='body'&&!assetStatus?.ready&&<div className={assetStatus?.error?'referenceFallbackNotice':'referenceModelLoading'} role="status">{assetStatus?.error?'Yedek şematik anatomi · Referans yüklenemedi':'Anatomik model yükleniyor…'}</div>}

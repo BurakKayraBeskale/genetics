@@ -1,0 +1,13 @@
+'use client';
+import { useState } from 'react';
+const SERIES={activeCases:['Aktif','#f08087'],newCases:['Yeni','#e8bd73'],recovered:['İyileşen','#7ad5dc'],severeCases:['Ağır','#cc7b57']};
+const num=value=>Number(value||0).toLocaleString('tr-TR',{maximumFractionDigits:1});
+export default function OutbreakTrend({history=[],onSelectDay}){
+ const [hover,setHover]=useState(null);const [enabled,setEnabled]=useState(['activeCases','newCases','recovered']);
+ const current=history.find(point=>point.day===hover)||history.at(-1);
+ const max=Math.max(1,...history.flatMap(point=>enabled.map(key=>point[key]||0)));
+ const first=history[0]?.day||0,last=history.at(-1)?.day||0;
+ const x=day=>30+(day-first)/Math.max(1,last-first)*320;
+ const y=value=>140-Number(value||0)/max*112;
+ return <section className="outbreakTrendV2"><h2>Vaka eğrisi</h2><p>Temsili nüfus · gerçek epidemiyolojik tahmin değildir</p><div className="outbreakTrendLegend" aria-label="Grafik serileri">{Object.entries(SERIES).map(([key,[label,color]])=><button key={key} aria-pressed={enabled.includes(key)} onClick={()=>setEnabled(old=>old.includes(key)?old.length>1?old.filter(item=>item!==key):old:[...old,key])}><i style={{background:color}}/>{label}</button>)}</div><svg viewBox="0 0 380 175" role="img" aria-label="Günlere göre aktif, yeni, iyileşen ve ağır model vakaları"><path d="M30 28H350M30 84H350M30 140H350" stroke="#254653"/><text x="5" y="31">{num(max)}</text><text x="14" y="144">0</text>{enabled.map(key=><polyline key={key} points={history.map(point=>`${x(point.day)},${y(point[key])}`).join(' ')} stroke={SERIES[key][1]} fill="none" strokeWidth="2" vectorEffect="non-scaling-stroke"/>)}{history.map(point=><g key={point.day}><rect x={x(point.day)-7} y="22" width="14" height="130" fill="transparent" onMouseEnter={()=>setHover(point.day)} onClick={()=>onSelectDay?.(point.day)}/>{point===current&&<line x1={x(point.day)} x2={x(point.day)} y1="20" y2="143" stroke="#769baa" strokeDasharray="3 4"/>}</g>)}<text x="30" y="165">Gün {first}</text><text x="315" y="165">Gün {last}</text></svg><div className="outbreakTrendReadout" aria-live="polite"><strong>Gün {current?.day??0}</strong>{Object.entries(SERIES).map(([key,[label]])=><span key={key}>{label}: <b>{num(current?.[key])}</b></span>)}</div><div className="outbreakTrendDays" aria-label="Grafik günlerini incele">{history.map(point=><button key={point.day} onFocus={()=>setHover(point.day)} onMouseEnter={()=>setHover(point.day)} onClick={()=>onSelectDay?.(point.day)} aria-label={`Gün ${point.day}: aktif ${num(point.activeCases)}, yeni ${num(point.newCases)}, iyileşen ${num(point.recovered)}. Geçmiş günü aç.`}>{point.day}</button>)}</div></section>;
+}

@@ -24,13 +24,13 @@ test('non-spreading infections generate no population messages or synthetic outb
 });
 test('profile transmission parameter affects spread without changing biological metrics', () => {
   const timeline = [{ day: 1, metrics: { pathogenLoad: 40, antibodyLevel: 0, tissueDamage: 0 } }];
-  const low = state(1, { timeline, scenarioConfig: { educationalParameters: { transmissionTendency: 10 } } });
-  const high = state(1, { timeline, scenarioConfig: { educationalParameters: { transmissionTendency: 80 } } });
+  const low = state(1, { timeline, scenarioConfig: { mechanism:'infectious/viral', contagious:true, educationalParameters: { transmissionTendency: 10 } } });
+  const high = state(1, { timeline, scenarioConfig: { mechanism:'infectious/viral', contagious:true, educationalParameters: { transmissionTendency: 80 } } });
   assert.ok(computeOutbreak(high).spread > computeOutbreak(low).spread);
   assert.deepEqual(low.metrics, high.metrics);
 });
 test('route-specific infection disables casual-contact forecast but remains an infection', () => {
-  const next = state(1, { scenarioConfig: { contagious: true, publicSpreadApplicable: true, spreadMode: 'route-specific' } });
+  const next = state(1, { scenarioConfig: { mechanism:'infectious/viral', contagious: true, publicSpreadApplicable: true, spreadMode: 'route-specific' } });
   const result = computeOutbreak(next);
   assert.equal(result.contagious, false); assert.equal(result.diseaseContagious, true);
   assert.equal(result.populationSpreadUnsupported, true); assert.equal(result.activeCases, 0);
@@ -41,7 +41,7 @@ test('route-specific infection disables casual-contact forecast but remains an i
 });
 test('virtual transmission fallback alters community curve', () => {
   const timeline = [{ day: 1, metrics: { pathogenLoad: 40, antibodyLevel: 0, tissueDamage: 0 } }];
-  const make = transmission => state(1, { timeline, scenarioConfig: { contagious: true, educationalParameters: { transmission } } });
+  const make = transmission => state(1, { timeline, scenarioConfig: { mechanism:'infectious/viral', contagious: true, educationalParameters: { transmission } } });
   assert.ok(computeOutbreak(make(80)).spread > computeOutbreak(make(10)).spread);
 });
 

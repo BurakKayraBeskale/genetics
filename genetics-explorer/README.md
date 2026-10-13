@@ -109,7 +109,7 @@ Tam vücut modeli; vücut, organ ve hedef doku ölçeklerine ayrılır. Etkilene
 
 `components/anatomy/AnatomyModel.jsx` sekiz sistem için ayrı organ ve hedef doku geometrileri sunar. `OrganDetails` paneli sistemin işlevini, profile bağlı etkilenme nedenini ve kaynakları gösterir; global göstergeler organ hasarı ölçümü olarak sunulmaz. Etkilenen sistem düşük şiddette de kırmızı görünür, yoğunluk arttıkça turuncu-kırmızıya geçer.
 
-`SocietyPeople` tam 10 insan figürü kullanır: hasta kırmızı, sağlıklı mavi, temsili risk sarı, iyileşen gri. Bir figür %10 temsil eder; yuvarlanmış figür oranı gerçek model yüzdesinden ayrı gösterilir. Risk figürleri gerçek temas sayısı değildir. Bulaşıcı olmayan profillerde salgın gösterimi kapatılır.
+`SocietyPeople` tam 10 insan figürü kullanır: hasta kırmızı, ağır durum turuncu, sağlıklı mavi, temaslı/riskli sarı, iyileşen gri. Bir figür %10 temsil eder; yuvarlanmış figür oranı gerçek model yüzdesinden ayrı gösterilir. Risk figürleri gerçek temas sayısı değildir. Bulaşıcı olmayan profillerde salgın gösterimi kapatılır.
 
 
 Holografik anatomi görünümünde normal yapılar cyan, açıkça hedeflenen sistemler mercan kırmızısı/turuncudur. Sistemik bağışıklık yanıtı tek başına damar hasarı olarak renklendirilmez. Hafif tarama halkaları ve kamera ile konumu güncellenen organ etiketi 3B etkileşimleri engellemez. Organ malzemeleri paylaşılıp şiddet düzeyi kuantize edilir; azaltılmış hareket tercihinde tarama/nabız hareketi durur.
@@ -153,3 +153,12 @@ Hastalık Simülatöründeki Genetik ilişkisini incele bağlantısı /dna?mode=
 63 profilin dnaRelation verisi DIRECT_GENETIC, HOST_RESPONSE, PATHOGEN_GENOME, INDIRECT veya NONE olarak zenginleşir; legacy kind/presetId alanları korunur. HBB/hemoglobin, CFTR/iyon kanalı, HTT/huntingtin ve DMD/distrofin bağlantıları kısa sentetik model üzerinde ilgili eğitim örneğine bağlanır. Diğer profillerde doğrulanmamış varyant otomatik uygulanmaz. Enfeksiyonda insan DNA dizisiyle etken DNA/RNA materyali farklı sekmelerdir; etken sekmesi gerçek sekans ve mutasyon aracı içermeyen salt okunur şemadır. HIV/HBV entegrasyon ve kanserde somatik/kalıtsal ayrımı koşullu açıklamalarla gösterilir.
 
 Moleküler zincirin organ/hücre düğmeleri tek kullanımlık observationRequest ile mevcut vakayı değiştirmeden ilgili simülasyon ölçeğine geçer. Anatomi ve DiseaseEngine geometri/seyirleri korunur. İnsan DNA görüntüsü tam genom veya gerçek hastalık geni dizisi değildir; laboratuvar deneyi vaka biyolojik metriklerini değiştirmez. Gizemli öğrenci görünümünde profil/gen/protein ayrıntıları önceki görünüm sınırı içinde saklı kalır.
+
+
+## Toplum / Salgın V2
+
+Toplum modeli beş bölmenin toplamını 10.000 soyut birim olarak korur: healthy, exposed, sick, severe ve recovered. activeCases sıradan hasta ile ağır durumun toplamıdır; ağır grup tekrar sayılmaz. Yayılım eğilimi profile bağlı eğitim katsayısıdır, R0 değildir. Kararlar aynı gün yalnız kaydedilir; sonraki dört adımda aktif olur. Bakım kararı temas azaltmak yerine kapasite/toparlanma üzerinden çalışır. Biyolojik vaka metrikleri toplum kararlarıyla yeniden yazılmaz.
+
+SocietyPeople V2 sabit on temsili figür, beş etiket/ikon/renk, bir saniyelik kontrollü geçiş ve azaltılmış hareket desteği kullanır. Geçmiş günler anında yeniden kurulur. Figür oranı 10 puanlık yuvarlamadır; tam model yüzdesi ayrı gösterilir. Salgın Merkezi toplum, vaka eğrisi ve kararlar olarak üç sütuna ayrılır; Neden açıklamaları, gerçek model yük/kapasite oranı ve kararın bekleyen/aktif durumları aynı tarihsel projeksiyondan gelir.
+
+Kararsız çizelge ve tek karar çıkarma karşılaştırmaları aynı biyolojik geçmiş/seed üzerinde tekrar hesaplanır. En etkili karar ölçütü final aktif birim farkıdır; eşitlikler gösterilir ve katkılar toplanamaz. Yeni vaka maruziyet grubundan aktif gruba geçen akıştır, aktif sayısının pozitif farkı değildir. Olaylar hasta payı artışı, ilk yayılım azalması, sonraki gün karar etkisi ve yüzde 80 kapasite eşiğinde mevcut CaseEventEngine ile üretilir. Yeni snapshot şeması gerekmez; toplum geçmişi kayıtlı biyolojik çizelge ve kararlardan deterministik türetilir.

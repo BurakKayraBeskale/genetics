@@ -99,12 +99,16 @@ export function generateClinicalEvents(previous,next,{previousOutbreak,nextOutbr
  const newPolicies=(next.publicHealthDecisions||[]).filter(i=>!(previous.publicHealthDecisions||[]).some(p=>p.day===i.day&&p.kind===i.kind));
  for(const i of newInterventions)add('intervention:'+i.kind+':'+i.day,'CLINICAL','NOTICE','Soyut müdahale kaydedildi',i.label+'. Sonraki model adımları önceki gözlemlerle karşılaştırılacak; bu bir klinik tedavi değildir.');
  const profile=next.scenarioConfig||{};
- const spreading=nextOutbreak?.contagious&&!nextOutbreak.populationSpreadUnsupported&&profile.contagious!==false&&profile.publicSpreadApplicable!==false&&profile.spreadMode!=='route-specific'&&profile.spreadMode!=='not-modeled'&&!['genetic','autoimmune','metabolic','neurological','oncology'].includes(profile.mechanism||profile.category);
+ const spreading=nextOutbreak?.contagious&&!nextOutbreak.populationSpreadUnsupported&&profile.contagious===true&&profile.publicSpreadApplicable!==false&&profile.spreadMode!=='route-specific'&&profile.spreadMode!=='not-modeled'&&!['genetic','autoimmune','metabolic','neurological','oncology'].includes(profile.mechanism||profile.category);
  if(spreading){
   const old=previousOutbreak||{},spread=nextOutbreak.spread||0,diff=round(spread-(old.spread||0));
   const report=(key,severity,title,text,metric,value,beforeValue)=>{const extra={relatedMetric:metric,metricValue:value,previousValue:beforeValue,delta:round(value-beforeValue)};add('population:'+key,'PUBLIC_HEALTH',severity,title,text,extra);bulletin('population:'+key,severity,title,text+' Göstergeler soyut sınıf nüfusuna aittir.',extra);};
+  const activePercent=value=>value?.population>0?(value.activeCases||0)/value.population*100:null;
+  const beforeActive=activePercent(old),afterActive=activePercent(nextOutbreak);
+  if(beforeActive!==null&&afterActive!==null&&afterActive-beforeActive>=5)report('active:rapid','IMPORTANT','Vaka artışı hızlandı','Aktif vaka payı önceki güne göre '+round(afterActive-beforeActive)+' yüzde puanı arttı.','sickPercent',round(afterActive),round(beforeActive));
+  for(const feedback of nextOutbreak.decisionFeedback||[]){if(feedback.status==='active'&&feedback.effectStartDay===day)report('effect:'+feedback.kind+':'+feedback.day,'NOTICE','Kararın model etkisi gözlendi',feedback.label+': '+(feedback.observedImpact||feedback.explanation||'Sonraki eğitim adımında karşılaştırılıyor.'),'spread',spread,old.spread||0);}
   if(diff>=5)report('rapid','IMPORTANT','Yeni vaka kümeleri hızlanıyor','Model yayılım göstergesi önceki adıma göre '+diff+' birim arttı.','spread',spread,old.spread||0);
-  else if(diff<=-3)report('slowdown','NOTICE','Yeni vaka artışında yavaşlama','Yayılım göstergesi '+Math.abs(diff)+' model birimi azaldı; bu gerçek toplum salgını tahmini değildir.','spread',spread,old.spread||0);
+  else if(diff<=-3||(diff<0&&(old.spreadDelta??(old.history?.length>1?(old.spread||0)-(old.history.at(-2)?.spread||0):0))>=0))report('slowdown','NOTICE','Yeni vaka artışında yavaşlama','Yayılım göstergesi '+Math.abs(diff)+' model birimi azaldı; bu gerçek toplum salgını tahmini değildir.','spread',spread,old.spread||0);
   if((old.spread||0)<30&&spread>=30)report('spread','NOTICE','Toplum izlemi genişledi','Yayılım göstergesi orta düzey eğitim eşiğini geçti.','spread',spread,old.spread||0);
   const hasOccupancy=Number.isFinite(nextOutbreak.hospitalLoad)&&Number.isFinite(nextOutbreak.hospitalCapacity)&&nextOutbreak.hospitalCapacity>0;
   const occupancy=hasOccupancy?round(nextOutbreak.hospitalLoad/nextOutbreak.hospitalCapacity*100):(nextOutbreak.hospitalPressure||0);
