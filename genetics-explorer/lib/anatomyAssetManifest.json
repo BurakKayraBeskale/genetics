@@ -1,0 +1,859 @@
+{
+  "version": 1,
+  "source": "https://lod.humanatlas.io/ref-organ/united-female/v1.5",
+  "license": "CC BY 4.0",
+  "orientation": "Y-up, front +Z, world transforms baked, units meters",
+  "limitations": [
+    "Female reference anatomy; not complete human anatomy",
+    "No stomach, thyroid/adrenal or limb-muscle mesh in source selection",
+    "Partial skeletal coverage"
+  ],
+  "bounds": {
+    "min": [
+      -0.4895615577697754,
+      -0.7947609424591064,
+      -0.22256970405578613
+    ],
+    "max": [
+      0.47776663303375244,
+      0.871560275554657,
+      0.10662645101547241
+    ]
+  },
+  "bytes": 5733584,
+  "nodes": [
+    {
+      "name": "HRA_skin",
+      "organ": "skin",
+      "structure": "skin",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_skin"
+      ],
+      "triangles": 61222,
+      "bounds": {
+        "min": [
+          -0.4895615577697754,
+          -0.7947609424591064,
+          -0.22256970405578613
+        ],
+        "max": [
+          0.47776663303375244,
+          0.871560275554657,
+          0.10662645101547241
+        ]
+      }
+    },
+    {
+      "name": "HRA_cerebrum_left",
+      "organ": "brain",
+      "structure": "cerebrum_left",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "Allen_frontal_agranular_insular_cortex_area_Fl_L",
+        "Allen_temporal_agranular_insular_cortex_area_Tl_L",
+        "Allen_precentral_gyrus_L",
+        "Allen_superior_frontal_gyrus_L",
+        "Allen_middle_frontal_gyrus_L",
+        "Allen_inferior_frontal_gyrus_triangular_part_L",
+        "Allen_inferior_frontal_gyrus_opercular_part_L",
+        "Allen_gyrus_rectus_straight_gyrus_L",
+        "Allen_medial_orbital_gyrus_L",
+        "Allen_anterior_intermediate_orbital_gyrus_L",
+        "Allen_posterior_intermediate_orbital_gyrus_L",
+        "Allen_lateral_orbital_gyrus_L",
+        "Allen_paracentral_lobule_rostral_part_L",
+        "Allen_postcentral_gyrus_L",
+        "Allen_supraparietal_lobule_L",
+        "Allen_supramarginal_gyrus_L",
+        "Allen_angular_gyrus_L",
+        "Allen_paracentral_lobule_caudal_part_L",
+        "Allen_superior_temporal_gyrus_L",
+        "Allen_middle_temporal_gyrus_L",
+        "Allen_inferior_temporal_gyrus_L",
+        "Allen_occipitotemporal_fusiform_gyrus_temporal_part_L",
+        "Allen_transverse_temporal_gyrus_Heschls_gyrus_L",
+        "Allen_lingual_gyrus_medial_occipitotemporal_gyrus_L",
+        "Allen_lateral_occipitotemporal_fusiform_gyrus_occipital_part_L",
+        "Allen_inferior_occipital_gyrus_L",
+        "Allen_superior_occipital_gyrus_L",
+        "Allen_cingulate_gyrus_rostral_anterior_part_L",
+        "Allen_cingulate_gyrus_caudal_posterior_part_L",
+        "Allen_subcallosal_gyrus_parolfactory_gyrus_L",
+        "Allen_anterior_parahippocampal_gyrus_L",
+        "Allen_posterior_parahippocampal_gyrus_L",
+        "Allen_gyrus_ambiens_L",
+        "Allen_long_insular_gyri_L",
+        "Allen_short_insular_gyri_L",
+        "Allen_lateral_olfactory_gyrus_L",
+        "Allen_paracingulate_gyrus_L",
+        "Allen_rostral_gyrus_L",
+        "Allen_frontomarginal_gyrus_L",
+        "Allen_perirhinal_gyrus_rostral_part_of_FuGt_L"
+      ],
+      "triangles": 26028,
+      "bounds": {
+        "min": [
+          -0.07464726269245148,
+          0.7405948638916016,
+          -0.14570824801921844
+        ],
+        "max": [
+          -0.002777260262519121,
+          0.8570089340209961,
+          0.01885676383972168
+        ]
+      }
+    },
+    {
+      "name": "HRA_cerebellum",
+      "organ": "brain",
+      "structure": "cerebellum",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "Allen_paravermis_of_cerebellum_L",
+        "Allen_lateral_hemisphere_of_cerebellum_L",
+        "Allen_paravermis_of_cerebellum_R",
+        "Allen_lateral_hemisphere_of_cerebellum_R"
+      ],
+      "triangles": 4902,
+      "bounds": {
+        "min": [
+          -0.06193530559539795,
+          0.7114169001579285,
+          -0.1253257542848587
+        ],
+        "max": [
+          0.04590523988008499,
+          0.7706400752067566,
+          -0.06422290951013565
+        ]
+      }
+    },
+    {
+      "name": "HRA_brainstem",
+      "organ": "brain",
+      "structure": "brainstem",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "Allen_basilar_part_of_pons_L",
+        "Allen_pyramidal_part_of_medulla_oblongata_L",
+        "Allen_tegmentum_of_medulla_oblongata_L",
+        "Allen_central_canal_of_medulla_oblongata_L",
+        "Allen_basilar_part_of_pons_R",
+        "Allen_pyramidal_part_of_medulla_oblongata_R",
+        "Allen_tegmentum_of_medulla_oblongata_R",
+        "Allen_central_canal_of_medulla_oblongata_R",
+        "Allen_midbrain_tegmentum_R",
+        "Allen_midbrain_tegmentum_L"
+      ],
+      "triangles": 1480,
+      "bounds": {
+        "min": [
+          -0.025743922218680382,
+          0.7110222578048706,
+          -0.07777320593595505
+        ],
+        "max": [
+          0.01233639009296894,
+          0.7794148325920105,
+          -0.051703594624996185
+        ]
+      }
+    },
+    {
+      "name": "HRA_cerebrum_right",
+      "organ": "brain",
+      "structure": "cerebrum_right",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "Allen_frontal_agranular_insular_cortex_area_Fl_R",
+        "Allen_temporal_agranular_insular_cortex_area_Tl_R",
+        "Allen_precentral_gyrus_R",
+        "Allen_superior_frontal_gyrus_R",
+        "Allen_middle_frontal_gyrus_R",
+        "Allen_inferior_frontal_gyrus_triangular_part_R",
+        "Allen_inferior_frontal_gyrus_opercular_part_R",
+        "Allen_gyrus_rectus_straight_gyrus_R",
+        "Allen_medial_orbital_gyrus_R",
+        "Allen_anterior_intermediate_orbital_gyrus_R",
+        "Allen_posterior_intermediate_orbital_gyrus_R",
+        "Allen_lateral_orbital_gyrus_R",
+        "Allen_paracentral_lobule_rostral_part_R",
+        "Allen_postcentral_gyrus_R",
+        "Allen_supraparietal_lobule_R",
+        "Allen_supramarginal_gyrus_R",
+        "Allen_angular_gyrus_R",
+        "Allen_paracentral_lobule_caudal_part_R",
+        "Allen_superior_temporal_gyrus_R",
+        "Allen_middle_temporal_gyrus_R",
+        "Allen_inferior_temporal_gyrus_R",
+        "Allen_occipitotemporal_fusiform_gyrus_temporal_part_R",
+        "Allen_transverse_temporal_gyrus_Heschls_gyrus_R",
+        "Allen_lingual_gyrus_medial_occipitotemporal_gyrus_R",
+        "Allen_lateral_occipitotemporal_fusiform_gyrus_occipital_part_R",
+        "Allen_inferior_occipital_gyrus_R",
+        "Allen_superior_occipital_gyrus_R",
+        "Allen_cingulate_gyrus_rostral_anterior_part_R",
+        "Allen_cingulate_gyrus_caudal_posterior_part_R",
+        "Allen_subcallosal_gyrus_parolfactory_gyrus_R",
+        "Allen_anterior_parahippocampal_gyrus_R",
+        "Allen_posterior_parahippocampal_gyrus_R",
+        "Allen_gyrus_ambiens_R",
+        "Allen_long_insular_gyri_R",
+        "Allen_short_insular_gyri_R",
+        "Allen_lateral_olfactory_gyrus_R",
+        "Allen_paracingulate_gyrus_R",
+        "Allen_rostral_gyrus_R",
+        "Allen_frontomarginal_gyrus_R",
+        "Allen_perirhinal_gyrus_rostral_part_of_FuGt_R"
+      ],
+      "triangles": 26030,
+      "bounds": {
+        "min": [
+          -0.008516709320247173,
+          0.7390202879905701,
+          -0.14692725241184235
+        ],
+        "max": [
+          0.06168726831674576,
+          0.8566551208496094,
+          0.018329491838812828
+        ]
+      }
+    },
+    {
+      "name": "HRA_colon",
+      "organ": "digestive",
+      "structure": "colon",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_hepatic_flexure_of_colon",
+        "VH_F_transverse_colon",
+        "VH_F_ascending_colon",
+        "VH_F_descending_colon",
+        "VH_F_caecum",
+        "VH_F_rectum",
+        "VH_F_sigmoid_colon",
+        "VH_F_splenic_flexure_of_colon"
+      ],
+      "triangles": 3409,
+      "bounds": {
+        "min": [
+          -0.12599124014377594,
+          -0.013008594512939453,
+          -0.14650557935237885
+        ],
+        "max": [
+          0.11666905879974365,
+          0.28132525086402893,
+          0.0469122976064682
+        ]
+      }
+    },
+    {
+      "name": "HRA_duodenum",
+      "organ": "digestive",
+      "structure": "duodenum",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_duodenum_superior",
+        "VH_F_duodenum_descending",
+        "VH_F_duodenum_ascending",
+        "VH_F_duodenum_horizontal"
+      ],
+      "triangles": 1591,
+      "bounds": {
+        "min": [
+          -0.06652910262346268,
+          0.21866874396800995,
+          -0.07816566526889801
+        ],
+        "max": [
+          0.02155720628798008,
+          0.2961168587207794,
+          -0.00022676089429296553
+        ]
+      }
+    },
+    {
+      "name": "HRA_small_intestine",
+      "organ": "digestive",
+      "structure": "small_intestine",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_jejenum",
+        "VH_F_ileum",
+        "VH_F_ileum_terminal"
+      ],
+      "triangles": 5567,
+      "bounds": {
+        "min": [
+          -0.08684401959180832,
+          0.07911209762096405,
+          -0.07697034627199173
+        ],
+        "max": [
+          0.0744376927614212,
+          0.25096601247787476,
+          0.02182808890938759
+        ]
+      }
+    },
+    {
+      "name": "HRA_liver",
+      "organ": "digestive",
+      "structure": "liver",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_capsule_of_the_liver",
+        "VH_F_bare_area_of_liver",
+        "VH_F_diaphragmatic_surface_of_liver"
+      ],
+      "triangles": 7735,
+      "bounds": {
+        "min": [
+          -0.1348661333322525,
+          0.2625250816345215,
+          -0.15380553901195526
+        ],
+        "max": [
+          0.1122201681137085,
+          0.4324977397918701,
+          0.012414366006851196
+        ]
+      }
+    },
+    {
+      "name": "HRA_pancreas",
+      "organ": "endocrine",
+      "structure": "pancreas",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_tail_of_pancreas",
+        "VH_F_body_of_pancreas",
+        "VH_F_ucinate_process1",
+        "VH_F_head_of_pancreas",
+        "VH_F_neck_of_pancreas"
+      ],
+      "triangles": 12894,
+      "bounds": {
+        "min": [
+          -0.05395494028925896,
+          0.23753882944583893,
+          -0.11208879202604294
+        ],
+        "max": [
+          0.11807678639888763,
+          0.29407721757888794,
+          -0.02771533839404583
+        ]
+      }
+    },
+    {
+      "name": "HRA_kidney_cortex_left",
+      "organ": "renal",
+      "structure": "kidney_cortex_left",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_kidney_capsule_L",
+        "VH_F_outer_cortex_of_kidney_L"
+      ],
+      "triangles": 3938,
+      "bounds": {
+        "min": [
+          0.04005156829953194,
+          0.1757885366678238,
+          -0.139386385679245
+        ],
+        "max": [
+          0.11316228657960892,
+          0.300632506608963,
+          -0.061940714716911316
+        ]
+      }
+    },
+    {
+      "name": "HRA_renal_hilum_left",
+      "organ": "renal",
+      "structure": "renal_hilum_left",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_hilum_of_kidney_L"
+      ],
+      "triangles": 947,
+      "bounds": {
+        "min": [
+          0.04436926916241646,
+          0.20650693774223328,
+          -0.106826052069664
+        ],
+        "max": [
+          0.08287303894758224,
+          0.279473215341568,
+          -0.06654682755470276
+        ]
+      }
+    },
+    {
+      "name": "HRA_renal_medulla_left",
+      "organ": "renal",
+      "structure": "renal_medulla_left",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_renal_pyramid_L_a",
+        "VH_F_renal_pyramid_L_b",
+        "VH_F_renal_pyramid_L_c",
+        "VH_F_renal_pyramid_L_d",
+        "VH_F_renal_pyramid_L_e",
+        "VH_F_renal_pyramid_L_f",
+        "VH_F_renal_pyramid_L_g",
+        "VH_F_renal_pyramid_L_h",
+        "VH_F_renal_pyramid_L_i",
+        "VH_F_renal_pyramid_L_j",
+        "VH_F_renal_pyramid_L_k"
+      ],
+      "triangles": 2577,
+      "bounds": {
+        "min": [
+          0.04796592518687248,
+          0.1828479915857315,
+          -0.1319991499185562
+        ],
+        "max": [
+          0.10597958415746689,
+          0.2927786111831665,
+          -0.06779073923826218
+        ]
+      }
+    },
+    {
+      "name": "HRA_kidney_cortex_right",
+      "organ": "renal",
+      "structure": "kidney_cortex_right",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_kidney_capsule_R",
+        "VH_F_outer_cortex_of_kidney_R"
+      ],
+      "triangles": 3914,
+      "bounds": {
+        "min": [
+          -0.1087215319275856,
+          0.1986190229654312,
+          -0.1343010663986206
+        ],
+        "max": [
+          -0.035330820828676224,
+          0.2964504659175873,
+          -0.06489789485931396
+        ]
+      }
+    },
+    {
+      "name": "HRA_renal_hilum_right",
+      "organ": "renal",
+      "structure": "renal_hilum_right",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_hilum_of_kidney_R"
+      ],
+      "triangles": 1021,
+      "bounds": {
+        "min": [
+          -0.08308717608451843,
+          0.22504304349422455,
+          -0.10493690520524979
+        ],
+        "max": [
+          -0.04479450732469559,
+          0.27251988649368286,
+          -0.07525740563869476
+        ]
+      }
+    },
+    {
+      "name": "HRA_renal_medulla_right",
+      "organ": "renal",
+      "structure": "renal_medulla_right",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_renal_pyramid_R_a",
+        "VH_F_renal_pyramid_R_b",
+        "VH_F_renal_pyramid_R_c",
+        "VH_F_renal_pyramid_R_d",
+        "VH_F_renal_pyramid_R_e",
+        "VH_F_renal_pyramid_R_f",
+        "VH_F_renal_pyramid_R_g",
+        "VH_F_renal_pyramid_R_h",
+        "VH_F_renal_pyramid_R_i",
+        "VH_F_renal_pyramid_R_j"
+      ],
+      "triangles": 3514,
+      "bounds": {
+        "min": [
+          -0.10199489444494247,
+          0.2032933533191681,
+          -0.12727366387844086
+        ],
+        "max": [
+          -0.043150052428245544,
+          0.2904820442199707,
+          -0.0691935122013092
+        ]
+      }
+    },
+    {
+      "name": "HRA_ureter_right",
+      "organ": "renal",
+      "structure": "ureter_right",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_right_ureter"
+      ],
+      "triangles": 2072,
+      "bounds": {
+        "min": [
+          -0.06973984837532043,
+          0.011176318861544132,
+          -0.08923254162073135
+        ],
+        "max": [
+          -0.03448278456926346,
+          0.2355201542377472,
+          -0.05355392396450043
+        ]
+      }
+    },
+    {
+      "name": "HRA_ureter_left",
+      "organ": "renal",
+      "structure": "ureter_left",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_left_ureter"
+      ],
+      "triangles": 2390,
+      "bounds": {
+        "min": [
+          0.00963280163705349,
+          0.009128126315772533,
+          -0.08789537847042084
+        ],
+        "max": [
+          0.0631011426448822,
+          0.2287796288728714,
+          -0.051182616502046585
+        ]
+      }
+    },
+    {
+      "name": "HRA_heart_ventricles",
+      "organ": "blood",
+      "structure": "heart_ventricles",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_interventricular_septum",
+        "VH_F_left_ventricle",
+        "VH_F_right_ventricle",
+        "VH_F_posterior_vein_of_left_ventricle"
+      ],
+      "triangles": 7470,
+      "bounds": {
+        "min": [
+          -0.006416316609829664,
+          0.38914886116981506,
+          -0.10772528499364853
+        ],
+        "max": [
+          0.10736755281686783,
+          0.49904686212539673,
+          -0.0051424503326416016
+        ]
+      }
+    },
+    {
+      "name": "HRA_heart_atria",
+      "organ": "blood",
+      "structure": "heart_atria",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_left_cardiac_atrium",
+        "VH_F_right_cardiac_atrium"
+      ],
+      "triangles": 2965,
+      "bounds": {
+        "min": [
+          -0.034795477986335754,
+          0.3978634476661682,
+          -0.10393178462982178
+        ],
+        "max": [
+          0.04158749431371689,
+          0.49513348937034607,
+          -0.016641635447740555
+        ]
+      }
+    },
+    {
+      "name": "HRA_vessels",
+      "organ": "blood",
+      "structure": "vessels",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_right_renal_artery",
+        "VH_F_left_renal_artery",
+        "VH_F_left_renal_vein",
+        "VH_F_right_renal_vein",
+        "VH_F_left_common_iliac_vein",
+        "VH_F_right_common_iliac_vein",
+        "VH_F_superior_vena_cava",
+        "VH_F_inferior_vena_cava_a",
+        "VH_F_inferior_vena_cava_b",
+        "VH_F_left_coronary_artery",
+        "VH_F_left_posterior_descending_branch_of_circumflex_branch_of_left_coronary_artery",
+        "VH_F_right_coronary_artery",
+        "VH_F_pulmonary_artery_L",
+        "VH_F_pulmonary_trunk",
+        "VH_F_pulmonary_artery_R",
+        "VH_F_aortic_arch",
+        "VH_F_ascending_aorta",
+        "VH_F_descending_aorta_a",
+        "VH_F_descending_aorta_b",
+        "VH_F_left_common_carotid_artery_a",
+        "VH_F_left_common_carotid_artery_b",
+        "VH_F_left_subclavian_artery_a",
+        "VH_F_left_subclavian_artery_b"
+      ],
+      "triangles": 13461,
+      "bounds": {
+        "min": [
+          -0.06955327093601227,
+          0.08728492259979248,
+          -0.13187435269355774
+        ],
+        "max": [
+          0.0838589295744896,
+          0.6041927337646484,
+          -0.019167637452483177
+        ]
+      }
+    },
+    {
+      "name": "HRA_right_lung",
+      "organ": "lungs",
+      "structure": "right_lung",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_lingula_superior_bronchopulmonary_segment",
+        "VH_F_lingula_inferior_bronchopulmonary_segment",
+        "VH_F_right_medial_basal_bronchopulmonary_segment",
+        "VH_F_right_posterior_basal_bronchopulmonary_segment",
+        "VH_F_right_anterior_basal_bronchopulmonary_segment",
+        "VH_F_right_lateral_basal_bronchopulmonary_segment",
+        "VH_F_right_superior_bronchopulmonary_segment",
+        "VH_F_right_medial_bronchopulmonary_segment",
+        "VH_F_right_lateral_bronchopulmonary_segmennt",
+        "VH_F_right_anterior_bronchopulmonary_segm",
+        "VH_F_right_apical_bronchopulmonary_segment",
+        "VH_F_right_posterior_bronchopulmonary_segment"
+      ],
+      "triangles": 2857,
+      "bounds": {
+        "min": [
+          -0.13033808767795563,
+          0.3819212317466736,
+          -0.15497392416000366
+        ],
+        "max": [
+          0.11973242461681366,
+          0.5872811675071716,
+          -0.004032544791698456
+        ]
+      }
+    },
+    {
+      "name": "HRA_left_lung",
+      "organ": "lungs",
+      "structure": "left_lung",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_left_anterior_bronchopulmonary_segment",
+        "VH_F_left_apical_bronchopulmonary_segment",
+        "VH_F_left_posterior_bronchopulmonary_segment",
+        "VH_F_left_superior_bronchopulmonary_segment",
+        "VH_F_left_posterior_basal_bronchopulmonary_segment",
+        "VH_F_left_anterior_basal_bronchopulmonary_segment",
+        "VH_F_left_lateral_basal_bronchopulmonary_segment",
+        "VH_F_left_medial_basal_bronchopulmonary_segment"
+      ],
+      "triangles": 1359,
+      "bounds": {
+        "min": [
+          0.009887788444757462,
+          0.3671085238456726,
+          -0.15629614889621735
+        ],
+        "max": [
+          0.12042001634836197,
+          0.5901092886924744,
+          -0.020941266790032387
+        ]
+      }
+    },
+    {
+      "name": "HRA_bronchi",
+      "organ": "lungs",
+      "structure": "bronchi",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_trachea",
+        "VH_F_carina",
+        "VH_F_right_main_bronchus",
+        "VH_F_left_main_bronchus",
+        "VH_F_left_superior_lobar_bronchus",
+        "VH_F_left_inferior_lobar_bronchus",
+        "VH_F_left_anterior_basal_bronchus",
+        "VH_F_left_lingula_superior_bronchus",
+        "VH_F_left_apical_bronchus",
+        "VH_F_left_posterior_basal_bronchus",
+        "VH_F_left_medial_basal_bronchus",
+        "VH_F_left_superior_bronchus",
+        "VH_F_left_anterior_bronchus",
+        "VH_F_left_posterior_bronchus",
+        "VH_F_left_lateral_basal_bronchus",
+        "VH_F_left_lingula_inferior_bronchi",
+        "VH_F_right_middle_lobar_bronchus",
+        "VH_F_right_superior_lobar_bronchus",
+        "VH_F_right_inferior_lobar_bronchus",
+        "VH_F_right_anterior_bronchus",
+        "VH_F_right_lateral_basal_bronchus",
+        "VH_F_right_lateral_bronchus",
+        "VH_F_right_medial_bronchus",
+        "VH_F_right_medial_basal_bronchus",
+        "VH_F_right_posterior_basal_bronchus",
+        "VH_F_right_posterior_bronchus",
+        "VH_F_right_superior_bronchus",
+        "VH_F_right_apical_bronchus",
+        "VH_F_right_anterior_basal_bronchus"
+      ],
+      "triangles": 3683,
+      "bounds": {
+        "min": [
+          -0.10355702042579651,
+          0.4269462823867798,
+          -0.13587437570095062
+        ],
+        "max": [
+          0.09962470829486847,
+          0.623683512210846,
+          -0.014642626978456974
+        ]
+      }
+    },
+    {
+      "name": "HRA_pelvis",
+      "organ": "skeleton",
+      "structure": "pelvis",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_sacrum",
+        "VH_F_coccyx",
+        "VH_F_pubis_compact_bone_R",
+        "VH_F_pubis_compact_bone_L",
+        "VH_F_ilium_compact_bone_R",
+        "VH_F_ilium_compact_bone_L",
+        "VH_F_ischium_compact_bone_R",
+        "VH_F_ischium_compact_bone_L"
+      ],
+      "triangles": 10680,
+      "bounds": {
+        "min": [
+          -0.16699616611003876,
+          -0.04683442786335945,
+          -0.18245455622673035
+        ],
+        "max": [
+          0.1496691107749939,
+          0.16445621848106384,
+          0.0002899217652156949
+        ]
+      }
+    },
+    {
+      "name": "HRA_leg_bones",
+      "organ": "skeleton",
+      "structure": "leg_bones",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_femur_R",
+        "VH_F_tibia_R",
+        "VH_F_fibula_R",
+        "VH_F_patella_R",
+        "VH_F_femur_L",
+        "VH_F_patella_L",
+        "VH_F_tibia_L",
+        "VH_F_fibula_L"
+      ],
+      "triangles": 4489,
+      "bounds": {
+        "min": [
+          -0.19032388925552368,
+          -0.7330566048622131,
+          -0.1232696920633316
+        ],
+        "max": [
+          0.16944772005081177,
+          0.0384126640856266,
+          -0.009059934876859188
+        ]
+      }
+    },
+    {
+      "name": "HRA_spine",
+      "organ": "skeleton",
+      "structure": "spine",
+      "source": "HRA united-female v1.5",
+      "sourceStructures": [
+        "VH_F_lumbar_vertebra_1",
+        "VH_F_lumbar_vertebra_2",
+        "VH_F_lumbar_vertebra_3",
+        "VH_F_lumbar_vertebra_4",
+        "VH_F_lumbar_vertebra_5",
+        "VH_F_lumbar_vertebra_6",
+        "VH_F_thoracic_vertebra_1",
+        "VH_F_thoracic_vertebra_2",
+        "VH_F_thoracic_vertebra_3",
+        "VH_F_thoracic_vertebra_4",
+        "VH_F_thoracic_vertebra_5",
+        "VH_F_thoracic_vertebra_6",
+        "VH_F_thoracic_vertebra_7",
+        "VH_F_thoracic_vertebra_8",
+        "VH_F_thoracic_vertebra_9",
+        "VH_F_thoracic_vertebra_10",
+        "VH_F_thoracic_vertebra_11",
+        "VH_F_thoracic_vertebra_12",
+        "VH_F_cervical_vertebra_1",
+        "VH_F_cervical_vertebra_2",
+        "VH_F_cervical_vertebra_3",
+        "VH_F_cervical_vertebra_4",
+        "VH_F_cervical_vertebra_5",
+        "VH_F_cervical_vertebra_6",
+        "VH_F_cervical_vertebra_7"
+      ],
+      "triangles": 68234,
+      "bounds": {
+        "min": [
+          -0.06101758033037186,
+          0.12445828318595886,
+          -0.17446185648441315
+        ],
+        "max": [
+          0.043546609580516815,
+          0.7179116010665894,
+          -0.04123497009277344
+        ]
+      }
+    }
+  ]
+}

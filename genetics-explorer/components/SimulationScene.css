@@ -16,3 +16,5 @@
 @media(max-width:760px){.anatomyMonitor{top:48px;left:14px;width:90px}.anatomyMonitor>small,.anatomyMonitor i{display:none}.anatomyMonitor>span{font-size:8px;letter-spacing:.6px}.holographicAnatomy .bodyViewSwitcher{top:68px;right:12px}.anatomyDataTag{min-width:85px;max-width:105px;padding:5px 7px}.anatomyDataTag strong{font-size:9px}.anatomyDataTag span{font-size:7px}.holographicAnatomy .organTargets{bottom:60px}.holographicAnatomy .sceneScale{bottom:35px}}
 
 .anatomyProjectedTag{position:absolute;top:0;left:0;z-index:1;pointer-events:none;opacity:0;will-change:transform;width:135px}
+
+.referenceModelLoading{position:absolute;left:50%;top:48%;transform:translateX(-50%);z-index:2;background:#061c2be6;border:1px solid #317b8b;padding:14px;color:#98ddea;font-size:11px;pointer-events:none}

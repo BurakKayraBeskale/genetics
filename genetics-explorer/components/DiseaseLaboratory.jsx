@@ -6,6 +6,7 @@ import { SCENARIOS, INTERVENTIONS } from '../lib/simulation';
 import { computeOutbreak } from '../lib/outbreak';
 import SimulationScene from './SimulationScene';
 import OrganDetails from './OrganDetails';
+import AnatomyHierarchy from './AnatomyHierarchy';
 import { affectedOrgansFor } from '../lib/organEducation';
 import './DiseaseLaboratory.css';
 
@@ -21,6 +22,8 @@ export default function DiseaseLaboratory() {
   const hiddenProfile = isMystery && studentView;
   const [mode, setMode] = useState('body');
   const [organSelection,setOrganSelection]=useState(null);
+  const [structureSelection,setStructureSelection]=useState(null);
+  const [anatomyAsset,setAnatomyAsset]=useState(null);
   const [previewDay, setPreviewDay] = useState(null);
   const [saving, setSaving] = useState(false);
   const [report, setReport] = useState(false);
@@ -37,7 +40,8 @@ export default function DiseaseLaboratory() {
   const [error, setError] = useState('');
   const scenario = state.scenarioConfig;
   const selectedOrgan=organSelection||affectedOrgansFor(scenario)[0]||'lungs';
-  useEffect(() => { setPreviewDay(null); setDismissed(false); setOrganSelection(null); }, [state.diseaseScenarioId, state.seed]);
+  const chooseOrgan=key=>{setOrganSelection(key);setStructureSelection(null);};
+  useEffect(() => { setPreviewDay(null); setDismissed(false); setOrganSelection(null); setStructureSelection(null); }, [state.diseaseScenarioId, state.seed]);
   const snapshot = previewDay === null ? null : state.timeline.find((item) => item.day === previewDay);
   const viewed = useMemo(() => snapshot ? { ...state, ...snapshot, running: false, paused: true } : state, [state, snapshot]);
   const preview = !!snapshot && snapshot.day !== state.day;
@@ -76,13 +80,14 @@ export default function DiseaseLaboratory() {
       </aside>
       <div className="simulationVisual">
         <div className="simulationSceneCaption"><span>{MODES.find(([id]) => id === mode)?.[1]} ölçeği</span><span>{preview ? 'GEÇMİŞ GÖZLEM' : state.finalOutcome ? 'TAMAMLANDI' : state.running ? 'CANLI' : 'DURAKLATILDI'} · Gün {viewed.day}</span></div>
-        <SimulationScene selectedOrgan={selectedOrgan} onOrganSelect={setOrganSelection} state={viewed} mode={mode} outbreak={preview ? computeOutbreak({ ...viewed, timeline: state.timeline.filter((item) => item.day <= viewed.day), publicHealthDecisions: state.publicHealthDecisions.filter((item) => item.day <= viewed.day) }) : outbreak} preview={preview} />
+        <SimulationScene assetStatus={anatomyAsset} selectedStructure={structureSelection} onSelectStructure={setStructureSelection} onAssetStatus={setAnatomyAsset} selectedOrgan={selectedOrgan} onOrganSelect={chooseOrgan} state={viewed} mode={mode} outbreak={preview ? computeOutbreak({ ...viewed, timeline: state.timeline.filter((item) => item.day <= viewed.day), publicHealthDecisions: state.publicHealthDecisions.filter((item) => item.day <= viewed.day) }) : outbreak} preview={preview} />
         {mode!=='society'&&<div className="simulationSceneHint">Sürükle: döndür · Tekerlek: yaklaş</div>}
         {preview && <button className="previewReturn" onClick={() => setPreviewDay(null)}>Gün {state.day} canlı duruma dön</button>}
         {mode === 'society' && <Link className="societyRoute" href="/outbreak">Salgın çalışma alanını aç ↗</Link>}
       </div>
       <aside className="simulationVitals" aria-label="Göstergeler ve belirtiler">
-        {mode==='body'&&<OrganDetails organ={selectedOrgan} profile={scenario} metrics={viewed.metrics} hiddenProfile={hiddenProfile}/>}<h2>Canlı göstergeler</h2><span className="relativeUnits">Göreli model birimleri</span>
+        {mode==='body'&&<OrganDetails organ={selectedOrgan} profile={scenario} metrics={viewed.metrics} hiddenProfile={hiddenProfile}/>}
+        {mode==='body'&&<AnatomyHierarchy organ={selectedOrgan} selectedStructure={structureSelection} onSelectStructure={setStructureSelection} availableMeshNames={[...(anatomyAsset?.meshNames||[]),...(anatomyAsset?.supplementNames||[])]}/>}<h2>Canlı göstergeler</h2><span className="relativeUnits">Göreli model birimleri</span>
         {Object.entries(METRICS).filter(([key])=>infectious || ["inflammation","tissueDamage"].includes(key)).map(([key, label]) => <div className={`vitalMeter vital-${key}`} key={key}><div><span>{label}</span><b>{Number(viewed.metrics[key] || 0).toFixed(1)}</b></div><meter min="0" max="100" value={viewed.metrics[key] || 0} aria-label={label} /></div>)}
         {viewed.metrics.proteinFunction !== undefined && <div className="vitalMeter"><div><span>Protein işlevi (temsili)</span><b>{Number(viewed.metrics.proteinFunction ?? 0).toFixed(1)}</b></div><meter min="0" max="100" value={viewed.metrics.proteinFunction ?? 0} aria-label="Protein işlevi" /></div>}{Object.entries({autoimmuneActivity:'Otoimmün etkinlik',metabolicImbalance:'Metabolik dengesizlik',neuralFunction:'Sinir işlevi',tumorBurden:'Göreli hücre birikimi'}).filter(([key])=>viewed.metrics[key]!==undefined).map(([key,label])=><div className="vitalMeter" key={key}><div><span>{label}</span><b>{Number(viewed.metrics[key]).toFixed(1)}</b></div><meter min="0" max="100" value={viewed.metrics[key]} aria-label={label}/></div>)}<h3>Gözlenen belirtiler</h3><ul className="simulationSymptoms">{viewed.symptoms.map((item, index) => <li key={index}>{typeof item === 'string' ? item : item.name || item.label}</li>)}</ul>
         {latestBulletin.length > 0 && <div className="simulationBulletin"><h3>Günlük bülten</h3><p>{noteText(latestBulletin[0])}</p><button onClick={() => bulletinDialog.current?.showModal()}>Bülten geçmişi ↗</button></div>}

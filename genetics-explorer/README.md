@@ -113,3 +113,10 @@ Tam vücut modeli; vücut, organ ve hedef doku ölçeklerine ayrılır. Etkilene
 
 
 Holografik anatomi görünümünde normal yapılar cyan, açıkça hedeflenen sistemler mercan kırmızısı/turuncudur. Sistemik bağışıklık yanıtı tek başına damar hasarı olarak renklendirilmez. Hafif tarama halkaları ve kamera ile konumu güncellenen organ etiketi 3B etkileşimleri engellemez. Organ malzemeleri paylaşılıp şiddet düzeyi kuantize edilir; azaltılmış hareket tercihinde tarama/nabız hareketi durur.
+
+
+## Gerçek referans anatomi
+
+`ReferenceAnatomy` yerel HRA GLB varlığını (27 semantik mesh, 286.429 üçgen, 5,7 MB) yükler. Seçimler organ/alt yapı hiyerarşisindeki gerçek mesh adlarına bağlanır. Sol/sağ akciğer, bronşlar, böbrek korteksi/medullası ve bağırsak alt bölümleri ayrı yakın görünüme geçer. Holografik clearcoat/emissive ve Fresnel kenar efekti, orijinal geometrilerin yerleşimini değiştirmez.
+
+Mide ve temsilî omuz/kol kasları BodyParts3D STL varlıklarından yalnız ayrı organ görünümünde gösterilir; erkek BodyParts3D ile kadın HRA koordinatları birlikte kayıtlı değildir. Mikroskobik alveol/nefron/deri tabakaları ayrı öğretici şemalardır; gerçek histoloji veya organ meshinden çıkarılan doku değildir. Tam veri atıfları ve lisanslar `public/models/anatomy/` içinde ve hiyerarşi panelinde bulunur. HRA CC BY 4.0, BodyParts3D varlıkları CC BY-SA 2.1 JP koşullarını korur.
