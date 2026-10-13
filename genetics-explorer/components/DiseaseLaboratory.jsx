@@ -23,7 +23,7 @@ const points = (timeline, key, maximum) => timeline.map((item) => `${(item.day /
 
 export default function DiseaseLaboratory() {
   const simulation = useSimulation();
-  const { state, outbreak, isMystery, studentView, setStudentView } = simulation;
+  const { state, outbreak, isMystery, studentView, setStudentView, observationRequest, clearObservationRequest } = simulation;
   const hiddenProfile = isMystery && studentView;
   const [mode, setMode] = useState('body');
   const [focusRequest,setFocusRequest]=useState(0);
@@ -69,6 +69,7 @@ export default function DiseaseLaboratory() {
   const selectedOrgan=organSelection||affectedOrgansFor(scenario)[0]||'lungs';
   const chooseOrgan=key=>{setOrganSelection(key);setStructureSelection(null);};
   useEffect(() => { setPreviewDay(null); setDismissed(false); setOrganSelection(null); setStructureSelection(null); setSaving(false); setReport(false); bulletinDialog.current?.close(); }, [state.diseaseScenarioId, state.seed]);
+  useEffect(()=>{if(!observationRequest)return;setMode(observationRequest.mode);if(observationRequest.organ){setOrganSelection(observationRequest.organ);setStructureSelection(observationRequest.structure||'all');}if(observationRequest.mode==='body')setFocusRequest(value=>value+1);clearObservationRequest();},[observationRequest,clearObservationRequest]);
   const snapshot = previewDay === null ? null : state.timeline.find((item) => item.day === previewDay);
   const viewed = useMemo(() => snapshot ? getCaseAtDay(state,snapshot.day) : state, [state, snapshot]);
   const preview = !!snapshot && snapshot.day !== state.day;
@@ -93,7 +94,7 @@ export default function DiseaseLaboratory() {
       <div><span className="simulationEyebrow">{isMystery ? (studentView ? "GİZEMLİ VAKA · ÖĞRENCİ" : "GİZEMLİ VAKA · ÖĞRETMEN") : "CANLI EĞİTİM MODELİ"}</span><h1>{hiddenProfile ? "Gizemli vaka" : scenario.name}</h1></div>
       {!hiddenProfile && <label className="scenarioSelect">Senaryo<select value={state.diseaseScenarioId} onChange={(event) => run(() => { simulation.start(event.target.value); simulation.pause(); setDismissed(false); setStarred(false); })}>{!SCENARIOS.some(item=>item.id===state.diseaseScenarioId)&&<option value={state.diseaseScenarioId}>{scenario.name}</option>}{SCENARIO_GROUPS.map(([id,label])=><optgroup key={id} label={label}>{SCENARIOS.filter(item=>item.category===id).map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</optgroup>)}</select></label>}
       <nav className="simulationModeTabs" aria-label="Gözlem ölçeği">{MODES.map(([id, label]) => <button key={id} aria-pressed={mode === id} onClick={() => setMode(id)}>{label}</button>)}</nav>
-      {!hiddenProfile && <><Link href="/dna" className="simulationArchiveLink">DNA ↗</Link><Link href="/archive" className="simulationArchiveLink">Arşiv ↗</Link></>}{isMystery && <button onClick={()=>{ setStudentView(!studentView); setBulletinToast(null); }}>{studentView?'Öğretmen görünümü':'Öğrenci görünümü'}</button>}
+      {!hiddenProfile && <><Link href="/dna?mode=case" className="simulationArchiveLink">Genetik ilişkisini incele ↗</Link><Link href="/archive" className="simulationArchiveLink">Arşiv ↗</Link></>}{isMystery && <button onClick={()=>{ setStudentView(!studentView); setBulletinToast(null); }}>{studentView?'Öğretmen görünümü':'Öğrenci görünümü'}</button>}
     </header>
     <div className="simulationWorkspace">
       <aside className="simulationAdvisor" aria-label="Eğitim danışmanı">

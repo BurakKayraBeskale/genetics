@@ -99,7 +99,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "53d068d5ccdee674684f141b63f7b34fa7b7dc345c9727bbef47c5190f60cb58"
+      "metricCourseSha256": "53d068d5ccdee674684f141b63f7b34fa7b7dc345c9727bbef47c5190f60cb58",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "chickenpox",
@@ -166,7 +171,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "f9d70c5c315e1eaa86c8f35a0d84f505e1b3826fe3d25854ffa4b7b13d579f16"
+      "metricCourseSha256": "f9d70c5c315e1eaa86c8f35a0d84f505e1b3826fe3d25854ffa4b7b13d579f16",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "measles",
@@ -242,7 +252,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "e2f4e19bf322056f6512da22724d580e9d001c8e238d41a55ab8ab6cabc4394e"
+      "metricCourseSha256": "e2f4e19bf322056f6512da22724d580e9d001c8e238d41a55ab8ab6cabc4394e",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "mumps",
@@ -298,7 +313,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "c8c02dbfee179fc31ab8df193a34756409b4801142291041d69867168bef752d"
+      "metricCourseSha256": "c8c02dbfee179fc31ab8df193a34756409b4801142291041d69867168bef752d",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "rubella",
@@ -365,7 +385,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "b0716a1ec287438abf1e6a13c0fe9e71ae2eef633554609ed82b738ad3b77fbf"
+      "metricCourseSha256": "b0716a1ec287438abf1e6a13c0fe9e71ae2eef633554609ed82b738ad3b77fbf",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "hepatitis-a",
@@ -432,7 +457,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "4e2d3a2b89823dbec340cd0ad35bbcbbf5f3945935e2672de490c7f93222d414"
+      "metricCourseSha256": "4e2d3a2b89823dbec340cd0ad35bbcbbf5f3945935e2672de490c7f93222d414",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "hepatitis-b",
@@ -499,7 +529,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "ba8c0ddd5d87ddb58de6f44d549924e523b34723108fc47fcd33bf035fb00c0a"
+      "metricCourseSha256": "ba8c0ddd5d87ddb58de6f44d549924e523b34723108fc47fcd33bf035fb00c0a",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "hepatitis-c",
@@ -566,7 +601,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "33c97a5b80a088cb1df8af75a652f37d78ebcb9ea9f12ba058f49aa7dba8499f"
+      "metricCourseSha256": "33c97a5b80a088cb1df8af75a652f37d78ebcb9ea9f12ba058f49aa7dba8499f",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "hiv",
@@ -633,7 +673,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "6162d997f5a677b85f784cdbae9073469d1f07f62da934ad299820362a6dcdab"
+      "metricCourseSha256": "6162d997f5a677b85f784cdbae9073469d1f07f62da934ad299820362a6dcdab",
+      "dnaType": "PATHOGEN_GENOME",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": true,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "norovirus",
@@ -700,7 +745,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "1037112d7e0f0492b094f28550d8cb63e39655c7729080a44f6100e64320317e"
+      "metricCourseSha256": "1037112d7e0f0492b094f28550d8cb63e39655c7729080a44f6100e64320317e",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "rabies",
@@ -772,7 +822,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "bb67459ad1e8b4210afd302865f5b737a173f89b21884dc62f11c6d2db9eb070"
+      "metricCourseSha256": "bb67459ad1e8b4210afd302865f5b737a173f89b21884dc62f11c6d2db9eb070",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "RNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "shingles",
@@ -833,7 +888,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "29dc0eca8b6f9d92a612a19873482c8271e877c16051eb3e0f58e6438b139b8b"
+      "metricCourseSha256": "29dc0eca8b6f9d92a612a19873482c8271e877c16051eb3e0f58e6438b139b8b",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "tuberculosis",
@@ -902,7 +962,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "2a3c5362b6e052f06b7215f78de06c3535ab756c2c8304058dd0577f643ac94e"
+      "metricCourseSha256": "2a3c5362b6e052f06b7215f78de06c3535ab756c2c8304058dd0577f643ac94e",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "cholera",
@@ -969,7 +1034,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "560830baa044fb6d356bcb894507d3a8caa5f6307ec6e3b6ef753c914c044ed5"
+      "metricCourseSha256": "560830baa044fb6d356bcb894507d3a8caa5f6307ec6e3b6ef753c914c044ed5",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "pertussis",
@@ -1031,7 +1101,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "afb74170ae6e344c41612501e90b2e7a8e3f928e531e13894f38e1a8119c8406"
+      "metricCourseSha256": "afb74170ae6e344c41612501e90b2e7a8e3f928e531e13894f38e1a8119c8406",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "lyme",
@@ -1107,7 +1182,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "f77c4bb9956eb2f27b6b26e3eb42b181a81aecf0c66fc90a51578b3cf2f1dabd"
+      "metricCourseSha256": "f77c4bb9956eb2f27b6b26e3eb42b181a81aecf0c66fc90a51578b3cf2f1dabd",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "tetanus",
@@ -1187,7 +1267,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "ebe66cd9a2700ddf4fa6fe77a2dc6df9c3aa85e71ca73835e597aa1206579a16"
+      "metricCourseSha256": "ebe66cd9a2700ddf4fa6fe77a2dc6df9c3aa85e71ca73835e597aa1206579a16",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "diphtheria",
@@ -1264,7 +1349,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "ff0caecb5debb23dd4b66b0bb25f9e88b25825d1e8456ef87737e5fb71ff6972"
+      "metricCourseSha256": "ff0caecb5debb23dd4b66b0bb25f9e88b25825d1e8456ef87737e5fb71ff6972",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "salmonellosis",
@@ -1331,7 +1421,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "e3d328989ca0030b0435ee07a369b06c5cb1cc00d1e475b4c7ca4f8a269fa606"
+      "metricCourseSha256": "e3d328989ca0030b0435ee07a369b06c5cb1cc00d1e475b4c7ca4f8a269fa606",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "gonorrhea",
@@ -1387,7 +1482,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "5ddde82868d9e1dfcce9ad4e152306fdd974e0ece3ea91af46509931bf941bc4"
+      "metricCourseSha256": "5ddde82868d9e1dfcce9ad4e152306fdd974e0ece3ea91af46509931bf941bc4",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "syphilis",
@@ -1463,7 +1563,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "024db2e10249cf79bd88cd5a7cc6c4c699320d80be7e4d4576e795cf92be127c"
+      "metricCourseSha256": "024db2e10249cf79bd88cd5a7cc6c4c699320d80be7e4d4576e795cf92be127c",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "sickle-cell",
@@ -1551,7 +1656,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "d47e80855dc67f8c20f6213327fb9d62174ceb121b78ee6d2fdf0aa670bffe0b"
+      "metricCourseSha256": "d47e80855dc67f8c20f6213327fb9d62174ceb121b78ee6d2fdf0aa670bffe0b",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": "HBB",
+      "protein": "Beta-globin / hemoglobin"
     },
     {
       "id": "cystic-fibrosis",
@@ -1632,7 +1742,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "747bdd413c9ee8ef845ac58fc52cb2f016113743d81d653e460ac5aa97079809"
+      "metricCourseSha256": "747bdd413c9ee8ef845ac58fc52cb2f016113743d81d653e460ac5aa97079809",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": "CFTR",
+      "protein": "CFTR iyon kanalı"
     },
     {
       "id": "huntington",
@@ -1704,7 +1819,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "4cbf8dd2e241d615aa65597ae17fcd215ef2de14b61824fc939eb287523f31f4"
+      "metricCourseSha256": "4cbf8dd2e241d615aa65597ae17fcd215ef2de14b61824fc939eb287523f31f4",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": "HTT",
+      "protein": "Huntingtin"
     },
     {
       "id": "dmd",
@@ -1778,7 +1898,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "caa3f1cb2c564989853d50649a8c1e0e7d15c30976063e4a606d92b204860f2f"
+      "metricCourseSha256": "caa3f1cb2c564989853d50649a8c1e0e7d15c30976063e4a606d92b204860f2f",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": "DMD",
+      "protein": "Distrofin"
     },
     {
       "id": "hemophilia",
@@ -1845,7 +1970,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "90c7f918871bef2ae9f1aa552f2747e228618d058a384a96cb917b708ab00e23"
+      "metricCourseSha256": "90c7f918871bef2ae9f1aa552f2747e228618d058a384a96cb917b708ab00e23",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "pku",
@@ -1904,7 +2034,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "0b3f5600d6879c734f670ee1e9088ae331d88a6b232c1062632d596abc4e0aa7"
+      "metricCourseSha256": "0b3f5600d6879c734f670ee1e9088ae331d88a6b232c1062632d596abc4e0aa7",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "marfan",
@@ -1972,7 +2107,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "4b98ef63812a4f07f59cf294b65c6070be5c1bcce9c6ad9335c2ab48e43a3f04"
+      "metricCourseSha256": "4b98ef63812a4f07f59cf294b65c6070be5c1bcce9c6ad9335c2ab48e43a3f04",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "tay-sachs",
@@ -2039,7 +2179,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "88701172b602a09e80c86cc4b995109d9f97c238de1f9a18b1d916585c0164ee"
+      "metricCourseSha256": "88701172b602a09e80c86cc4b995109d9f97c238de1f9a18b1d916585c0164ee",
+      "dnaType": "DIRECT_GENETIC",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": true,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "rheumatoid",
@@ -2095,7 +2240,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "1759c6257a7cd912299fc0e511c8a5f65964d01b6a2aaa415e58c372a47cc591"
+      "metricCourseSha256": "1759c6257a7cd912299fc0e511c8a5f65964d01b6a2aaa415e58c372a47cc591",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "lupus",
@@ -2180,7 +2330,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "3ae91ad8bfe0946c3f9772fbf1d0f522ccaabd5a6ab0f4f52af0ad528dcf481f"
+      "metricCourseSha256": "3ae91ad8bfe0946c3f9772fbf1d0f522ccaabd5a6ab0f4f52af0ad528dcf481f",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "ms",
@@ -2247,7 +2402,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "57d2d02811cdd8ae684e726c9e7b04a8633ef5abffea6894959e5ac296fae9c6"
+      "metricCourseSha256": "57d2d02811cdd8ae684e726c9e7b04a8633ef5abffea6894959e5ac296fae9c6",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "celiac",
@@ -2314,7 +2474,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "0cca0c4da74ec076ab589ca959e9e15af203bcb44fbb92eb7587ecc4e1e31c53"
+      "metricCourseSha256": "0cca0c4da74ec076ab589ca959e9e15af203bcb44fbb92eb7587ecc4e1e31c53",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "sjogren",
@@ -2370,7 +2535,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "f70972aa79e8d68c9bf76445314847a24d536ac4140231f6a9ee57aa4be11049"
+      "metricCourseSha256": "f70972aa79e8d68c9bf76445314847a24d536ac4140231f6a9ee57aa4be11049",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "type1-diabetes",
@@ -2446,7 +2616,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "c6e53f42c4b77a1bef5655d9031d16766bd4db4997e00a69305ff23164561c86"
+      "metricCourseSha256": "c6e53f42c4b77a1bef5655d9031d16766bd4db4997e00a69305ff23164561c86",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "type2-diabetes",
@@ -2522,7 +2697,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "8b39d1edf850dc0a72f5dc6d7f6b34f0f5e64b32d63dcd279595b45d206337b0"
+      "metricCourseSha256": "8b39d1edf850dc0a72f5dc6d7f6b34f0f5e64b32d63dcd279595b45d206337b0",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "gout",
@@ -2588,7 +2768,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "fae22a05325b0dd606a3b93bc7bd270c62f375dd75d4a1631c39fd290f3fe387"
+      "metricCourseSha256": "fae22a05325b0dd606a3b93bc7bd270c62f375dd75d4a1631c39fd290f3fe387",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "hypothyroidism",
@@ -2655,7 +2840,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "2ba1b5b36b704378b4e31adde04638b61d39ce1b7bf36439f7104e648d96e9df"
+      "metricCourseSha256": "2ba1b5b36b704378b4e31adde04638b61d39ce1b7bf36439f7104e648d96e9df",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "hyperthyroidism",
@@ -2731,7 +2921,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "632346a89be5594e9f47a4cdd7cf4365699fea476a211152ec0322ebe3bd8586"
+      "metricCourseSha256": "632346a89be5594e9f47a4cdd7cf4365699fea476a211152ec0322ebe3bd8586",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "alzheimer",
@@ -2800,7 +2995,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "f57d6f95cd651756975904f2c7f6c3bc796b7dc68b14155896378af296e7bcd2"
+      "metricCourseSha256": "f57d6f95cd651756975904f2c7f6c3bc796b7dc68b14155896378af296e7bcd2",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "parkinson",
@@ -2876,7 +3076,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "a740c0426cc87ce9de32e436ca99b95b834f092c1681979d12c36fc15119f19d"
+      "metricCourseSha256": "a740c0426cc87ce9de32e436ca99b95b834f092c1681979d12c36fc15119f19d",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "epilepsy",
@@ -2936,7 +3141,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "74681721721d502b1959f0de55e46d993a614b9bf2edd9b5bcca08ac068905a1"
+      "metricCourseSha256": "74681721721d502b1959f0de55e46d993a614b9bf2edd9b5bcca08ac068905a1",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "als",
@@ -3021,7 +3231,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "bed269e7affa8f5b55a81f82b34cead8c2a402bd6de915d4bcc36b2b9ce69a87"
+      "metricCourseSha256": "bed269e7affa8f5b55a81f82b34cead8c2a402bd6de915d4bcc36b2b9ce69a87",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "migraine",
@@ -3086,7 +3301,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "53fe0bfbc632cd5e5b970cfda7034ec24e59ddb4f719c51e694c93ea8deaf537"
+      "metricCourseSha256": "53fe0bfbc632cd5e5b970cfda7034ec24e59ddb4f719c51e694c93ea8deaf537",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "breast-cancer",
@@ -3136,7 +3356,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "ec9d2342bbf625638973ef5a88b82af4c6d886d7f7945c7b8e19c7a1c6ee444f"
+      "metricCourseSha256": "ec9d2342bbf625638973ef5a88b82af4c6d886d7f7945c7b8e19c7a1c6ee444f",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "lung-cancer",
@@ -3205,7 +3430,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "15b981b6962f654b1e16372792f3327f1afe74f9732fe42a6e6883b307420fe4"
+      "metricCourseSha256": "15b981b6962f654b1e16372792f3327f1afe74f9732fe42a6e6883b307420fe4",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "colorectal-cancer",
@@ -3272,7 +3502,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "72e5411e2b7febee6f72663fd913a498378d609b542d199715bdf82541e00b23"
+      "metricCourseSha256": "72e5411e2b7febee6f72663fd913a498378d609b542d199715bdf82541e00b23",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "prostate-cancer",
@@ -3328,7 +3563,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "90e824af861ef37503f330524e35369423e256fe7a29935113f97263d14f4d00"
+      "metricCourseSha256": "90e824af861ef37503f330524e35369423e256fe7a29935113f97263d14f4d00",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "leukemia",
@@ -3395,7 +3635,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "95b80204e37838d821e85a10cd4244a6fd2313fddf79aee544dcd5ef772d5e5a"
+      "metricCourseSha256": "95b80204e37838d821e85a10cd4244a6fd2313fddf79aee544dcd5ef772d5e5a",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "lymphoma",
@@ -3462,7 +3707,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "9d4eb7ae7052a532f523f0d26ce914f8190bd427cede8218a176ba576eff8318"
+      "metricCourseSha256": "9d4eb7ae7052a532f523f0d26ce914f8190bd427cede8218a176ba576eff8318",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "melanoma",
@@ -3529,7 +3779,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "6979e78400531909f76d64d07a02f3dcb62fe0170bbe56b5c8d1279efc642d33"
+      "metricCourseSha256": "6979e78400531909f76d64d07a02f3dcb62fe0170bbe56b5c8d1279efc642d33",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "pancreatic-cancer",
@@ -3605,7 +3860,12 @@
           "sourceDate": "2026-10-10"
         }
       ],
-      "metricCourseSha256": "eb9abc3e66c783d25e4367af87247942c296bea4c5d5601ddc98fe9806e2d46a"
+      "metricCourseSha256": "eb9abc3e66c783d25e4367af87247942c296bea4c5d5601ddc98fe9806e2d46a",
+      "dnaType": "INDIRECT",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": null,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "bacterial",
@@ -3669,7 +3929,12 @@
           "accessedAt": "2026-10-12"
         }
       ],
-      "metricCourseSha256": "e54cae6e77ff3b2b4c92c76300a41dadbe492da16f65179dc5dfb402b323b99b"
+      "metricCourseSha256": "e54cae6e77ff3b2b4c92c76300a41dadbe492da16f65179dc5dfb402b323b99b",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "mixed",
@@ -3758,7 +4023,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "8a7a077161763517852b6fb4347d41b0370af3d909dae5d0e932a6a17d48ce24"
+      "metricCourseSha256": "8a7a077161763517852b6fb4347d41b0370af3d909dae5d0e932a6a17d48ce24",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "covid-like",
@@ -3845,7 +4115,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "c9bd8c8cbfe930af96d117a4cf69304315d4a2c9a8b7f9319d742f6044f399b3"
+      "metricCourseSha256": "c9bd8c8cbfe930af96d117a4cf69304315d4a2c9a8b7f9319d742f6044f399b3",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "gastroenteritis",
@@ -3923,7 +4198,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "728c815be57f1b2d8cf7c969c7e26e05774354c1e1feceb69c4142c938869b95"
+      "metricCourseSha256": "728c815be57f1b2d8cf7c969c7e26e05774354c1e1feceb69c4142c938869b95",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "avian-flu-like",
@@ -4010,7 +4290,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "0edbc7050dba9ccb4452b063edf072102f36622d4986ec1119e2c2d4bd54b193"
+      "metricCourseSha256": "0edbc7050dba9ccb4452b063edf072102f36622d4986ec1119e2c2d4bd54b193",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "pneumonia",
@@ -4088,7 +4373,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "cdca7ee5c92975197866f0ef2063b12512db0716aaad14d99bc452f2bd892150"
+      "metricCourseSha256": "cdca7ee5c92975197866f0ef2063b12512db0716aaad14d99bc452f2bd892150",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "foodborne",
@@ -4175,7 +4465,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "d39501e09dae1af846a5d892e1e749183d5474f7a0a140ac330d7e284cfa585a"
+      "metricCourseSha256": "d39501e09dae1af846a5d892e1e749183d5474f7a0a140ac330d7e284cfa585a",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "meningitis-like",
@@ -4267,7 +4562,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "20fcc2a33157bebf5fc95e38bda504966986bd793bc48b3f5815e632c0cd8e26"
+      "metricCourseSha256": "20fcc2a33157bebf5fc95e38bda504966986bd793bc48b3f5815e632c0cd8e26",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": "DNA",
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "atypical-influenza",
@@ -4366,7 +4666,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "9068f1af0f609bc7971cb7b28c23c7ecef77b1507c2a5dd6c1056e0895cb818a"
+      "metricCourseSha256": "9068f1af0f609bc7971cb7b28c23c7ecef77b1507c2a5dd6c1056e0895cb818a",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "flu-gi",
@@ -4465,7 +4770,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "ac0f1f976e71ded52987d3602f18abb79dc4abce92fc52360833a9bad3752803"
+      "metricCourseSha256": "ac0f1f976e71ded52987d3602f18abb79dc4abce92fc52360833a9bad3752803",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     },
     {
       "id": "immunosuppressed",
@@ -4550,7 +4860,12 @@
           "accessedAt": "2026-10-13"
         }
       ],
-      "metricCourseSha256": "8af2c893e9564a0ab18e423b93be16846bd6f0ca64f7065c0fac7bfef2be5e92"
+      "metricCourseSha256": "8af2c893e9564a0ab18e423b93be16846bd6f0ca64f7065c0fac7bfef2be5e92",
+      "dnaType": "HOST_RESPONSE",
+      "pathogenGenomeType": null,
+      "humanGenomeAffected": false,
+      "gene": null,
+      "protein": null
     }
   ]
 }

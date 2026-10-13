@@ -144,3 +144,12 @@ CaseEventEngine biyolojik katsayıları değiştirmeden CLINICAL, LAB, ANATOMY, 
 caseView geçmiş günün tüm kanıtlarını o günle sınırlar; canlı durumu değiştirmez. Anatomi olayları mevcut organ kamerasına bağlanır. Dijital bültenler yayılım değişimi, sistem etkisi ve hastane model eşiğinden türetilir. Bulaşıcı olmayan profiller salgın haberi üretmez. caseReport tarihsel zirveleri, dönüm noktalarını ve olaylara bağlı eğitim açıklamasını simülasyonda ve arşivde gösterir.
 
 Snapshot schemaVersion 1 korunur: clinicalEvents, importantEvents, knowledgeState, hypothesisHistory ve timeline hipotezleri ek alanlardır. Eski kayıtlarda eksik anlatı boş/null yüklenir; yeni gözlemlerle devam edilir. Gizemli öğrenci görünümü profil adını ve yapılandırmayı saklar; rol ayrımı kimlik doğrulamalı sınav güvenliği değildir.
+
+
+## DNA laboratuvarında aktif vaka
+
+Hastalık Simülatöründeki Genetik ilişkisini incele bağlantısı /dna?mode=case üzerinden Provider içindeki mevcut vaka ve günle açılır. Menü ve ana sayfadaki DNA bağlantıları /dna?mode=free ile bağımsız deney alanını açar. DNAWorkspaceProvider iki ayrı deney geçmişini uygulama açıkken sayfalar arasında korur; vaka günü ilerlemesi veya arşive kaydetme DNA deneyini sıfırlamaz. Yeni vaka/yeniden başlatma yalnız vaka çalışma alanını yeniler. Undo/Redo, AP hasarı ve mutasyon araçları her alanın kendi geçmişini kullanır.
+
+63 profilin dnaRelation verisi DIRECT_GENETIC, HOST_RESPONSE, PATHOGEN_GENOME, INDIRECT veya NONE olarak zenginleşir; legacy kind/presetId alanları korunur. HBB/hemoglobin, CFTR/iyon kanalı, HTT/huntingtin ve DMD/distrofin bağlantıları kısa sentetik model üzerinde ilgili eğitim örneğine bağlanır. Diğer profillerde doğrulanmamış varyant otomatik uygulanmaz. Enfeksiyonda insan DNA dizisiyle etken DNA/RNA materyali farklı sekmelerdir; etken sekmesi gerçek sekans ve mutasyon aracı içermeyen salt okunur şemadır. HIV/HBV entegrasyon ve kanserde somatik/kalıtsal ayrımı koşullu açıklamalarla gösterilir.
+
+Moleküler zincirin organ/hücre düğmeleri tek kullanımlık observationRequest ile mevcut vakayı değiştirmeden ilgili simülasyon ölçeğine geçer. Anatomi ve DiseaseEngine geometri/seyirleri korunur. İnsan DNA görüntüsü tam genom veya gerçek hastalık geni dizisi değildir; laboratuvar deneyi vaka biyolojik metriklerini değiştirmez. Gizemli öğrenci görünümünde profil/gen/protein ayrıntıları önceki görünüm sınırı içinde saklı kalır.

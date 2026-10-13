@@ -1,5 +1,6 @@
 import './globals.css';
 import SimulationProvider from '../providers/SimulationProvider';
+import DNAWorkspaceProvider from '../providers/DNAWorkspaceProvider';
 import LabShell from '../components/LabShell';
 
 export const metadata = {
@@ -10,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="tr">
-      <body><SimulationProvider><LabShell>{children}</LabShell></SimulationProvider></body>
+      <body><SimulationProvider><DNAWorkspaceProvider><LabShell>{children}</LabShell></DNAWorkspaceProvider></SimulationProvider></body>
     </html>
   );
 }

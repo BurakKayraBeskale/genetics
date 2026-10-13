@@ -1,3 +1,4 @@
+import { enrichDNARelation } from './dnaRelations.js';
 /** Hand-curated teaching trajectories. All fractions/rates are classroom design, NOT clinical duration/prognosis. */
 const row=(family,subtype,mode,onset,peak,recovery,primary,secondary=[],flags=[])=>({family,subtype,mode,onset,peak,recovery,primary,secondary,flags});
 export const PROFILE_TRAJECTORIES = {
@@ -164,7 +165,7 @@ export function enrichDiseaseProfile(profile) {
  affectedSystems:profile.affectedSystems || (data.primary ? [({lungs:'respiratory',blood:'systemic',brain:'neurological',muscle:'muscular',digestive:'digestive',renal:'renal',endocrine:'metabolic',skin:'skin'})[data.primary[0]]] : []),
  typicalSymptoms:symptoms,symptomTimeline,organEffectTimeline,
  immunePattern:profile.immuneResponseType || 'Mekanizmaya özgü soyut konak yanıtı',complicationFlags:data.flags,
- dnaRelation:{...(profile.dnaRelation||{}),kind,...(geneticDetails[profile.id]||{}),explanation:profile.dnaRelation?.explanation || 'Hücresel konak yanıtı kavramsaldır; hastaya ait DNA dizisi veya gerçek genom düzenlemesi hesaplanmaz.'},
+ dnaRelation:enrichDNARelation({...profile,organEffectTimeline,sources:verifiedSources},{...(profile.dnaRelation||{}),kind,...(geneticDetails[profile.id]||{})}),
  publicSpreadApplicable:!denySpread && contagious===true,contagious:denySpread?false:contagious===true,spreadMode:denySpread?'not-modeled':restricted?'route-specific':contagious?'abstract-exposure':'not-applicable',
  educationalTimeline,affectedTissues:profile.id==='pku'?['Metabolik enzim işlevi']:data.primary?.slice(1).length?data.primary.slice(1):[data.subtype],educationNotes:notes,sources:verifiedSources,temporalSources:verifiedSources};
 }

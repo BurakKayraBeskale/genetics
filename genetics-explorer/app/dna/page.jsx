@@ -1,9 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import DNAViewer from '../../components/DNAViewer';
 import { useSimulation } from '../../providers/SimulationProvider';
-import { DISEASE_PRESETS } from '../../lib/diseases';
+import DNACasePanel from '../../components/DNACasePanel';
+import { getDNACaseContext } from '../../lib/dnaCaseContext';
+import { useDNAWorkspace } from '../../providers/DNAWorkspaceProvider';
+import { dnaWorkspaceMode, supportedCaseDNAPreset } from '../../lib/dnaWorkspace';
 import HologramPanel from '../../components/HologramPanel';
 import GenomeRegion from '../../components/GenomeRegion';
 import MutationLab from '../../components/MutationLab';
@@ -15,7 +19,6 @@ import BaseNavigator from '../../components/BaseNavigator';
 import ExperimentReport from '../../components/ExperimentReport';
 import DamagePanel from '../../components/DamagePanel';
 import DiseaseScenarios from '../../components/DiseaseScenarios';
-import useDNAExperiment from '../../hooks/useDNAExperiment';
 import { ORIGINAL, sequenceOf, displayedBase, regionMap, analyzeExperiment, transcribedSequence } from '../../lib/experiment';
 import { BASE_INFO, COMPLEMENT, codonAt } from '../../lib/genetics';
 
@@ -47,11 +50,18 @@ function PairInfo({ base, index, dna, token, side, region }) {
   );
 }
 
-export default function Home() {
-  const { state: diseaseState } = useSimulation();
-  const linkedScenario = diseaseState.scenarioConfig;
-  const appliedScenario = useRef(null);
-  const experiment = useDNAExperiment();
+function DNAWorkspacePage({mode}) {
+  const router=useRouter();
+  const {state:diseaseState,previewState,studentView,isMystery,requestObservation}=useSimulation();
+  const viewedCase=previewState||diseaseState;
+  const context=useMemo(()=>getDNACaseContext(viewedCase,{hiddenProfile:studentView&&isMystery}),[viewedCase,studentView,isMystery]);
+  const [genomeTab,setGenomeTab]=useState('human');
+  const experiment=useDNAWorkspace(mode);
+  const {activeDiseaseId,diseaseQueue,applyDisease,revertDisease,clearDisease}=experiment;
+  const linkedPreset=useMemo(()=>mode==='case'&&context?.presetId?supportedCaseDNAPreset(diseaseState.scenarioConfig):null,[mode,context?.presetId,diseaseState.scenarioConfig]);
+  const showObservation=useCallback((view,organ)=>{const target=organ||context?.organTarget;requestObservation?.({mode:view,organ:target||null,structure:'all'});router.push('/simulation');},[requestObservation,router,context?.organTarget]);
+  const showBody=useCallback(organ=>showObservation('body',organ),[showObservation]);
+  const showCell=useCallback(organ=>showObservation('cell',organ),[showObservation]);
   const { current, token, index: safeSelectedIndex, selection, pending, act, reset, undo, redo, select } = experiment;
   const [separated, setSeparated] = useState(false);
   const [exploded, setExploded] = useState(false);
@@ -60,41 +70,6 @@ export default function Home() {
   const [activeRegionId, setActiveRegionId] = useState(null);
   const [mutationMode, setMutationMode] = useState('substitution');
   const [menuRequest, setMenuRequest] = useState(null);
-  const [activeDiseaseId, setActiveDiseaseId] = useState(null);
-  const [diseaseQueue, setDiseaseQueue] = useState([]);
-
-  // Hastalık senaryosu adımlarını sırayla uygular: silme/hasar işlemleri
-  // animasyon süresi boyunca "pending" kalır, bu yüzden bir sonraki adım
-  // ancak öncekinin tamamlanmasından sonra tetiklenir.
-  useEffect(() => {
-    if (!diseaseQueue.length || pending) return;
-    const [step, ...rest] = diseaseQueue;
-    act(step.kind, step.base, { id: step.id, side: step.side });
-    setDiseaseQueue(rest);
-  }, [diseaseQueue, pending, act]);
-
-  const applyDisease = useCallback(disease => {
-    reset();
-    setActiveDiseaseId(disease.id);
-    setDiseaseQueue(disease.steps);
-  }, [reset]);
-  const revertDisease = useCallback(() => {
-    reset();
-    setActiveDiseaseId(null);
-    setDiseaseQueue([]);
-  }, [reset]);
-  useEffect(() => {
-    if (appliedScenario.current === linkedScenario.id) return;
-    appliedScenario.current = linkedScenario.id;
-    const directGenetic=['genetic','direct-genetic'].includes(linkedScenario.dnaRelation?.kind);
-    const preset = directGenetic ? DISEASE_PRESETS.find(item => item.id === linkedScenario.dnaRelation?.presetId) : null;
-    if (preset) applyDisease(preset);
-    else revertDisease();
-  }, [linkedScenario, applyDisease, revertDisease]);
-  // Zaman çizelgesinde manuel gezinme (geri al/yinele/sıfırla) hastalık
-  // senaryosunun DNA üzerinde hâlâ uygulanmış olup olmadığını belirsizleştirir;
-  // bu yüzden "MODELDE UYGULANIYOR" rozetini de birlikte temizliyoruz.
-  const clearDisease = useCallback(() => { setActiveDiseaseId(null); setDiseaseQueue([]); }, []);
   const clearedUndo = useCallback(() => { clearDisease(); undo(); }, [clearDisease, undo]);
   const clearedRedo = useCallback(() => { clearDisease(); redo(); }, [clearDisease, redo]);
   const clearedReset = useCallback(() => { clearDisease(); reset(); }, [clearDisease, reset]);
@@ -124,8 +99,10 @@ export default function Home() {
 
   return (
     <main className="appShell">
-      <div className="moduleHeading"><span className="introKicker">MOLEKÜLER DENEY ALANI</span><h1>DNA Laboratuvarı</h1><div className="linkedDiseaseNote"><b>Bu hastalık DNA ile nasıl ilişkili? · {linkedScenario.name}</b><p>{linkedScenario.dnaRelation?.explanation || 'Bu enfeksiyon senaryosu doğrudan insan DNA mutasyonu olarak modellenmez. Hücresel ve bağışıklık yanıtını simülasyon ekranında inceleyebilirsin.'}</p>{['genetic','direct-genetic'].includes(linkedScenario.dnaRelation?.kind) && linkedScenario.dnaRelation?.presetId && <small>İlgili gen/mutasyon, 27 bazlık temsili öğretim dizisi üzerinde anlatılır; bu model gerçek genin tam dizisi değildir.</small>}{linkedScenario.dnaRelation?.gene&&<small>Gen: {linkedScenario.dnaRelation.gene} · Protein/işlev: {linkedScenario.dnaRelation.protein||'Profil kaynağındaki işlev ilişkisi'}</small>}{!['genetic','direct-genetic'].includes(linkedScenario.dnaRelation?.kind)&&<small>Bu bağlantı insan DNA dizisine hastalık kaynaklı mutasyon uygulamaz.</small>}{linkedScenario.dnaRelation?.sourceUrl && <a href={linkedScenario.dnaRelation.sourceUrl} target="_blank" rel="noopener noreferrer">Bilimsel kaynak ↗</a>}</div></div>
-
+      <div className="moduleHeading"><span className="introKicker">MOLEKÜLER DENEY ALANI · {mode==='case'?'VAKA MODU':'SERBEST DNA LAB'}</span><h1>DNA Laboratuvarı</h1><nav className="dnaCaseGenomeTabs" aria-label="DNA çalışma alanı"><button aria-pressed={mode==='free'} onClick={()=>router.push('/dna?mode=free')}>Serbest DNA Lab</button><button aria-pressed={mode==='case'} onClick={()=>router.push('/dna?mode=case')}>Aktif vaka</button></nav>{mode==='free'&&<p className="microNote">Bağımsız kısa eğitim dizisi. Serbest deneylerin aktif hastalık vakasını değiştirmez.</p>}</div>
+      {mode==='case'&&<DNACasePanel context={context} state={viewedCase} onShowBody={showBody} onShowCell={showCell} onTabChange={setGenomeTab}/>}
+      {linkedPreset&&<div className="dnaCaseActions" aria-label="Vaka DNA eğitim örneği"><span className="microNote" role="status">Vaka eğitim örneği · {pending||diseaseQueue.length?'Hazırlanıyor':activeDiseaseId===linkedPreset.id?'Modelde yüklü':'Manuel eğitim deneyi'}</span><button disabled={!!pending||diseaseQueue.length>0} onClick={()=>applyDisease(linkedPreset)}>Vaka örneğini yeniden uygula</button></div>}
+      {(mode==='free'||genomeTab==='human')&&<>
 <section className="hero" id="yapi">
         <div className="heroBackdrop" />
 
@@ -240,7 +217,7 @@ export default function Home() {
           />
         </HologramPanel>
 
-        <HologramPanel id="hastalik" eyebrow="HASTALIK SENARYOSU // 05" title="Hastalık Senaryo Modu" className="widePanel">
+        {mode==='free'&&(<HologramPanel id="hastalik" eyebrow="HASTALIK SENARYOSU // 05" title="Hastalık Senaryo Modu" className="widePanel">
           <DiseaseScenarios
             activeDiseaseId={activeDiseaseId}
             busy={!!pending}
@@ -248,9 +225,7 @@ export default function Home() {
             onRevert={revertDisease}
             modelEffect={mutation.effect}
           />
-        </HologramPanel>
-
-        <HologramPanel eyebrow="KARŞILAŞTIR // 06" title="Orijinal ve Değişmiş DNA" className="widePanel">
+        </HologramPanel>)}        <HologramPanel eyebrow="KARŞILAŞTIR // 06" title="Orijinal ve Değişmiş DNA" className="widePanel">
           <SequenceViewer original={original} mutated={mutated} tokens={current.tokens} selectedIndex={safeSelectedIndex} onSelect={select} />
           <div className="codingComparison"><small>KODLAYAN EKZONLAR · İNTRONLAR ÇIKARILDIKTAN SONRA</small><SequenceViewer original={mutation.originalCoding} mutated={mutation.coding} compact /></div>
           {mutation.effect === 'Çerçeve kayması' && <p className="frameshiftFlow">{mutation.type === 'Silme' ? 'Nükleotid silinmesi (Deletion)' : 'Nükleotid eklenmesi (Insertion)'} → Okuma çerçevesi değişti → Frameshift mutasyonu</p>}
@@ -268,6 +243,10 @@ export default function Home() {
       </section>
 
 
+      </>}
     </main>
   );
 }
+
+function DNAModeRoute(){const params=useSearchParams();const mode=dnaWorkspaceMode(params.get('mode'));return <DNAWorkspacePage key={mode} mode={mode}/>;}
+export default function DNAPage(){return <Suspense fallback={<main className="appShell"><p className="microNote">DNA çalışma alanı açılıyor…</p></main>}><DNAModeRoute/></Suspense>;}
