@@ -88,7 +88,7 @@ Tedavi ve sonuç/komplikasyon alanları resmi kategori bağlantılarından oluş
 
 Next.js route'ları: `/` kontrol merkezi, `/dna` bağımsız DNA deney alanı, `/simulation` dört bölgeli simülatör, `/outbreak` toplum modeli, `/archive` numune koleksiyonu ve `/catalog` kaynak araştırma ekranı. `LabShell` ortak uygulama navigasyonunu sağlar; layout'a bağlı `SimulationProvider` tek `useDiseaseSimulation` instance'ını route değişimleri boyunca korur. Tam sayfa yenilemede aktif deney başlangıca döner; arşiv kayıtları localStorage'da korunur.
 
-`SimulationScene` dört procedural R3F görünüm sunar: molekül/RNA şeması, hücre/yanıt, vücut/doku şeması, temsili şehir. OrbitControls, zoom ve tıklanabilir açıklama işaretçileri vardır. Partikül/şehir yapıları instanced geometry kullanır; cihaz DPR'si sınırlandırılır. Modeller anatomik veya klinik doğruluk iddiası taşımaz.
+`SimulationScene` dört procedural R3F görünüm sunar: molekül/RNA şeması, hücre/yanıt, vücut/organ/doku anatomisi ve 10 kişilik toplum şeması. OrbitControls, zoom ve tıklanabilir açıklama işaretçileri vardır. Partiküller instanced geometry, anatomi paylaşılan geometry/material kullanır; cihaz DPR'si sınırlandırılır. Modeller anatomik veya klinik doğruluk iddiası taşımaz.
 
 `lib/outbreak.js` altı kamu sağlığı kararının soyut sağlık/toplum/ekonomi etkilerini mevcut timeline'dan deterministik hesaplar. Kararlar mevcut publicHealthDecisions alanında arşivlenir. Hücresel simülasyon hesapları değiştirilmedi. Yeni belirtiler ve bağışıklık/yayılım/bakım eşikleri geçildiğinde kayıtlı danışman/bülten mesajları üretilir; kısa bülten bildirimi geçmiş panelini açar. Timeline geçmiş görünümü yalnız önizler, deney geçmişini geri sarmaz.
 
@@ -103,3 +103,10 @@ Next.js route'ları: `/` kontrol merkezi, `/dna` bağımsız DNA deney alanı, `
 Gizemli Vaka'da öğretmen gerçek/kurgu profili yapılandırır; öğrenci görünümü adı, seçim listesini ve kaynak yapılandırmasını gizler. Gözlem, metrik, belirti, model ve bültenler görünür kalır. Bu bir eğitim görünümü ayrımıdır; istemci verilerini gizleyen güvenli sınav veya authentication sistemi değildir.
 
 Tam vücut modeli; vücut, organ ve hedef doku ölçeklerine ayrılır. Etkilenen birincil/ikincil sistemler ve renk yoğunluğu profile/state metriklerine bağlıdır. Yapılar şematiktir; gerçek anatomik ölçüm değildir. Salgın ekranı aynı güne ait kararsız temel modelle karşılaştırma, karar etkisinin başlangıcı, doluluk ve ağır vaka göstergeleri sunar; nüfus 10.000 kişilik temsili eğitim örneğidir.
+
+
+## Anatomi ve toplum görselleştirmesi
+
+`components/anatomy/AnatomyModel.jsx` sekiz sistem için ayrı organ ve hedef doku geometrileri sunar. `OrganDetails` paneli sistemin işlevini, profile bağlı etkilenme nedenini ve kaynakları gösterir; global göstergeler organ hasarı ölçümü olarak sunulmaz. Etkilenen sistem düşük şiddette de kırmızı görünür, yoğunluk arttıkça turuncu-kırmızıya geçer.
+
+`SocietyPeople` tam 10 insan figürü kullanır: hasta kırmızı, sağlıklı mavi, temsili risk sarı, iyileşen gri. Bir figür %10 temsil eder; yuvarlanmış figür oranı gerçek model yüzdesinden ayrı gösterilir. Risk figürleri gerçek temas sayısı değildir. Bulaşıcı olmayan profillerde salgın gösterimi kapatılır.
