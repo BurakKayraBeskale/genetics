@@ -86,7 +86,8 @@ export default function Home() {
   useEffect(() => {
     if (appliedScenario.current === linkedScenario.id) return;
     appliedScenario.current = linkedScenario.id;
-    const preset = DISEASE_PRESETS.find(item => item.id === linkedScenario.dnaRelation?.presetId);
+    const directGenetic=['genetic','direct-genetic'].includes(linkedScenario.dnaRelation?.kind);
+    const preset = directGenetic ? DISEASE_PRESETS.find(item => item.id === linkedScenario.dnaRelation?.presetId) : null;
     if (preset) applyDisease(preset);
     else revertDisease();
   }, [linkedScenario, applyDisease, revertDisease]);
@@ -123,7 +124,7 @@ export default function Home() {
 
   return (
     <main className="appShell">
-      <div className="moduleHeading"><span className="introKicker">MOLEKÜLER DENEY ALANI</span><h1>DNA Laboratuvarı</h1><div className="linkedDiseaseNote"><b>{linkedScenario.name} · DNA bağlantısı</b><p>{linkedScenario.dnaRelation?.explanation || 'Bu enfeksiyon senaryosu doğrudan insan DNA mutasyonu olarak modellenmez. Hücresel ve bağışıklık yanıtını simülasyon ekranında inceleyebilirsin.'}</p>{linkedScenario.dnaRelation?.kind === 'genetic' && linkedScenario.dnaRelation?.presetId && <small>İlgili gen/mutasyon, 27 bazlık temsili öğretim dizisi üzerinde anlatılır; bu model gerçek genin tam dizisi değildir.</small>}{linkedScenario.dnaRelation?.sourceUrl && <a href={linkedScenario.dnaRelation.sourceUrl} target="_blank" rel="noopener noreferrer">Bilimsel kaynak ↗</a>}</div></div>
+      <div className="moduleHeading"><span className="introKicker">MOLEKÜLER DENEY ALANI</span><h1>DNA Laboratuvarı</h1><div className="linkedDiseaseNote"><b>Bu hastalık DNA ile nasıl ilişkili? · {linkedScenario.name}</b><p>{linkedScenario.dnaRelation?.explanation || 'Bu enfeksiyon senaryosu doğrudan insan DNA mutasyonu olarak modellenmez. Hücresel ve bağışıklık yanıtını simülasyon ekranında inceleyebilirsin.'}</p>{['genetic','direct-genetic'].includes(linkedScenario.dnaRelation?.kind) && linkedScenario.dnaRelation?.presetId && <small>İlgili gen/mutasyon, 27 bazlık temsili öğretim dizisi üzerinde anlatılır; bu model gerçek genin tam dizisi değildir.</small>}{linkedScenario.dnaRelation?.gene&&<small>Gen: {linkedScenario.dnaRelation.gene} · Protein/işlev: {linkedScenario.dnaRelation.protein||'Profil kaynağındaki işlev ilişkisi'}</small>}{!['genetic','direct-genetic'].includes(linkedScenario.dnaRelation?.kind)&&<small>Bu bağlantı insan DNA dizisine hastalık kaynaklı mutasyon uygulamaz.</small>}{linkedScenario.dnaRelation?.sourceUrl && <a href={linkedScenario.dnaRelation.sourceUrl} target="_blank" rel="noopener noreferrer">Bilimsel kaynak ↗</a>}</div></div>
 
 <section className="hero" id="yapi">
         <div className="heroBackdrop" />

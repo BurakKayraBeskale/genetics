@@ -1,5 +1,6 @@
+import { enrichDiseaseProfile } from './diseaseTrajectories.js';
 /** Source-backed profiles. Numeric parameters are classroom abstractions, not clinical estimates. */
-export const DISEASE_PROFILES = [
+const RAW_DISEASE_PROFILES = [
   {
     "id": "influenza",
     "name": "Influenza",
@@ -3790,7 +3791,7 @@ export const DISEASE_PROFILES = [
     }
   }
 ];
-export const LEGACY_SCENARIOS = [
+const RAW_LEGACY_SCENARIOS = [
   {
     "id": "bacterial",
     "name": "Bakteriyel enfeksiyon",
@@ -4375,5 +4376,7 @@ export const LEGACY_SCENARIOS = [
     "publicSpreadApplicable": true
   }
 ];
+export const DISEASE_PROFILES = RAW_DISEASE_PROFILES.map(enrichDiseaseProfile);
+export const LEGACY_SCENARIOS = RAW_LEGACY_SCENARIOS.map(enrichDiseaseProfile);
 export const SCENARIOS = [...DISEASE_PROFILES, ...LEGACY_SCENARIOS];
 export const DISEASE_MECHANISMS = ["infectious/viral","infectious/bacterial","infectious/mixed","genetic","autoimmune","metabolic","neurological","oncology"];

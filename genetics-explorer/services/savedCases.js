@@ -44,7 +44,7 @@ function list(value, mapper) {
 function record(item, day, intervention = false) {
   if (!object(item)) fail('Vaka geçmiş kaydı geçersiz.');
   const result = { day: number(item.day, day, true) };
-  return intervention ? { ...result, kind: text(item.kind, 100), label: text(item.label, 200) } : { ...result, text: text(item.text) };
+  return intervention ? { ...result, kind: text(item.kind, 100), label: text(item.label, 200) } : { ...result, text: text(item.text), ...(item.id===undefined?{}:{id:text(item.id,200)}) };
 }
 function initial(input) {
   if (!object(input) || !object(input.scenarioConfig) || !object(input.config)) fail('Başlangıç ayarları eksik.');

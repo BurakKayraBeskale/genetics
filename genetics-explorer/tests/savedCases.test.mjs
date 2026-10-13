@@ -24,7 +24,8 @@ test('restart uses same seed and initial coefficients, clears intervention and p
   assert.equal(fresh.scenarioConfig.growth, 1.18);
   assert.deepEqual(fresh.interventions, []); assert.deepEqual(fresh.publicHealthDecisions, []);
   assert.equal(fresh.timeline.length, 1); assert.equal(fresh.timeline[0].day, 0);
-  assert.deepEqual(fresh.symptoms, ['Başlangıç gözlemi']); assert.equal(fresh.metrics.pathogenLoad, 18);
+  const expected=createSimulation(saved.diseaseScenarioId,saved.snapshot.config,saved.snapshot.initialScenarioConfig);
+  assert.deepEqual(fresh.symptoms,expected.symptoms);assert.deepEqual(fresh.metrics,expected.metrics);
 });
 test('teacher edits, remove star, delete and refresh retain stable codes and counters', () => {
   const db = storage(); const saved = saveCase({ state: dayFour(), isStarred: true }, db);

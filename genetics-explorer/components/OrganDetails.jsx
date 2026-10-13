@@ -3,10 +3,10 @@ import { memo } from 'react';
 import { ORGAN_EDUCATION, getOrganEffect } from '../lib/organEducation';
 import './OrganDetails.css';
 function Meter({label,value,accent}) { return <div className={`organ-meter ${accent ? 'is-warm' : ''}`}><div><span>{label}</span><b>{value.toFixed(0)}<small>/100</small></b></div><meter min="0" max="100" value={value} aria-label={`${label}, eğitimsel birim`}/></div>; }
-function OrganDetails({organ, profile = {}, metrics = {}, hiddenProfile = false}) {
+function OrganDetails({organ, profile = {}, metrics = {}, hiddenProfile = false,day=0,duration=14}) {
  const info = ORGAN_EDUCATION[organ];
  if (!info) return null;
- const effect = getOrganEffect(profile, metrics, organ);
+ const effect = getOrganEffect(profile, metrics, organ,{day,duration});
  const profileSource = profile.sources?.find(source => /^https:\/\//.test(source.url || ''));
  return <section className="organ-details" aria-label="Organ inceleme paneli" aria-live="polite">
   <header><div className="organ-monitor-title"><span>ORGAN MONİTÖRÜ</span><span className={`organ-status ${effect.affected ? 'is-affected' : ''}`}><i/>{effect.affected ? 'Hedef sistem' : 'Anatomik keşif'}</span></div><h3>{info.name}</h3></header>

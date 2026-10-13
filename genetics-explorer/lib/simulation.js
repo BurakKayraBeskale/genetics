@@ -1,3 +1,4 @@
+import { applyProfileTrajectory } from './diseaseTrajectory.js';
 import { SCENARIOS } from '../data/diseaseProfiles.js';
 import { mechanismOf, initialMechanismMetrics, advanceMechanism } from './DiseaseEngine.js';
 import { validateVirtualProfile } from './virtualDisease.js';
@@ -28,6 +29,7 @@ export function createSimulation(scenarioId = 'influenza', input = {}, initialSc
     state.doctorNotes.push({ day: 0, text: 'Zaman çizelgesi soyut öğrenme adımlarını gösterir; gerçek klinik süre değildir. Bu senaryo bulaşıcı değildir.' });
   }
   state.metrics = initialMechanismMetrics(scenario, state.metrics);
+  if(scenario.trajectory)Object.assign(state,applyProfileTrajectory(state,state));
   state.timeline = [entry(state)];
   return state;
 }

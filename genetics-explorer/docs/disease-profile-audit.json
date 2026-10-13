@@ -1,0 +1,4556 @@
+{
+  "generatedAt": "2026-10-13",
+  "scope": "Educational model audit; classroom coefficients are not clinical validation or prognosis.",
+  "seed": 42,
+  "teachingSteps": 14,
+  "profiles": 63,
+  "families": 39,
+  "distinctMetricCourses": 63,
+  "rows": [
+    {
+      "id": "influenza",
+      "name": "Influenza",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "respiratory-viral",
+      "subtype": "Akut solunum epiteli yanıtı",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.07,
+        "peak": 0.32,
+        "recovery": 0.68,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.19,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "upper-airway",
+        "trachea",
+        "bronchus"
+      ],
+      "typicalSymptoms": [
+        "Ateş",
+        "Öksürük",
+        "Halsizlik",
+        "Kas ağrısı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ateş",
+          "start": 0.07,
+          "end": 0.68,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Öksürük",
+          "start": 0.15000000000000002,
+          "end": 0.7200000000000001,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Halsizlik",
+          "start": 0.23,
+          "end": 0.76,
+          "minActivity": 0.26
+        },
+        {
+          "symptom": "Kas ağrısı",
+          "start": 0.31,
+          "end": 0.8,
+          "minActivity": 0.33
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "upper-airway",
+            "trachea",
+            "bronchus"
+          ],
+          "role": "primary",
+          "start": 0.07,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.4,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Flu",
+          "url": "https://medlineplus.gov/flu.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "53d068d5ccdee674684f141b63f7b34fa7b7dc345c9727bbef47c5190f60cb58"
+    },
+    {
+      "id": "chickenpox",
+      "name": "Suçiçeği",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "viral-exanthem",
+      "subtype": "Yaygın veziküler deri bulguları",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.15,
+        "peak": 0.44,
+        "recovery": 0.78,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.27,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "skin"
+      ],
+      "affectedTissues": [
+        "epidermis"
+      ],
+      "typicalSymptoms": [
+        "Kaşıntılı döküntü",
+        "Ateş"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Kaşıntılı döküntü",
+          "start": 0.15,
+          "end": 0.78,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.22999999999999998,
+          "end": 0.8200000000000001,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "epidermis"
+          ],
+          "role": "primary",
+          "start": 0.15,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Chickenpox",
+          "url": "https://medlineplus.gov/chickenpox.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "f9d70c5c315e1eaa86c8f35a0d84f505e1b3826fe3d25854ffa4b7b13d579f16"
+    },
+    {
+      "id": "measles",
+      "name": "Kızamık",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "viral-exanthem",
+      "subtype": "Solunum ön bulguları ve döküntü",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.12,
+        "peak": 0.48,
+        "recovery": 0.82,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.24,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "skin"
+      ],
+      "affectedTissues": [
+        "upper-airway"
+      ],
+      "typicalSymptoms": [
+        "Döküntü",
+        "Ateş"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Döküntü",
+          "start": 0.12,
+          "end": 0.82,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.2,
+          "end": 0.86,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "upper-airway"
+          ],
+          "role": "primary",
+          "start": 0.12,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "skin",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.5599999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Measles",
+          "url": "https://medlineplus.gov/measles.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "e2f4e19bf322056f6512da22724d580e9d001c8e238d41a55ab8ab6cabc4394e"
+    },
+    {
+      "id": "mumps",
+      "name": "Kabakulak",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "glandular-virus",
+      "subtype": "Tükürük bezi tutulumu",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.18,
+        "peak": 0.5,
+        "recovery": 0.8,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.3,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "Tükürük bezi tutulumu"
+      ],
+      "typicalSymptoms": [
+        "Tükürük bezi şişliği",
+        "Ateş"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Tükürük bezi şişliği",
+          "start": 0.18,
+          "end": 0.8,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.26,
+          "end": 0.8400000000000001,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Mumps",
+          "url": "https://medlineplus.gov/mumps.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "c8c02dbfee179fc31ab8df193a34756409b4801142291041d69867168bef752d"
+    },
+    {
+      "id": "rubella",
+      "name": "Kızamıkçık",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "viral-exanthem",
+      "subtype": "Hafif döküntülü viral yanıt",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.2,
+        "peak": 0.42,
+        "recovery": 0.7,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.32,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "skin"
+      ],
+      "affectedTissues": [
+        "epidermis"
+      ],
+      "typicalSymptoms": [
+        "Döküntü",
+        "Ateş"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Döküntü",
+          "start": 0.2,
+          "end": 0.7,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.28,
+          "end": 0.74,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "epidermis"
+          ],
+          "role": "primary",
+          "start": 0.2,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Rubella",
+          "url": "https://medlineplus.gov/rubella.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "b0716a1ec287438abf1e6a13c0fe9e71ae2eef633554609ed82b738ad3b77fbf"
+    },
+    {
+      "id": "hepatitis-a",
+      "name": "Hepatit A",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "hepatic-virus",
+      "subtype": "Akut karaciğer inflamasyonu",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.22,
+        "peak": 0.55,
+        "recovery": 0.88,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.33999999999999997,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "liver"
+      ],
+      "typicalSymptoms": [
+        "Yorgunluk",
+        "Sarılık"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.22,
+          "end": 0.88,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Sarılık",
+          "start": 0.3,
+          "end": 0.92,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "liver"
+          ],
+          "role": "primary",
+          "start": 0.22,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Hepatitis A",
+          "url": "https://medlineplus.gov/hepatitisa.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "4e2d3a2b89823dbec340cd0ad35bbcbbf5f3945935e2672de490c7f93222d414"
+    },
+    {
+      "id": "hepatitis-b",
+      "name": "Hepatit B",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "hepatic-virus",
+      "subtype": "Kronik enfeksiyon öğretim dalı",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.2,
+        "peak": 0.65,
+        "recovery": 1,
+        "baseline": 0.2,
+        "progressionRate": 0.24,
+        "immuneDelay": 0.32,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "liver"
+      ],
+      "typicalSymptoms": [
+        "Yorgunluk",
+        "Sarılık"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.2,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Sarılık",
+          "start": 0.28,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "liver"
+          ],
+          "role": "primary",
+          "start": 0.2,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "route-specific",
+      "sources": [
+        {
+          "title": "MedlinePlus: Hepatitis B",
+          "url": "https://medlineplus.gov/hepatitisb.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "ba8c0ddd5d87ddb58de6f44d549924e523b34723108fc47fcd33bf035fb00c0a"
+    },
+    {
+      "id": "hepatitis-c",
+      "name": "Hepatit C",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "hepatic-virus",
+      "subtype": "Persistan karaciğer yanıtı",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.25,
+        "peak": 0.76,
+        "recovery": 1,
+        "baseline": 0.23,
+        "progressionRate": 0.29,
+        "immuneDelay": 0.37,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "liver"
+      ],
+      "typicalSymptoms": [
+        "Yorgunluk",
+        "Sarılık"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.25,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Sarılık",
+          "start": 0.33,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "liver"
+          ],
+          "role": "primary",
+          "start": 0.25,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "route-specific",
+      "sources": [
+        {
+          "title": "MedlinePlus: Hepatitis C",
+          "url": "https://medlineplus.gov/hepatitisc.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "33c97a5b80a088cb1df8af75a652f37d78ebcb9ea9f12ba058f49aa7dba8499f"
+    },
+    {
+      "id": "hiv",
+      "name": "HIV enfeksiyonu",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "immune-targeting-virus",
+      "subtype": "Bağışıklık hücresi işlevi",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.08,
+        "peak": 0.86,
+        "recovery": 1,
+        "baseline": 0.15,
+        "progressionRate": 0.62,
+        "immuneDelay": 0.2,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "blood-cells"
+      ],
+      "typicalSymptoms": [
+        "Ateş",
+        "Yorgunluk"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ateş",
+          "start": 0.08,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.16,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [
+            "blood-cells"
+          ],
+          "role": "primary",
+          "start": 0.08,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "route-specific",
+      "sources": [
+        {
+          "title": "MedlinePlus: HIV",
+          "url": "https://medlineplus.gov/hiv.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "6162d997f5a677b85f784cdbae9073469d1f07f62da934ad299820362a6dcdab"
+    },
+    {
+      "id": "norovirus",
+      "name": "Norovirüs enfeksiyonu",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "acute-enteric",
+      "subtype": "Akut gastrointestinal bulgular",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.04,
+        "peak": 0.2,
+        "recovery": 0.52,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.16,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "intestinal-epithelium"
+      ],
+      "typicalSymptoms": [
+        "İshal",
+        "Kusma"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İshal",
+          "start": 0.04,
+          "end": 0.52,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Kusma",
+          "start": 0.12,
+          "end": 0.56,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "intestinal-epithelium"
+          ],
+          "role": "primary",
+          "start": 0.04,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Norovirus Infections",
+          "url": "https://medlineplus.gov/norovirusinfections.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "1037112d7e0f0492b094f28550d8cb63e39655c7729080a44f6100e64320317e"
+    },
+    {
+      "id": "rabies",
+      "name": "Kuduz",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "neuroinvasive-infection",
+      "subtype": "Belirti sonrası nörolojik seyir",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.35,
+        "peak": 0.95,
+        "recovery": 1,
+        "baseline": 0.02,
+        "progressionRate": 0.96,
+        "immuneDelay": 0.47,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "Konfüzyon",
+        "Felç"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Konfüzyon",
+          "start": 0.35,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Felç",
+          "start": 0.43,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.35,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-modeled",
+      "sources": [
+        {
+          "title": "MedlinePlus: Rabies",
+          "url": "https://medlineplus.gov/rabies.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        },
+        {
+          "title": "CDC: Yayılım ve mekanizma bağlamı",
+          "url": "https://www.cdc.gov/rabies/hcp/clinical-overview/index.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "bb67459ad1e8b4210afd302865f5b737a173f89b21884dc62f11c6d2db9eb070"
+    },
+    {
+      "id": "shingles",
+      "name": "Zona",
+      "profileType": "real",
+      "mechanism": "infectious/viral",
+      "family": "viral-reactivation",
+      "subtype": "Bölgesel sinir ve deri bulguları",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.16,
+        "peak": 0.4,
+        "recovery": 0.87,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.28,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "skin",
+        "neurological"
+      ],
+      "affectedTissues": [
+        "epidermis"
+      ],
+      "typicalSymptoms": [
+        "Ağrılı döküntü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ağrılı döküntü",
+          "start": 0.16,
+          "end": 0.87,
+          "minActivity": 0.12
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "epidermis"
+          ],
+          "role": "primary",
+          "start": 0.16,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-modeled",
+      "sources": [
+        {
+          "title": "MedlinePlus: Shingles",
+          "url": "https://medlineplus.gov/shingles.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "29dc0eca8b6f9d92a612a19873482c8271e877c16051eb3e0f58e6438b139b8b"
+    },
+    {
+      "id": "tuberculosis",
+      "name": "Tüberküloz",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "persistent-respiratory",
+      "subtype": "Uzamış solunum enfeksiyonu",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.25,
+        "peak": 0.72,
+        "recovery": 1,
+        "baseline": 0.12,
+        "progressionRate": 0.4,
+        "immuneDelay": 0.37,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "left-lung",
+        "right-lung"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Gece terlemesi"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0.25,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Gece terlemesi",
+          "start": 0.33,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "left-lung",
+            "right-lung"
+          ],
+          "role": "primary",
+          "start": 0.25,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Tuberculosis",
+          "url": "https://medlineplus.gov/tuberculosis.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "2a3c5362b6e052f06b7215f78de06c3535ab756c2c8304058dd0577f643ac94e"
+    },
+    {
+      "id": "cholera",
+      "name": "Kolera",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "acute-enteric",
+      "subtype": "Sıvı kaybı odaklı gastrointestinal seyir",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.03,
+        "peak": 0.18,
+        "recovery": 0.6,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.15,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "intestinal-epithelium"
+      ],
+      "typicalSymptoms": [
+        "Sulu ishal",
+        "Dehidrasyon"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Sulu ishal",
+          "start": 0.03,
+          "end": 0.6,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Dehidrasyon",
+          "start": 0.11,
+          "end": 0.64,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "intestinal-epithelium"
+          ],
+          "role": "primary",
+          "start": 0.03,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Cholera",
+          "url": "https://medlineplus.gov/cholera.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "560830baa044fb6d356bcb894507d3a8caa5f6307ec6e3b6ef753c914c044ed5"
+    },
+    {
+      "id": "pertussis",
+      "name": "Boğmaca",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "persistent-respiratory",
+      "subtype": "Uzamış öksürük örüntüsü",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.18,
+        "peak": 0.53,
+        "recovery": 0.95,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.3,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "trachea",
+        "bronchus"
+      ],
+      "typicalSymptoms": [
+        "Öksürük nöbetleri"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük nöbetleri",
+          "start": 0.18,
+          "end": 0.95,
+          "minActivity": 0.12
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "trachea",
+            "bronchus"
+          ],
+          "role": "primary",
+          "start": 0.18,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Whooping Cough",
+          "url": "https://medlineplus.gov/whoopingcough.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "afb74170ae6e344c41612501e90b2e7a8e3f928e531e13894f38e1a8119c8406"
+    },
+    {
+      "id": "lyme",
+      "name": "Lyme hastalığı",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "vector-infection",
+      "subtype": "Deri ve olası geç sistem bulguları",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.13,
+        "peak": 0.7,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.32,
+        "immuneDelay": 0.25,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "skin",
+        "neurological"
+      ],
+      "affectedTissues": [
+        "epidermis"
+      ],
+      "typicalSymptoms": [
+        "Döküntü",
+        "Eklem ağrısı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Döküntü",
+          "start": 0.13,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Eklem ağrısı",
+          "start": 0.21000000000000002,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "epidermis"
+          ],
+          "role": "primary",
+          "start": 0.13,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "brain",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.7799999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-modeled",
+      "sources": [
+        {
+          "title": "MedlinePlus: Lyme Disease",
+          "url": "https://medlineplus.gov/lymedisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "f77c4bb9956eb2f27b6b26e3eb42b181a81aecf0c66fc90a51578b3cf2f1dabd"
+    },
+    {
+      "id": "tetanus",
+      "name": "Tetanos",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "toxin-neuromuscular",
+      "subtype": "Toksin ilişkili kas spazmları",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.22,
+        "peak": 0.9,
+        "recovery": 1,
+        "baseline": 0.07,
+        "progressionRate": 0.85,
+        "immuneDelay": 0.33999999999999997,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "muscular"
+      ],
+      "affectedTissues": [
+        "skeletal-muscle"
+      ],
+      "typicalSymptoms": [
+        "Kas kasılmaları",
+        "Çene kilitlenmesi"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Kas kasılmaları",
+          "start": 0.22,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Çene kilitlenmesi",
+          "start": 0.3,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "muscle",
+          "structureIds": [
+            "skeletal-muscle"
+          ],
+          "role": "primary",
+          "start": 0.22,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.95,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-modeled",
+      "sources": [
+        {
+          "title": "MedlinePlus: Tetanus",
+          "url": "https://medlineplus.gov/tetanus.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        },
+        {
+          "title": "CDC: Yayılım ve mekanizma bağlamı",
+          "url": "https://www.cdc.gov/tetanus/about/index.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "ebe66cd9a2700ddf4fa6fe77a2dc6df9c3aa85e71ca73835e597aa1206579a16"
+    },
+    {
+      "id": "diphtheria",
+      "name": "Difteri",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "toxin-respiratory",
+      "subtype": "Hava yolu ve toksin yanıtı",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.1,
+        "peak": 0.47,
+        "recovery": 0.88,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.22,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "upper-airway",
+        "trachea"
+      ],
+      "typicalSymptoms": [
+        "Boğaz ağrısı",
+        "Ateş"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Boğaz ağrısı",
+          "start": 0.1,
+          "end": 0.88,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.18,
+          "end": 0.92,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "upper-airway",
+            "trachea"
+          ],
+          "role": "primary",
+          "start": 0.1,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.5499999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Diphtheria",
+          "url": "https://medlineplus.gov/diphtheria.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "ff0caecb5debb23dd4b66b0bb25f9e88b25825d1e8456ef87737e5fb71ff6972"
+    },
+    {
+      "id": "salmonellosis",
+      "name": "Salmonella enfeksiyonu",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "acute-enteric",
+      "subtype": "Bakteriyel bağırsak yanıtı",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.09,
+        "peak": 0.34,
+        "recovery": 0.73,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.21,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "intestinal-epithelium"
+      ],
+      "typicalSymptoms": [
+        "İshal",
+        "Ateş"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İshal",
+          "start": 0.09,
+          "end": 0.73,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.16999999999999998,
+          "end": 0.77,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "intestinal-epithelium"
+          ],
+          "role": "primary",
+          "start": 0.09,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Salmonella Infections",
+          "url": "https://medlineplus.gov/salmonellainfections.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "e3d328989ca0030b0435ee07a369b06c5cb1cc00d1e475b4c7ca4f8a269fa606"
+    },
+    {
+      "id": "gonorrhea",
+      "name": "Gonore",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "mucosal-infection",
+      "subtype": "Ürogenital mukoza tutulumu",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.12,
+        "peak": 0.59,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.32,
+        "immuneDelay": 0.24,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "reproductive"
+      ],
+      "affectedTissues": [
+        "Ürogenital mukoza tutulumu"
+      ],
+      "typicalSymptoms": [
+        "İdrar yaparken ağrı",
+        "Akıntı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İdrar yaparken ağrı",
+          "start": 0.12,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Akıntı",
+          "start": 0.2,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "route-specific",
+      "sources": [
+        {
+          "title": "MedlinePlus: Gonorrhea",
+          "url": "https://medlineplus.gov/gonorrhea.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "5ddde82868d9e1dfcce9ad4e152306fdd974e0ece3ea91af46509931bf941bc4"
+    },
+    {
+      "id": "syphilis",
+      "name": "Sifiliz",
+      "profileType": "real",
+      "mechanism": "infectious/bacterial",
+      "family": "staged-infection",
+      "subtype": "Evreli deri ve sistem bulguları",
+      "trajectory": {
+        "mode": "relapsing",
+        "onset": 0.15,
+        "peak": 0.55,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.27,
+        "relapsePeriod": 0.34
+      },
+      "affectedSystems": [
+        "skin",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "epidermis"
+      ],
+      "typicalSymptoms": [
+        "Ağrısız yara",
+        "Döküntü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ağrısız yara",
+          "start": 0.15,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Döküntü",
+          "start": 0.22999999999999998,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "epidermis"
+          ],
+          "role": "primary",
+          "start": 0.15,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.63,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "route-specific",
+      "sources": [
+        {
+          "title": "MedlinePlus: Syphilis",
+          "url": "https://medlineplus.gov/syphilis.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "024db2e10249cf79bd88cd5a7cc6c4c699320d80be7e4d4576e795cf92be127c"
+    },
+    {
+      "id": "sickle-cell",
+      "name": "Orak hücre hastalığı",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "hemoglobin-disorder",
+      "subtype": "Krizli kalıtsal kan hastalığı",
+      "trajectory": {
+        "mode": "relapsing",
+        "onset": 0,
+        "peak": 0.45,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.12,
+        "relapsePeriod": 0.34
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "blood-cells"
+      ],
+      "typicalSymptoms": [
+        "Ağrı",
+        "Anemi"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ağrı",
+          "start": 0,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Anemi",
+          "start": 0.08,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [
+            "blood-cells"
+          ],
+          "role": "primary",
+          "start": 0,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.53,
+          "end": 1,
+          "weight": 0.32
+        },
+        {
+          "organ": "renal",
+          "structureIds": [],
+          "role": "optional",
+          "start": 0.5800000000000001,
+          "end": 1,
+          "weight": 0.18
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Sickle Cell Disease",
+          "url": "https://medlineplus.gov/sicklecelldisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        },
+        {
+          "title": "MedlinePlus Genetics: Gen ve protein ilişkisi",
+          "url": "https://medlineplus.gov/genetics/condition/sickle-cell-disease/",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "d47e80855dc67f8c20f6213327fb9d62174ceb121b78ee6d2fdf0aa670bffe0b"
+    },
+    {
+      "id": "cystic-fibrosis",
+      "name": "Kistik fibrozis",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "channel-protein",
+      "subtype": "Kalıtsal epitel taşıma bozukluğu",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0,
+        "peak": 0.7,
+        "recovery": 1,
+        "baseline": 0.26,
+        "progressionRate": 0.34,
+        "immuneDelay": 0.12,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "digestive"
+      ],
+      "affectedTissues": [
+        "bronchus"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Sindirim sorunları"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Sindirim sorunları",
+          "start": 0.08,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "bronchus"
+          ],
+          "role": "primary",
+          "start": 0,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "digestive",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.7799999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Cystic Fibrosis",
+          "url": "https://medlineplus.gov/cysticfibrosis.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        },
+        {
+          "title": "MedlinePlus Genetics: Gen ve protein ilişkisi",
+          "url": "https://medlineplus.gov/genetics/condition/cystic-fibrosis/",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "747bdd413c9ee8ef845ac58fc52cb2f016113743d81d653e460ac5aa97079809"
+    },
+    {
+      "id": "huntington",
+      "name": "Huntington hastalığı",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "neurodegeneration",
+      "subtype": "Kalıtsal ilerleyici sinir işlevi",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.1,
+        "peak": 0.94,
+        "recovery": 1,
+        "baseline": 0.13,
+        "progressionRate": 0.68,
+        "immuneDelay": 0.22,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "İstemsiz hareketler",
+        "Denge bozukluğu"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İstemsiz hareketler",
+          "start": 0.1,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Denge bozukluğu",
+          "start": 0.18,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.1,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Huntington's Disease",
+          "url": "https://medlineplus.gov/huntingtonsdisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        },
+        {
+          "title": "MedlinePlus Genetics: Gen ve protein ilişkisi",
+          "url": "https://medlineplus.gov/genetics/condition/huntingtons-disease/",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "4cbf8dd2e241d615aa65597ae17fcd215ef2de14b61824fc939eb287523f31f4"
+    },
+    {
+      "id": "dmd",
+      "name": "Duchenne musküler distrofi",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "muscle-protein",
+      "subtype": "Kalıtsal kas lifi işlevi",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0,
+        "peak": 0.9,
+        "recovery": 1,
+        "baseline": 0.24,
+        "progressionRate": 0.72,
+        "immuneDelay": 0.12,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "muscular",
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "muscle-fiber"
+      ],
+      "typicalSymptoms": [
+        "Kas güçsüzlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Kas güçsüzlüğü",
+          "start": 0,
+          "end": 1,
+          "minActivity": 0.12
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "muscle",
+          "structureIds": [
+            "muscle-fiber"
+          ],
+          "role": "primary",
+          "start": 0,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.95,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Muscular Dystrophy",
+          "url": "https://medlineplus.gov/musculardystrophy.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        },
+        {
+          "title": "MedlinePlus Genetics: Gen ve protein ilişkisi",
+          "url": "https://medlineplus.gov/genetics/condition/duchenne-and-becker-muscular-dystrophy/",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "caa3f1cb2c564989853d50649a8c1e0e7d15c30976063e4a606d92b204860f2f"
+    },
+    {
+      "id": "hemophilia",
+      "name": "Hemofili",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "coagulation-disorder",
+      "subtype": "Kalıtsal pıhtılaşma işlevi",
+      "trajectory": {
+        "mode": "episodic",
+        "onset": 0,
+        "peak": 0.38,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.12,
+        "relapsePeriod": 0.26
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "blood-cells"
+      ],
+      "typicalSymptoms": [
+        "Uzayan kanama",
+        "Eklem kanaması"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Uzayan kanama",
+          "start": 0,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Eklem kanaması",
+          "start": 0.08,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [
+            "blood-cells"
+          ],
+          "role": "primary",
+          "start": 0,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Hemophilia",
+          "url": "https://medlineplus.gov/hemophilia.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "90c7f918871bef2ae9f1aa552f2747e228618d058a384a96cb917b708ab00e23"
+    },
+    {
+      "id": "pku",
+      "name": "Fenilketonüri",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "inherited-metabolism",
+      "subtype": "Aminoasit metabolizması",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0,
+        "peak": 0.66,
+        "recovery": 1,
+        "baseline": 0.22,
+        "progressionRate": 0.36,
+        "immuneDelay": 0.12,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "metabolic",
+        "neurological"
+      ],
+      "affectedTissues": [
+        "Metabolik enzim işlevi"
+      ],
+      "typicalSymptoms": [
+        "Gelişim sorunları"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Gelişim sorunları",
+          "start": 0,
+          "end": 1,
+          "minActivity": 0.12
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.74,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Phenylketonuria",
+          "url": "https://medlineplus.gov/phenylketonuria.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "0b3f5600d6879c734f670ee1e9088ae331d88a6b232c1062632d596abc4e0aa7"
+    },
+    {
+      "id": "marfan",
+      "name": "Marfan sendromu",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "connective-tissue",
+      "subtype": "Kalıtsal bağ dokusu işlevi",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0,
+        "peak": 0.78,
+        "recovery": 1,
+        "baseline": 0.17,
+        "progressionRate": 0.28,
+        "immuneDelay": 0.12,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "cardiovascular",
+        "muscular"
+      ],
+      "affectedTissues": [
+        "aorta"
+      ],
+      "typicalSymptoms": [
+        "Eklem gevşekliği",
+        "Damar sorunları"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Eklem gevşekliği",
+          "start": 0,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Damar sorunları",
+          "start": 0.08,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [
+            "aorta"
+          ],
+          "role": "primary",
+          "start": 0,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Marfan Syndrome",
+          "url": "https://medlineplus.gov/marfansyndrome.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "4b98ef63812a4f07f59cf294b65c6070be5c1bcce9c6ad9335c2ab48e43a3f04"
+    },
+    {
+      "id": "tay-sachs",
+      "name": "Tay-Sachs hastalığı",
+      "profileType": "real",
+      "mechanism": "genetic",
+      "family": "neurodegeneration",
+      "subtype": "Kalıtsal hücresel birikim",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.04,
+        "peak": 0.98,
+        "recovery": 1,
+        "baseline": 0.21,
+        "progressionRate": 0.82,
+        "immuneDelay": 0.16,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "Gelişimsel gerileme",
+        "Kas güçsüzlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Gelişimsel gerileme",
+          "start": 0.04,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Kas güçsüzlüğü",
+          "start": 0.12,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.04,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "direct-genetic",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Tay-Sachs Disease",
+          "url": "https://medlineplus.gov/taysachsdisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "88701172b602a09e80c86cc4b995109d9f97c238de1f9a18b1d916585c0164ee"
+    },
+    {
+      "id": "rheumatoid",
+      "name": "Romatoid artrit",
+      "profileType": "real",
+      "mechanism": "autoimmune",
+      "family": "joint-autoimmune",
+      "subtype": "Eklemlerde otoimmün aktivite",
+      "trajectory": {
+        "mode": "relapsing",
+        "onset": 0.03,
+        "peak": 0.5,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.15,
+        "relapsePeriod": 0.34
+      },
+      "affectedSystems": [
+        "muscular"
+      ],
+      "affectedTissues": [
+        "Eklemlerde otoimmün aktivite"
+      ],
+      "typicalSymptoms": [
+        "Eklem ağrısı",
+        "Tutukluk"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Eklem ağrısı",
+          "start": 0.03,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Tutukluk",
+          "start": 0.11,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Rheumatoid Arthritis",
+          "url": "https://medlineplus.gov/rheumatoidarthritis.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "1759c6257a7cd912299fc0e511c8a5f65964d01b6a2aaa415e58c372a47cc591"
+    },
+    {
+      "id": "lupus",
+      "name": "Sistemik lupus eritematozus",
+      "profileType": "real",
+      "mechanism": "autoimmune",
+      "family": "systemic-autoimmune",
+      "subtype": "Çok sistemli dalgalanan aktivite",
+      "trajectory": {
+        "mode": "relapsing",
+        "onset": 0.06,
+        "peak": 0.53,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.18,
+        "relapsePeriod": 0.34
+      },
+      "affectedSystems": [
+        "systemic",
+        "skin",
+        "renal"
+      ],
+      "affectedTissues": [
+        "dermis"
+      ],
+      "typicalSymptoms": [
+        "Yorgunluk",
+        "Döküntü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.06,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Döküntü",
+          "start": 0.14,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "dermis"
+          ],
+          "role": "primary",
+          "start": 0.06,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "renal",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.61,
+          "end": 1,
+          "weight": 0.32
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "optional",
+          "start": 0.66,
+          "end": 1,
+          "weight": 0.18
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Lupus",
+          "url": "https://medlineplus.gov/lupus.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "3ae91ad8bfe0946c3f9772fbf1d0f522ccaabd5a6ab0f4f52af0ad528dcf481f"
+    },
+    {
+      "id": "ms",
+      "name": "Multipl skleroz",
+      "profileType": "real",
+      "mechanism": "autoimmune",
+      "family": "neural-autoimmune",
+      "subtype": "Sinir sistemi otoimmün aktivitesi",
+      "trajectory": {
+        "mode": "relapsing",
+        "onset": 0.05,
+        "peak": 0.46,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.16999999999999998,
+        "relapsePeriod": 0.34
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "Uyuşma",
+        "Güçsüzlük"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Uyuşma",
+          "start": 0.05,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Güçsüzlük",
+          "start": 0.13,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.05,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Multiple Sclerosis",
+          "url": "https://medlineplus.gov/multiplesclerosis.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "57d2d02811cdd8ae684e726c9e7b04a8633ef5abffea6894959e5ac296fae9c6"
+    },
+    {
+      "id": "celiac",
+      "name": "Çölyak hastalığı",
+      "profileType": "real",
+      "mechanism": "autoimmune",
+      "family": "intestinal-autoimmune",
+      "subtype": "Bağırsak yüzeyi otoimmün yanıtı",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.1,
+        "peak": 0.61,
+        "recovery": 1,
+        "baseline": 0.16,
+        "progressionRate": 0.27,
+        "immuneDelay": 0.22,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "intestinal-epithelium"
+      ],
+      "typicalSymptoms": [
+        "İshal",
+        "Emilim bozukluğu"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İshal",
+          "start": 0.1,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Emilim bozukluğu",
+          "start": 0.18,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "intestinal-epithelium"
+          ],
+          "role": "primary",
+          "start": 0.1,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Celiac Disease",
+          "url": "https://medlineplus.gov/celiacdisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "0cca0c4da74ec076ab589ca959e9e15af203bcb44fbb92eb7587ecc4e1e31c53"
+    },
+    {
+      "id": "sjogren",
+      "name": "Sjögren hastalığı",
+      "profileType": "real",
+      "mechanism": "autoimmune",
+      "family": "glandular-autoimmune",
+      "subtype": "Salgı bezi işlevi",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.12,
+        "peak": 0.67,
+        "recovery": 1,
+        "baseline": 0.13,
+        "progressionRate": 0.21,
+        "immuneDelay": 0.24,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "Salgı bezi işlevi"
+      ],
+      "typicalSymptoms": [
+        "Göz kuruluğu",
+        "Ağız kuruluğu"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Göz kuruluğu",
+          "start": 0.12,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ağız kuruluğu",
+          "start": 0.2,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Sjogren's Syndrome",
+          "url": "https://medlineplus.gov/sjogrenssyndrome.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "f70972aa79e8d68c9bf76445314847a24d536ac4140231f6a9ee57aa4be11049"
+    },
+    {
+      "id": "type1-diabetes",
+      "name": "Tip 1 diyabet",
+      "profileType": "real",
+      "mechanism": "autoimmune",
+      "family": "pancreatic-autoimmune",
+      "subtype": "İnsülin üretimi ve otoimmün bağlam",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.04,
+        "peak": 0.69,
+        "recovery": 1,
+        "baseline": 0.25,
+        "progressionRate": 0.33,
+        "immuneDelay": 0.16,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "metabolic",
+        "renal"
+      ],
+      "affectedTissues": [
+        "pancreas"
+      ],
+      "typicalSymptoms": [
+        "Susama",
+        "Sık idrara çıkma"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Susama",
+          "start": 0.04,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Sık idrara çıkma",
+          "start": 0.12,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "endocrine",
+          "structureIds": [
+            "pancreas"
+          ],
+          "role": "primary",
+          "start": 0.04,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "renal",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.7699999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Diabetes Type 1",
+          "url": "https://medlineplus.gov/diabetestype1.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "c6e53f42c4b77a1bef5655d9031d16766bd4db4997e00a69305ff23164561c86"
+    },
+    {
+      "id": "type2-diabetes",
+      "name": "Tip 2 diyabet",
+      "profileType": "real",
+      "mechanism": "metabolic",
+      "family": "metabolic-regulation",
+      "subtype": "İnsülin direnci ve metabolik denge",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.18,
+        "peak": 0.74,
+        "recovery": 1,
+        "baseline": 0.21,
+        "progressionRate": 0.26,
+        "immuneDelay": 0.3,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "metabolic",
+        "cardiovascular"
+      ],
+      "affectedTissues": [
+        "pancreas"
+      ],
+      "typicalSymptoms": [
+        "Susama",
+        "Yorgunluk"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Susama",
+          "start": 0.18,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.26,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "endocrine",
+          "structureIds": [
+            "pancreas"
+          ],
+          "role": "primary",
+          "start": 0.18,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.82,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Diabetes Type 2",
+          "url": "https://medlineplus.gov/diabetestype2.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "8b39d1edf850dc0a72f5dc6d7f6b34f0f5e64b32d63dcd279595b45d206337b0"
+    },
+    {
+      "id": "gout",
+      "name": "Gut",
+      "profileType": "real",
+      "mechanism": "metabolic",
+      "family": "crystal-inflammatory",
+      "subtype": "Ataklı eklem inflamasyonu",
+      "trajectory": {
+        "mode": "episodic",
+        "onset": 0.02,
+        "peak": 0.24,
+        "recovery": 0.66,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.13999999999999999,
+        "relapsePeriod": 0.26
+      },
+      "affectedSystems": [
+        "muscular",
+        "renal"
+      ],
+      "affectedTissues": [
+        "Ataklı eklem inflamasyonu"
+      ],
+      "typicalSymptoms": [
+        "Eklem ağrısı",
+        "Şişlik"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Eklem ağrısı",
+          "start": 0.02,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Şişlik",
+          "start": 0.1,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "renal",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.32,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Gout",
+          "url": "https://medlineplus.gov/gout.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "fae22a05325b0dd606a3b93bc7bd270c62f375dd75d4a1631c39fd290f3fe387"
+    },
+    {
+      "id": "hypothyroidism",
+      "name": "Hipotiroidi",
+      "profileType": "real",
+      "mechanism": "metabolic",
+      "family": "thyroid-regulation",
+      "subtype": "Düşük tiroid işlevi",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.2,
+        "peak": 0.72,
+        "recovery": 1,
+        "baseline": 0.14,
+        "progressionRate": 0.2,
+        "immuneDelay": 0.32,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "metabolic"
+      ],
+      "affectedTissues": [
+        "thyroid"
+      ],
+      "typicalSymptoms": [
+        "Yorgunluk",
+        "Üşüme"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.2,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Üşüme",
+          "start": 0.28,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "endocrine",
+          "structureIds": [
+            "thyroid"
+          ],
+          "role": "primary",
+          "start": 0.2,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Hypothyroidism",
+          "url": "https://medlineplus.gov/hypothyroidism.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "2ba1b5b36b704378b4e31adde04638b61d39ce1b7bf36439f7104e648d96e9df"
+    },
+    {
+      "id": "hyperthyroidism",
+      "name": "Hipertiroidi",
+      "profileType": "real",
+      "mechanism": "metabolic",
+      "family": "thyroid-regulation",
+      "subtype": "Artmış tiroid işlevi",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.12,
+        "peak": 0.64,
+        "recovery": 1,
+        "baseline": 0.17,
+        "progressionRate": 0.3,
+        "immuneDelay": 0.24,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "metabolic",
+        "cardiovascular"
+      ],
+      "affectedTissues": [
+        "thyroid"
+      ],
+      "typicalSymptoms": [
+        "Çarpıntı",
+        "Kilo kaybı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Çarpıntı",
+          "start": 0.12,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Kilo kaybı",
+          "start": 0.2,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "endocrine",
+          "structureIds": [
+            "thyroid"
+          ],
+          "role": "primary",
+          "start": 0.12,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.72,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Hyperthyroidism",
+          "url": "https://medlineplus.gov/hyperthyroidism.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "632346a89be5594e9f47a4cdd7cf4365699fea476a211152ec0322ebe3bd8586"
+    },
+    {
+      "id": "alzheimer",
+      "name": "Alzheimer hastalığı",
+      "profileType": "real",
+      "mechanism": "neurological",
+      "family": "neurodegeneration",
+      "subtype": "Yavaş ilerleyici bilişsel işlev",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.22,
+        "peak": 0.99,
+        "recovery": 1,
+        "baseline": 0.12,
+        "progressionRate": 0.57,
+        "immuneDelay": 0.33999999999999997,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "cerebrum",
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "Bellek kaybı",
+        "Düşünme güçlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Bellek kaybı",
+          "start": 0.22,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Düşünme güçlüğü",
+          "start": 0.3,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "cerebrum",
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.22,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Alzheimer's Disease",
+          "url": "https://medlineplus.gov/alzheimersdisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "f57d6f95cd651756975904f2c7f6c3bc796b7dc68b14155896378af296e7bcd2"
+    },
+    {
+      "id": "parkinson",
+      "name": "Parkinson hastalığı",
+      "profileType": "real",
+      "mechanism": "neurological",
+      "family": "movement-neurology",
+      "subtype": "İlerleyici hareket düzenleme işlevi",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.18,
+        "peak": 0.9,
+        "recovery": 1,
+        "baseline": 0.16,
+        "progressionRate": 0.54,
+        "immuneDelay": 0.3,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological",
+        "muscular"
+      ],
+      "affectedTissues": [
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "Titreme",
+        "Hareket yavaşlığı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Titreme",
+          "start": 0.18,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Hareket yavaşlığı",
+          "start": 0.26,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.18,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "muscle",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.95,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Parkinson's Disease",
+          "url": "https://medlineplus.gov/parkinsonsdisease.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "a740c0426cc87ce9de32e436ca99b95b834f092c1681979d12c36fc15119f19d"
+    },
+    {
+      "id": "epilepsy",
+      "name": "Epilepsi",
+      "profileType": "real",
+      "mechanism": "neurological",
+      "family": "episodic-neurology",
+      "subtype": "Tekrarlayan nöbet örüntüsü",
+      "trajectory": {
+        "mode": "episodic",
+        "onset": 0.04,
+        "peak": 0.28,
+        "recovery": 0.6,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.16,
+        "relapsePeriod": 0.26
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "neuron"
+      ],
+      "typicalSymptoms": [
+        "Tekrarlayan nöbetler"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Tekrarlayan nöbetler",
+          "start": 0.04,
+          "end": 1,
+          "minActivity": 0.12
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "neuron"
+          ],
+          "role": "primary",
+          "start": 0.04,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Epilepsy",
+          "url": "https://medlineplus.gov/epilepsy.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "74681721721d502b1959f0de55e46d993a614b9bf2edd9b5bcca08ac068905a1"
+    },
+    {
+      "id": "als",
+      "name": "Amyotrofik lateral skleroz",
+      "profileType": "real",
+      "mechanism": "neurological",
+      "family": "motor-neurodegeneration",
+      "subtype": "Motor sinir ve kas işlevi",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.11,
+        "peak": 0.96,
+        "recovery": 1,
+        "baseline": 0.19,
+        "progressionRate": 0.79,
+        "immuneDelay": 0.22999999999999998,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological",
+        "muscular",
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "peripheral-nerves"
+      ],
+      "typicalSymptoms": [
+        "Kas güçsüzlüğü",
+        "Konuşma güçlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Kas güçsüzlüğü",
+          "start": 0.11,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Konuşma güçlüğü",
+          "start": 0.19,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [
+            "peripheral-nerves"
+          ],
+          "role": "primary",
+          "start": 0.11,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "muscle",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.95,
+          "end": 1,
+          "weight": 0.32
+        },
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "optional",
+          "start": 0.95,
+          "end": 1,
+          "weight": 0.18
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Amyotrophic Lateral Sclerosis",
+          "url": "https://medlineplus.gov/amyotrophiclateralsclerosis.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "bed269e7affa8f5b55a81f82b34cead8c2a402bd6de915d4bcc36b2b9ce69a87"
+    },
+    {
+      "id": "migraine",
+      "name": "Migren",
+      "profileType": "real",
+      "mechanism": "neurological",
+      "family": "episodic-neurology",
+      "subtype": "Ataklı baş ağrısı örüntüsü",
+      "trajectory": {
+        "mode": "episodic",
+        "onset": 0.03,
+        "peak": 0.21,
+        "recovery": 0.57,
+        "baseline": 0.18,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.15,
+        "relapsePeriod": 0.26
+      },
+      "affectedSystems": [
+        "neurological"
+      ],
+      "affectedTissues": [
+        "Ataklı baş ağrısı örüntüsü"
+      ],
+      "typicalSymptoms": [
+        "Zonklayan baş ağrısı",
+        "Işık hassasiyeti"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Zonklayan baş ağrısı",
+          "start": 0.03,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Işık hassasiyeti",
+          "start": 0.11,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [],
+          "role": "primary",
+          "start": 0.03,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Migraine",
+          "url": "https://medlineplus.gov/migraine.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "53fe0bfbc632cd5e5b970cfda7034ec24e59ddb4f719c51e694c93ea8deaf537"
+    },
+    {
+      "id": "breast-cancer",
+      "name": "Meme kanseri",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "solid-tumor",
+      "subtype": "Meme dokusunda hücresel çoğalma",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.28,
+        "peak": 0.94,
+        "recovery": 1,
+        "baseline": 0.12,
+        "progressionRate": 0.52,
+        "immuneDelay": 0.4,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "reproductive",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "Meme dokusunda hücresel çoğalma"
+      ],
+      "typicalSymptoms": [
+        "Memede kitle"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Memede kitle",
+          "start": 0.28,
+          "end": 1,
+          "minActivity": 0.12
+        }
+      ],
+      "organEffectTimeline": [],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Breast Cancer",
+          "url": "https://medlineplus.gov/breastcancer.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "ec9d2342bbf625638973ef5a88b82af4c6d886d7f7945c7b8e19c7a1c6ee444f"
+    },
+    {
+      "id": "lung-cancer",
+      "name": "Akciğer kanseri",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "solid-tumor",
+      "subtype": "Akciğerde hücresel çoğalma",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.25,
+        "peak": 0.92,
+        "recovery": 1,
+        "baseline": 0.15,
+        "progressionRate": 0.66,
+        "immuneDelay": 0.37,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "left-lung",
+        "right-lung"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Solunum güçlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0.25,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Solunum güçlüğü",
+          "start": 0.33,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "left-lung",
+            "right-lung"
+          ],
+          "role": "primary",
+          "start": 0.25,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Lung Cancer",
+          "url": "https://medlineplus.gov/lungcancer.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "15b981b6962f654b1e16372792f3327f1afe74f9732fe42a6e6883b307420fe4"
+    },
+    {
+      "id": "colorectal-cancer",
+      "name": "Kolorektal kanser",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "solid-tumor",
+      "subtype": "Kolorektal epitel çoğalması",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.24,
+        "peak": 0.95,
+        "recovery": 1,
+        "baseline": 0.11,
+        "progressionRate": 0.58,
+        "immuneDelay": 0.36,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "colon"
+      ],
+      "typicalSymptoms": [
+        "Dışkıda kan",
+        "Bağırsak alışkanlığı değişimi"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Dışkıda kan",
+          "start": 0.24,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Bağırsak alışkanlığı değişimi",
+          "start": 0.32,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "colon"
+          ],
+          "role": "primary",
+          "start": 0.24,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Colorectal Cancer",
+          "url": "https://medlineplus.gov/colorectalcancer.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "72e5411e2b7febee6f72663fd913a498378d609b542d199715bdf82541e00b23"
+    },
+    {
+      "id": "prostate-cancer",
+      "name": "Prostat kanseri",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "solid-tumor",
+      "subtype": "Prostat dokusunda hücresel çoğalma",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.32,
+        "peak": 0.97,
+        "recovery": 1,
+        "baseline": 0.09,
+        "progressionRate": 0.37,
+        "immuneDelay": 0.44,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "reproductive"
+      ],
+      "affectedTissues": [
+        "Prostat dokusunda hücresel çoğalma"
+      ],
+      "typicalSymptoms": [
+        "İdrar yapmada güçlük",
+        "Belirtisiz seyir"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İdrar yapmada güçlük",
+          "start": 0.32,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Belirtisiz seyir",
+          "start": 0.4,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Prostate Cancer",
+          "url": "https://medlineplus.gov/prostatecancer.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "90e824af861ef37503f330524e35369423e256fe7a29935113f97263d14f4d00"
+    },
+    {
+      "id": "leukemia",
+      "name": "Lösemi",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "hematologic-tumor",
+      "subtype": "Kan yapıcı hücre çoğalması",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.07,
+        "peak": 0.84,
+        "recovery": 1,
+        "baseline": 0.24,
+        "progressionRate": 0.88,
+        "immuneDelay": 0.19,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "blood-cells"
+      ],
+      "typicalSymptoms": [
+        "Yorgunluk",
+        "Kolay kanama"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Yorgunluk",
+          "start": 0.07,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Kolay kanama",
+          "start": 0.15000000000000002,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [
+            "blood-cells"
+          ],
+          "role": "primary",
+          "start": 0.07,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Leukemia",
+          "url": "https://medlineplus.gov/leukemia.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "95b80204e37838d821e85a10cd4244a6fd2313fddf79aee544dcd5ef772d5e5a"
+    },
+    {
+      "id": "lymphoma",
+      "name": "Lenfoma",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "lymphoid-tumor",
+      "subtype": "Lenfoid hücre çoğalması",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.2,
+        "peak": 0.88,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.61,
+        "immuneDelay": 0.32,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "blood-cells"
+      ],
+      "typicalSymptoms": [
+        "Lenf bezi şişliği",
+        "Gece terlemesi"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Lenf bezi şişliği",
+          "start": 0.2,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Gece terlemesi",
+          "start": 0.28,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [
+            "blood-cells"
+          ],
+          "role": "primary",
+          "start": 0.2,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Lymphoma",
+          "url": "https://medlineplus.gov/lymphoma.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "9d4eb7ae7052a532f523f0d26ce914f8190bd427cede8218a176ba576eff8318"
+    },
+    {
+      "id": "melanoma",
+      "name": "Melanom",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "solid-tumor",
+      "subtype": "Melanosit kökenli hücresel çoğalma",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.23,
+        "peak": 0.91,
+        "recovery": 1,
+        "baseline": 0.1,
+        "progressionRate": 0.55,
+        "immuneDelay": 0.35,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "skin"
+      ],
+      "affectedTissues": [
+        "epidermis"
+      ],
+      "typicalSymptoms": [
+        "Bende renk değişimi",
+        "Biçim değişimi"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Bende renk değişimi",
+          "start": 0.23,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Biçim değişimi",
+          "start": 0.31,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "skin",
+          "structureIds": [
+            "epidermis"
+          ],
+          "role": "primary",
+          "start": 0.23,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Melanoma",
+          "url": "https://medlineplus.gov/melanoma.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "6979e78400531909f76d64d07a02f3dcb62fe0170bbe56b5c8d1279efc642d33"
+    },
+    {
+      "id": "pancreatic-cancer",
+      "name": "Pankreas kanseri",
+      "profileType": "real",
+      "mechanism": "oncology",
+      "family": "solid-tumor",
+      "subtype": "Pankreas hücresel çoğalma",
+      "trajectory": {
+        "mode": "progressive",
+        "onset": 0.29,
+        "peak": 0.96,
+        "recovery": 1,
+        "baseline": 0.14,
+        "progressionRate": 0.76,
+        "immuneDelay": 0.41,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive",
+        "metabolic"
+      ],
+      "affectedTissues": [
+        "digestive-pancreas"
+      ],
+      "typicalSymptoms": [
+        "Sarılık",
+        "Karın ağrısı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Sarılık",
+          "start": 0.29,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Karın ağrısı",
+          "start": 0.37,
+          "end": 1,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "digestive-pancreas"
+          ],
+          "role": "primary",
+          "start": 0.29,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "endocrine",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.95,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "indirect",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-applicable",
+      "sources": [
+        {
+          "title": "MedlinePlus: Pancreatic Cancer",
+          "url": "https://medlineplus.gov/pancreaticcancer.html",
+          "accessedAt": "2026-10-12",
+          "sourceDate": "2026-10-10"
+        }
+      ],
+      "metricCourseSha256": "eb9abc3e66c783d25e4367af87247942c296bea4c5d5601ddc98fe9806e2d46a"
+    },
+    {
+      "id": "bacterial",
+      "name": "Bakteriyel enfeksiyon",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/bacterial",
+      "family": "educational-infection",
+      "subtype": "Soyut bakteriyel vaka",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.1,
+        "peak": 0.4,
+        "recovery": 0.78,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.22,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "systemic"
+      ],
+      "affectedTissues": [
+        "Soyut bakteriyel vaka"
+      ],
+      "typicalSymptoms": [
+        "Ateş",
+        "Halsizlik"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ateş",
+          "start": 0.1,
+          "end": 0.78,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Halsizlik",
+          "start": 0.18,
+          "end": 0.8200000000000001,
+          "minActivity": 0.19
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "primary",
+          "start": 0.1,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        }
+      ],
+      "metricCourseSha256": "e54cae6e77ff3b2b4c92c76300a41dadbe492da16f65179dc5dfb402b323b99b"
+    },
+    {
+      "id": "mixed",
+      "name": "Ko-enfeksiyon şüphesi",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/mixed",
+      "family": "mixed-education",
+      "subtype": "Soyut karma enfeksiyon hipotezi",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.12,
+        "peak": 0.59,
+        "recovery": 0.9,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.24,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "Soyut karma enfeksiyon hipotezi"
+      ],
+      "typicalSymptoms": [
+        "Ateş",
+        "Öksürük",
+        "Halsizlik"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ateş",
+          "start": 0.12,
+          "end": 0.9,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Öksürük",
+          "start": 0.2,
+          "end": 0.9400000000000001,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Halsizlik",
+          "start": 0.28,
+          "end": 0.98,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "primary",
+          "start": 0.12,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.6699999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/flu.html",
+          "accessedAt": "2026-10-13"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/norovirusinfections.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "8a7a077161763517852b6fb4347d41b0370af3d909dae5d0e932a6a17d48ce24"
+    },
+    {
+      "id": "covid-like",
+      "name": "COVID-benzeri solunum yolu enfeksiyonu",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/viral",
+      "family": "respiratory-viral",
+      "subtype": "COVID-benzeri eğitim profili",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.1,
+        "peak": 0.44,
+        "recovery": 0.8,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.22,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "upper-airway"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Ateş",
+        "Halsizlik"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0.1,
+          "end": 0.8,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.18,
+          "end": 0.8400000000000001,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Halsizlik",
+          "start": 0.26,
+          "end": 0.88,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "upper-airway"
+          ],
+          "role": "primary",
+          "start": 0.1,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.52,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/flu.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "c9bd8c8cbfe930af96d117a4cf69304315d4a2c9a8b7f9319d742f6044f399b3"
+    },
+    {
+      "id": "gastroenteritis",
+      "name": "Gastroenterit / norovirüs benzeri",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/viral",
+      "family": "acute-enteric",
+      "subtype": "Norovirüs-benzeri eğitim profili",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.06,
+        "peak": 0.26,
+        "recovery": 0.61,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.18,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive"
+      ],
+      "affectedTissues": [
+        "intestinal-epithelium"
+      ],
+      "typicalSymptoms": [
+        "Bulantı",
+        "Kusma",
+        "İshal"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Bulantı",
+          "start": 0.06,
+          "end": 0.61,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Kusma",
+          "start": 0.14,
+          "end": 0.65,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "İshal",
+          "start": 0.22,
+          "end": 0.69,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "intestinal-epithelium"
+          ],
+          "role": "primary",
+          "start": 0.06,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/norovirusinfections.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "728c815be57f1b2d8cf7c969c7e26e05774354c1e1feceb69c4142c938869b95"
+    },
+    {
+      "id": "avian-flu-like",
+      "name": "Kuş gribi benzeri senaryo",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/viral",
+      "family": "respiratory-viral",
+      "subtype": "Kuş gribi benzeri eğitim profili",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.13,
+        "peak": 0.62,
+        "recovery": 0.94,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.25,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "bronchus"
+      ],
+      "typicalSymptoms": [
+        "Ateş",
+        "Öksürük",
+        "Solunum güçlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Ateş",
+          "start": 0.13,
+          "end": 0.94,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Öksürük",
+          "start": 0.21000000000000002,
+          "end": 0.98,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Solunum güçlüğü",
+          "start": 0.29000000000000004,
+          "end": 1,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "bronchus"
+          ],
+          "role": "primary",
+          "start": 0.13,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.7,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": false,
+      "publicSpreadApplicable": false,
+      "spreadMode": "not-modeled",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/flu.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "0edbc7050dba9ccb4452b063edf072102f36622d4986ec1119e2c2d4bd54b193"
+    },
+    {
+      "id": "pneumonia",
+      "name": "Bakteriyel pnömoni",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/bacterial",
+      "family": "persistent-respiratory",
+      "subtype": "Bakteriyel pnömoni eğitim profili",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.11,
+        "peak": 0.52,
+        "recovery": 0.88,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.22999999999999998,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory"
+      ],
+      "affectedTissues": [
+        "alveoli"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Ateş",
+        "Solunum güçlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0.11,
+          "end": 0.88,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.19,
+          "end": 0.92,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Solunum güçlüğü",
+          "start": 0.27,
+          "end": 0.96,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "alveoli"
+          ],
+          "role": "primary",
+          "start": 0.11,
+          "end": 1,
+          "weight": 0.85
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/pneumonia.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "cdca7ee5c92975197866f0ef2063b12512db0716aaad14d99bc452f2bd892150"
+    },
+    {
+      "id": "foodborne",
+      "name": "Gıda kaynaklı bakteriyel enfeksiyon",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/bacterial",
+      "family": "acute-enteric",
+      "subtype": "Gıda ilişkili bakteriyel eğitim profili",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.08,
+        "peak": 0.31,
+        "recovery": 0.7,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.2,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "digestive",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "intestinal-epithelium"
+      ],
+      "typicalSymptoms": [
+        "İshal",
+        "Karın ağrısı",
+        "Bulantı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "İshal",
+          "start": 0.08,
+          "end": 0.7,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Karın ağrısı",
+          "start": 0.16,
+          "end": 0.74,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Bulantı",
+          "start": 0.24,
+          "end": 0.7799999999999999,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "digestive",
+          "structureIds": [
+            "intestinal-epithelium"
+          ],
+          "role": "primary",
+          "start": 0.08,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.39,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/salmonellainfections.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "d39501e09dae1af846a5d892e1e749183d5474f7a0a140ac330d7e284cfa585a"
+    },
+    {
+      "id": "meningitis-like",
+      "name": "Menenjit benzeri senaryo",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/bacterial",
+      "family": "neuroinvasive-infection",
+      "subtype": "Menenjit benzeri eğitim profili",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.08,
+        "peak": 0.55,
+        "recovery": 0.9,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.2,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "neurological",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "Menenjit benzeri eğitim profili"
+      ],
+      "typicalSymptoms": [
+        "Baş ağrısı",
+        "Ateş",
+        "Ense sertliği",
+        "Bulantı"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Baş ağrısı",
+          "start": 0.08,
+          "end": 0.9,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.16,
+          "end": 0.9400000000000001,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Ense sertliği",
+          "start": 0.24,
+          "end": 0.98,
+          "minActivity": 0.26
+        },
+        {
+          "symptom": "Bulantı",
+          "start": 0.32,
+          "end": 1,
+          "minActivity": 0.33
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "brain",
+          "structureIds": [],
+          "role": "primary",
+          "start": 0.08,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.63,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/meningitis.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "20fcc2a33157bebf5fc95e38bda504966986bd793bc48b3f5815e632c0cd8e26"
+    },
+    {
+      "id": "atypical-influenza",
+      "name": "Atipik influenza",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/mixed",
+      "family": "mixed-education",
+      "subtype": "Atipik karma belirtiler",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.09,
+        "peak": 0.47,
+        "recovery": 0.84,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.21,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "digestive"
+      ],
+      "affectedTissues": [
+        "upper-airway"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Ateş",
+        "Halsizlik",
+        "Gastrointestinal belirtiler"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0.09,
+          "end": 0.84,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.16999999999999998,
+          "end": 0.88,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Halsizlik",
+          "start": 0.25,
+          "end": 0.9199999999999999,
+          "minActivity": 0.26
+        },
+        {
+          "symptom": "Gastrointestinal belirtiler",
+          "start": 0.32999999999999996,
+          "end": 0.96,
+          "minActivity": 0.33
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "upper-airway"
+          ],
+          "role": "primary",
+          "start": 0.09,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "digestive",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.5499999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/flu.html",
+          "accessedAt": "2026-10-13"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/norovirusinfections.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "9068f1af0f609bc7971cb7b28c23c7ecef77b1507c2a5dd6c1056e0895cb818a"
+    },
+    {
+      "id": "flu-gi",
+      "name": "Grip + gastrointestinal semptom",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/mixed",
+      "family": "mixed-education",
+      "subtype": "Solunum ve bağırsak gözlemleri",
+      "trajectory": {
+        "mode": "acute",
+        "onset": 0.07,
+        "peak": 0.39,
+        "recovery": 0.76,
+        "baseline": 0.04,
+        "progressionRate": 0.5,
+        "immuneDelay": 0.19,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "digestive"
+      ],
+      "affectedTissues": [
+        "upper-airway"
+      ],
+      "typicalSymptoms": [
+        "Öksürük",
+        "Ateş",
+        "Bulantı",
+        "İshal"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Öksürük",
+          "start": 0.07,
+          "end": 0.76,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Ateş",
+          "start": 0.15000000000000002,
+          "end": 0.8,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Bulantı",
+          "start": 0.23,
+          "end": 0.84,
+          "minActivity": 0.26
+        },
+        {
+          "symptom": "İshal",
+          "start": 0.31,
+          "end": 0.88,
+          "minActivity": 0.33
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [
+            "upper-airway"
+          ],
+          "role": "primary",
+          "start": 0.07,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "digestive",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.47000000000000003,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/flu.html",
+          "accessedAt": "2026-10-13"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/norovirusinfections.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "ac0f1f976e71ded52987d3602f18abb79dc4abce92fc52360833a9bad3752803"
+    },
+    {
+      "id": "immunosuppressed",
+      "name": "Bağışıklığı baskılanmış hastada ağır enfeksiyon",
+      "profileType": "legacy-educational",
+      "mechanism": "infectious/mixed",
+      "family": "immune-modified-infection",
+      "subtype": "Azalmış bağışıklık yanıtıyla eğitim profili",
+      "trajectory": {
+        "mode": "chronic",
+        "onset": 0.09,
+        "peak": 0.82,
+        "recovery": 1,
+        "baseline": 0.18,
+        "progressionRate": 0.32,
+        "immuneDelay": 0.21,
+        "relapsePeriod": 0
+      },
+      "affectedSystems": [
+        "respiratory",
+        "systemic"
+      ],
+      "affectedTissues": [
+        "Azalmış bağışıklık yanıtıyla eğitim profili"
+      ],
+      "typicalSymptoms": [
+        "Halsizlik",
+        "Öksürük",
+        "Solunum güçlüğü"
+      ],
+      "symptomTimeline": [
+        {
+          "symptom": "Halsizlik",
+          "start": 0.09,
+          "end": 1,
+          "minActivity": 0.12
+        },
+        {
+          "symptom": "Öksürük",
+          "start": 0.16999999999999998,
+          "end": 1,
+          "minActivity": 0.19
+        },
+        {
+          "symptom": "Solunum güçlüğü",
+          "start": 0.25,
+          "end": 1,
+          "minActivity": 0.26
+        }
+      ],
+      "organEffectTimeline": [
+        {
+          "organ": "lungs",
+          "structureIds": [],
+          "role": "primary",
+          "start": 0.09,
+          "end": 1,
+          "weight": 0.85
+        },
+        {
+          "organ": "blood",
+          "structureIds": [],
+          "role": "secondary",
+          "start": 0.8999999999999999,
+          "end": 1,
+          "weight": 0.32
+        }
+      ],
+      "dnaKind": "response",
+      "contagious": true,
+      "publicSpreadApplicable": true,
+      "spreadMode": "abstract-exposure",
+      "sources": [
+        {
+          "title": "MedlinePlus: Infections",
+          "url": "https://medlineplus.gov/infections.html",
+          "accessedAt": "2026-10-12"
+        },
+        {
+          "title": "MedlinePlus: Belirti karşılaştırması (eğitim hipotezi)",
+          "url": "https://medlineplus.gov/pneumonia.html",
+          "accessedAt": "2026-10-13"
+        }
+      ],
+      "metricCourseSha256": "8af2c893e9564a0ab18e423b93be16846bd6f0ca64f7065c0fac7bfef2be5e92"
+    }
+  ]
+}

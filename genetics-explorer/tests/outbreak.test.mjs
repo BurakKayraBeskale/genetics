@@ -24,10 +24,17 @@ test('new observations produce archived bulletins without repeated same-day addi
   assert.deepEqual(restoreSnapshot(createSnapshot(next)).bulletinHistory, next.bulletinHistory);
 });
 
-test('adaptive response crossing creates day-four bulletin from metrics', () => {
+test('adaptive response bulletin follows actual profile threshold crossing exactly once', () => {
   let state = createSimulation();
-  for (let day = 0; day < 4; day++) state = enrichObservations(state, advanceSimulation(state));
-  assert.ok(state.bulletinHistory.some((item) => item.day === 4 && item.text.includes('Kazanılmış bağışıklık')));
-  const next = enrichObservations(state, advanceSimulation(state));
-  assert.equal(next.bulletinHistory.filter((item) => item.text.includes('Kazanılmış bağışıklık')).length, 1);
+  let crossingDay = null;
+  for (let step = 0; step < state.config.durationDays && !state.finalOutcome; step++) {
+    const previous = state;
+    state = enrichObservations(previous, advanceSimulation(previous));
+    if ((previous.metrics.adaptiveImmunity || 0) < 1 && state.metrics.adaptiveImmunity >= 1) crossingDay = state.day;
+  }
+  assert.notEqual(crossingDay, null);
+  const responses = state.bulletinHistory.filter(item => item.id?.endsWith('metric:adaptiveImmunity:rise'));
+  assert.equal(responses.length, 1);
+  assert.equal(responses[0].day, crossingDay);
+  assert.ok(responses[0].text.includes('Kazanılmış bağışıklık'));
 });

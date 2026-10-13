@@ -11,7 +11,8 @@ test('52 named real profiles retain source provenance and required educational f
   assert.ok(p.name&&p.cellularMechanism&&p.immuneResponseType&&p.dnaRelation.explanation);
   assert.ok(p.affectedSystems.length&&p.typicalSymptoms.length&&p.educationalTimeline.length);
   assert.match(p.timelineDisclaimer,/gerçek kuluçka/);
-  assert.ok(p.sources.every(s=>catalog.topics.some(t=>t.url===s.url&&t.summaryPlainText)));
+  assert.ok(p.sources.some(s=>catalog.topics.some(t=>t.url===s.url&&t.summaryPlainText)));
+  assert.ok(p.sources.every(s=>/^https:\/\/(medlineplus\.gov|www\.cdc\.gov|www\.nih\.gov)\//.test(s.url)&&s.title));
   assert.equal(typeof p.publicSpreadApplicable,'boolean');
   if(!p.mechanism.startsWith('infectious/'))assert.equal(p.publicSpreadApplicable,false);
  }

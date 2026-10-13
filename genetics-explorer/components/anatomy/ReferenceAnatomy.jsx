@@ -48,7 +48,7 @@ function makeHologram(affected,surface,selected,box){
  };
  mat.customProgramCacheKey=()=>affected?'anatomy-red':'anatomy-cyan';return mat;
 }
-function LoadedReference({view,target,selectedStructure,affectedOrgans,severity,onSelect,onSelectStructure,reducedMotion,onStatus}){
+function LoadedReference({view,target,selectedStructure,affectedOrgans,severity,onSelect,onSelectStructure,reducedMotion,onStatus,organSeverities,meshSeverities}){
  const {scene}=useGLTF('/models/anatomy/anatomy.glb');
  const parts=useMemo(()=>referenceParts(scene),[scene]);
  const definition=getStructures(target).find(s=>s.id===selectedStructure);
@@ -56,10 +56,11 @@ function LoadedReference({view,target,selectedStructure,affectedOrgans,severity,
  const matching=parts.filter(p=>matches(p.name,definition));
  const visible=useMemo(()=>parts.filter(p=>view==='body'||(matching.length?matches(p.name,definition):p.organ===target)),[parts,view,target,selectedStructure]);
  const layout=useMemo(()=>{const bounds=new THREE.Box3();visible.forEach(p=>bounds.union(p.box));const size=bounds.getSize(new THREE.Vector3());const center=bounds.getCenter(new THREE.Vector3());const scale=(view==='body'?5.5:2.6)/Math.max(view==='body'?size.y:Math.max(size.x,size.y,size.z),.001);return {scale,offset:center.multiplyScalar(-scale).toArray()};},[visible,view]);
- const mats=useMemo(()=>new Map(visible.map(p=>[p.name,makeHologram(affectedOrgans.includes(p.organ),view==='body'&&p.organ==='skin',p.organ===target&&(!definition||matches(p.name,definition)),p.box)])),[visible,affectedOrgans.join(','),view,target,selectedStructure]);
+ const activeMeshes=meshSeverities?Object.keys(meshSeverities).filter(name=>meshSeverities[name]>0).join(','):null;
+ const mats=useMemo(()=>new Map(visible.map(p=>[p.name,makeHologram(meshSeverities?meshSeverities[p.name]>0:affectedOrgans.includes(p.organ),view==='body'&&p.organ==='skin',p.organ===target&&(!definition||matches(p.name,definition)),p.box)])),[visible,affectedOrgans.join(','),activeMeshes,view,target,selectedStructure]);
  useEffect(()=>()=>mats.forEach(m=>m.dispose()),[mats]);
  useEffect(()=>{onStatus?.(previous=>({...previous,error:false,loading:false,ready:true,count:parts.length,meshNames:parts.map(p=>p.name),schematic:isSchematic}));},[parts,isSchematic,onStatus]);
- useEffect(()=>{mats.forEach(m=>{m.userData.uniforms.uAnatomyStrength.value=severity;m.emissiveIntensity=m.userData.affected?.2+severity*.35:.08;if(reducedMotion)m.userData.uniforms.uAnatomyTime.value=0;});},[mats,severity,reducedMotion]);
+ useEffect(()=>{mats.forEach((m,name)=>{const organ=visible.find(p=>p.name===name)?.organ;const localSeverity=meshSeverities?.[name]??organSeverities?.[organ]??severity;m.userData.uniforms.uAnatomyStrength.value=localSeverity;m.emissiveIntensity=m.userData.affected?.2+localSeverity*.35:.08;if(reducedMotion)m.userData.uniforms.uAnatomyTime.value=0;});},[mats,severity,reducedMotion,organSeverities,meshSeverities]);
  useFrame(({clock})=>{if(!reducedMotion)mats.forEach(m=>{m.userData.uniforms.uAnatomyTime.value=clock.elapsedTime;});});
  if(isSchematic)return <AnatomyModel view="tissue" target={target} affectedOrgans={affectedOrgans} severity={severity} onSelect={onSelect} reducedMotion={reducedMotion}/>;
  if(!visible.length)return null;
@@ -70,15 +71,17 @@ class AssetBoundary extends Component{
  componentDidUpdate(previous){if(this.state.failed&&previous.retryKey!==this.props.retryKey)this.setState({failed:false});}
  render(){return this.state.failed?this.props.fallback:this.props.children;}
 }
-function Supplement({target,affectedOrgans,severity,reducedMotion,onStatus}){
+function Supplement({target,affectedOrgans,severity,reducedMotion,onStatus,organSeverities,meshSeverities}){
  const ids=target==='muscle'?['34682','34683','37686','37687']:['7148'];
  const originals=useLoader(STLLoader,ids.map(id=>'/models/anatomy/supplemental/FMA'+id+'.stl'));
  const parts=useMemo(()=>originals.map(supplementGeometry),[originals]);
  const layout=useMemo(()=>{const b=new THREE.Box3();parts.forEach(g=>b.union(g.boundingBox));const size=b.getSize(new THREE.Vector3());const scale=2.6/Math.max(size.x,size.y,size.z);return {scale,offset:b.getCenter(new THREE.Vector3()).multiplyScalar(-scale).toArray()};},[parts]);
- const mat=useMemo(()=>{const bounds=new THREE.Box3();parts.forEach(g=>bounds.union(g.boundingBox));return makeHologram(affectedOrgans.includes(target),false,true,bounds);},[target,affectedOrgans.join(',')]);
+ const supplementSeverity=meshSeverities?.[target==='muscle'?'BodyParts3D_muscle':'BodyParts3D_stomach']??organSeverities?.[target]??severity;
+ const supplementAffected=meshSeverities?supplementSeverity>0:affectedOrgans.includes(target);
+ const mat=useMemo(()=>{const bounds=new THREE.Box3();parts.forEach(g=>bounds.union(g.boundingBox));return makeHologram(supplementAffected,false,true,bounds);},[target,supplementAffected]);
  useEffect(()=>()=>mat.dispose(),[mat]);
  useEffect(()=>{onStatus?.(previous=>({...previous,error:false,loading:false,ready:true,schematic:false,supplementNames:[...new Set([...(previous?.supplementNames||[]),target==='muscle'?'skeletal_muscle':'stomach'])],supplement:true}));},[target,onStatus]);
- useEffect(()=>{mat.userData.uniforms.uAnatomyStrength.value=severity;mat.emissiveIntensity=mat.userData.affected?.2+severity*.35:.08;if(reducedMotion)mat.userData.uniforms.uAnatomyTime.value=0;},[mat,severity,reducedMotion]);
+ useEffect(()=>{const localSeverity=supplementSeverity;mat.userData.uniforms.uAnatomyStrength.value=localSeverity;mat.emissiveIntensity=mat.userData.affected?.2+localSeverity*.35:.08;if(reducedMotion)mat.userData.uniforms.uAnatomyTime.value=0;},[mat,supplementSeverity,reducedMotion]);
  useFrame(({clock})=>{if(!reducedMotion)mat.userData.uniforms.uAnatomyTime.value=clock.elapsedTime;});
  return <SmoothLayout layout={layout} reducedMotion={reducedMotion}>{parts.map((g,i)=><mesh key={i} geometry={g} material={mat} dispose={null}/>)}</SmoothLayout>;
 }

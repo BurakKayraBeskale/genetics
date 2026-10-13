@@ -126,3 +126,12 @@ Lokal etki maskesi gerçek mesh koordinatlarında eğitimsel Gaussian dağılım
 
 
 Bilgi amaçlı yapılar (üst hava yolları, periferik sinirler, ayrı sınıflandırılmamış atardamar/toplardamarlar) yanlış mikrodoku geometrisiyle temsil edilmez. Kullanıcı tam anatomik bağlamda kalır, seçim açıklaması panelde gösterilir. Ayrı geometri ve mikrodoku şeması durumları farklı etiketlenir. Referans yükleme hataları varlık türüne göre sınırlanır; yeni seçimde yeniden deneme yapılır, başarılı varlık hatayı temizler. GLB/STL dönüşmüş geometrileri kaynak nesnesi başına önbelleğe alınır; organ görünümü yalnız görünen meshlerin materyal ve uniformlarını kullanır.
+
+
+## Profile özgü eğitim seyirleri
+
+63 mevcut senaryo (52 gerçek hastalık profili + 11 eğitim varyantı) `data/diseaseTrajectories.js` içinde 39 anlamlı aile ve özgün alt tip/seyir konfigürasyonu ile zenginleştirilir. Yeni hastalık eklenmedi. Akut, kronik, ilerleyici, alevlenmeli ve ataklı modeller normalize öğrenme zamanını kullanır; belirtiler görünüp azalabilir, organ hedefleri farklı ağırlık ve zaman pencerelerinde etkinleşir. Sayısal katsayılar kaynaklardan alınmış klinik süreler veya prognoz değildir. Kaynaklar mevcut MedlinePlus kayıtları ve gerektiğinde MedlinePlus Genetics/CDC bağlantılarıdır.
+
+`lib/diseaseTrajectory.js` aile/alt tip bileşimini, `DiseaseEngine.js` mekanizma cephesini ve `lib/caseEvents.js` durum değişimlerinden türetilen doktor/bülten olaylarını yönetir. Olay kimlikleri snapshotlarda korunur ve yinelenen UI/motor kayıtları engellenir. `outbreak.js` eğitimsel transmission parametresini kullanır; bulaşıcı olmayan, genel temas modeline uygun olmayan ve belirli maruziyet yolu gerektiren profiller birbirinden açıklamayla ayrılır. DNA kartı doğrudan kalıtsal ilişki ile hücresel yanıtı ayırır; enfeksiyon insan DNA dizisini değiştirmez.
+
+`tests/diseaseDifferentiation.test.mjs` talep edilen 10 temsilî vakayı, gerçek snapshot devamını, belirtileri, notları, organ pencerelerini ve DNA/toplum ilişkisini karşılaştırır. Tüm 63 profilin aynı seed ile 14 eğitim adımındaki metrik seyri ve fenotip imzası ayrıca denetlenir. `docs/disease-profile-audit.json` denetim özeti ve profil kaynaklarını içerir. Anatomi varlıkları, geometri ve holografik shaderlar korunmuştur; mevcut renderer yalnız zaman bazlı etki değerlerini alır.

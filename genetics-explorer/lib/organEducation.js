@@ -1,3 +1,4 @@
+import { getProfileOrganEffects } from './diseaseTrajectory.js';
 const organ = (name, functionText, tissue, sourceUrl, sourceTitle) => ({ name, function: functionText, tissue, sourceUrl, sourceTitle });
 export const ORGAN_EDUCATION = {
  lungs: organ('Akciğerler ve hava yolları', 'Hava yolları havayı iletir; alveoller oksijen ve karbondioksitin kan ile değişimini sağlar.', 'Hava yolu epiteli ve alveol yüzeyi', 'https://www.nhlbi.nih.gov/health/lungs/breathing-benefits', 'NIH / NHLBI: Solunum ve gaz değişimi'),
@@ -16,6 +17,7 @@ const mappings = [
 ];
 /** Specific systems retain profile order; broad/systemic involvement is placed last. */
 export function affectedOrgansFor(profile = {}) {
+ if(Array.isArray(profile.organEffectTimeline))return [...new Set([...profile.organEffectTimeline].sort((a,b)=>({primary:0,secondary:1,optional:2}[a.role]??0)-({primary:0,secondary:1,optional:2}[b.role]??0)).map(w=>w.organ))];
  const systems = Array.isArray(profile.affectedSystems) ? profile.affectedSystems : [];
  const keys = systems.flatMap(system => mappings.filter(([pattern]) => pattern.test(String(system))).map(([,key]) => key));
  // Systemic/immune involvement alone does not locate disease in blood vessels.
@@ -23,12 +25,13 @@ export function affectedOrgansFor(profile = {}) {
 }
 const bounded = value => Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value)) * 10) / 10 : 0;
 /** This adapter only reads global classroom indicators. It never estimates clinical organ damage. */
-export function getOrganEffect(profile = {}, metrics = {}, key) {
+export function getOrganEffect(profile = {}, metrics = {}, key, context) {
  const affected = affectedOrgansFor(profile).includes(key);
  const inflammation = bounded(metrics.inflammation);
  const loss = name => Number.isFinite(metrics[name]) ? bounded(100 - metrics[name]) : 0;
  const tissueStress = bounded(Math.max(bounded(metrics.tissueDamage), loss('proteinFunction'), loss('neuralFunction'), bounded(metrics.metabolicImbalance), bounded(metrics.tumorBurden), bounded(metrics.autoimmuneActivity)));
- const severity = affected ? bounded(inflammation * .35 + tissueStress * .65) : 0;
+ const targets=context&&Array.isArray(profile.organEffectTimeline)?getProfileOrganEffects(profile,metrics,context.day,context.duration).filter(effect=>effect.organ===key):null;
+ const severity=targets?bounded(Math.max(0,...targets.map(effect=>effect.severity))*100):affected?bounded(inflammation*.35+tissueStress*.65):0;
  const damageLevel = severity === 0 ? 'Belirgin görsel etki yok' : severity < 25 ? 'Düşük görsel etki' : severity < 60 ? 'Orta görsel etki' : 'Yüksek görsel etki';
  const tissueLinks = {
  lungs: 'Hava yolu yüzeyi ve gaz değişimi, solunum belirtilerinin anlaşılmasına yardımcı olur.',
@@ -44,5 +47,5 @@ export function getOrganEffect(profile = {}, metrics = {}, key) {
  const mechanismLinks = mechanism.startsWith('infectious') || /viral|bacterial|mixed/.test(mechanism) ? 'Enfeksiyon ve konak yanıtı birlikte değerlendirilir.' : mechanism === 'autoimmune' ? 'Öz dokulara yönelen bağışıklık aktivitesi kavramsal olarak incelenir.' : mechanism === 'genetic' ? 'Kalıtsal protein işlevi ile sistem belirtileri karşılaştırılır.' : mechanism === 'metabolic' ? 'Metabolik denge ile sistem işlevi arasındaki ilişki incelenir.' : mechanism === 'neurological' ? 'Sinir işlevi ile günlük gözlemler karşılaştırılır.' : mechanism === 'oncology' ? 'Anormal hücre çoğalması ve doku işlevi kavramsal olarak karşılaştırılır.' : 'Vaka profilindeki mekanizma günlük gözlemlerle karşılaştırılır.';
  let explanation = affected ? [tissueLinks[key], mechanismLinks].filter(Boolean).join(' ') : 'Bu sistem profilde hedef olarak belirtilmiyor. Genel göstergeler burada hasar olduğu anlamına gelmez.';
  if (affected && key === 'lungs' && /influenza/i.test(profile.id || '')) explanation = 'Influenza solunum epiteliyle ilişkilidir; üst hava yolları, trakea ve bronşlar da bu kapsamdadır. Akciğer gösterimi her vakada akciğer hasarı geliştiği anlamına gelmez.';
- return { affected, severity, inflammation, tissueStress, damageLevel, explanation };
+ return { affected, active:targets?targets.length>0:affected, targets:targets||[], severity, inflammation, tissueStress, damageLevel, explanation };
 }
