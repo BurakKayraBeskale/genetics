@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo, useRef } from 'react';
+import { memo, createContext, useContext, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -9,36 +9,61 @@ import * as THREE from 'three';
 const sphere = new THREE.SphereGeometry(1, 24, 16);
 const box = new THREE.BoxGeometry(1, 1, 1);
 const ring = new THREE.TorusGeometry(1, .16, 8, 24);
+const kidneyGeometry = sphere.clone();
+const kidneyVertices = kidneyGeometry.attributes.position;
+for(let i=0;i<kidneyVertices.count;i++) {
+ const x=kidneyVertices.getX(i),y=kidneyVertices.getY(i),z=kidneyVertices.getZ(i);
+ const hilum=Math.exp(-y*y*9)*Math.max(0,-x)*.62;
+ kidneyVertices.setXYZ(i,x+hilum,y,z*(.94+.06*Math.abs(y)));
+}
+kidneyGeometry.computeVertexNormals();
 const palette = {};
-function material(color, ghost = false) {
- const key = color + ghost;
- if (!palette[key]) palette[key] = new THREE.MeshStandardMaterial({color, roughness: .48, metalness: .12, emissive: color, emissiveIntensity: ghost ? .07 : .045, transparent: ghost, opacity: ghost ? .13 : 1, depthWrite: !ghost});
+const AnatomyTint = createContext(null);
+function material(color, ghost = false, intensity = .08) {
+ const key = color + ghost + intensity;
+ if (!palette[key]) palette[key] = new THREE.MeshStandardMaterial({color, roughness: .32, metalness: .22, emissive: color, emissiveIntensity: ghost ? .16 : intensity, transparent: ghost, opacity: ghost ? .17 : 1, depthWrite: !ghost});
  return palette[key];
 }
-const POS = { lungs: [0,1.2,.16], digestive:[0,.34,.22], brain:[0,2.38,.04], muscle:[-.28,-.72,.12], renal:[0,.46,-.04], endocrine:[0,.64,.22], skin:[.6,.82,.27], blood:[0,1.17,.33] };
+function useAnatomyMaterial(color, ghost) {
+ const tint=useContext(AnatomyTint);
+ return useMemo(()=>{
+  if(!tint)return material(color,ghost);
+  const luminance=new THREE.Color(color).getHSL({h:0,s:0,l:0}).l;
+  const shaded=new THREE.Color(tint.affected ? '#fa746b' : '#42bed9');
+  shaded.lerp(new THREE.Color(tint.affected ? '#ffb171' : '#b1effa'),Math.max(0,luminance-.24)*.4);
+  if(tint.affected) shaded.lerp(new THREE.Color('#ff8e50'),tint.severity*.6);
+  return material(shaded.getStyle(),ghost,.1+(tint.affected?tint.severity*.28:0));
+ },[color,ghost,tint]);
+}
+export const ANATOMY_ANCHORS = { lungs: [0,1.2,.16], digestive:[0,.34,.22], brain:[0,2.38,.04], muscle:[-.28,-.72,.12], renal:[0,.46,-.04], endocrine:[0,.64,.22], skin:[.6,.82,.27], blood:[0,1.17,.33] };
+const POS = ANATOMY_ANCHORS;
 const COLORS = {lungs:'#73bdd0',digestive:'#d4ac92',brain:'#bcaed9',muscle:'#bf8eaa',renal:'#b38fa9',endocrine:'#d0bd88',skin:'#caa690',blood:'#bfa6be'};
 const keys = Object.keys(POS);
 function Part({ p=[0,0,0], s=1, r=[0,0,0], color, ghost=false, geometry=sphere }) {
- return <mesh geometry={geometry} material={material(color,ghost)} position={p} scale={s} rotation={r} dispose={null}/>;
+ return <mesh geometry={geometry} material={useAnatomyMaterial(color,ghost)} position={p} scale={s} rotation={r} dispose={null}/>;
 }
 function Tube({points, radius=.045, color, ghost=false}) {
  const geometry=useMemo(()=>new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),Math.max(12,points.length*6),radius,7,false),[points,radius]);
  // Own tube geometry only; shared primitives and materials remain cached.
  useEffect(()=>()=>geometry.dispose(),[geometry]);
- return <mesh geometry={geometry} material={material(color,ghost)} dispose={null}/>;
+ return <mesh geometry={geometry} material={useAnatomyMaterial(color,ghost)} dispose={null}/>;
 }
 function Taper({profile,position,scale,rotation,color,ghost=false}) {
  const geometry=useMemo(()=>new THREE.LatheGeometry(profile.map(p=>new THREE.Vector2(...p)),24),[profile]);
  useEffect(()=>()=>geometry.dispose(),[geometry]);
- return <mesh geometry={geometry} material={material(color,ghost)} position={position} scale={scale} rotation={rotation} dispose={null}/>;
+ return <mesh geometry={geometry} material={useAnatomyMaterial(color,ghost)} position={position} scale={scale} rotation={rotation} dispose={null}/>;
 }
 const torsoProfile=[[0,0],[.29,.02],[.43,.16],[.38,.39],[.35,.65],[.43,.88],[.59,1.18],[.61,1.39],[.47,1.52],[.2,1.6],[0,1.62]];
+const headProfile=[[0,0],[.15,.035],[.22,.1],[.27,.23],[.31,.4],[.32,.57],[.27,.71],[.16,.8],[0,.84]];
 const limbProfile=[[0,-.5],[.09,-.49],[.12,-.35],[.15,0],[.17,.27],[.12,.48],[0,.5]];
 function HumanShell() {
- const c='#87b9c5', bone='#95d5db';
+ const c='#45ccec', bone='#82cfda';
  return <group>
  <Taper profile={torsoProfile} position={[0,-.08,0]} scale={[1,1,.5]} color={c} ghost/>
- <Part p={[0,2.34,0]} s={[.32,.43,.29]} color={c} ghost/>
+ <Taper profile={headProfile} position={[0,1.93,0]} scale={[1,1,.85]} color={c} ghost/>
+ <Part p={[0,2.31,.245]} s={[.068,.1,.073]} color={c} ghost/>
+ <Part p={[0,2.02,.075]} s={[.21,.1,.17]} color={c} ghost/>
+ {[-1,1].map(side=><Part key={side} p={[side*.31,2.31,0]} s={[.052,.105,.065]} color={c} ghost/>)}
  <Part p={[0,1.83,0]} s={[.16,.22,.16]} color={c} ghost/>
  <Part p={[0,-.03,0]} s={[.48,.32,.29]} color={c} ghost/>
  {[-1,1].map(side=><group key={side}>
@@ -52,6 +77,11 @@ function HumanShell() {
  <Part p={[side*.28,-1.43,0]} s={[.16,.16,.16]} color={c} ghost/>
  <Taper profile={limbProfile} position={[side*.29,-1.99,0]} scale={[1,1.05,1]} color={c} ghost/>
  <Part p={[side*.29,-2.61,.14]} s={[.17,.12,.31]} color={c} ghost/>
+ <Tube points={[[side*.18,-.17,-.07],[side*.25,-.77,-.04],[side*.28,-1.34,-.025]]} radius={.042} color={bone} ghost/>
+ <Tube points={[[side*.28,-1.5,-.02],[side*.3,-2.05,-.025],[side*.29,-2.52,0]]} radius={.029} color={bone} ghost/>
+ <Tube points={[[side*.62,1.44,0],[side*.81,1.05,0],[side*.95,.55,0]]} radius={.029} color={bone} ghost/>
+ <Tube points={[[side*.97,.45,0],[side*1.05,.05,0],[side*1.12,-.31,0]]} radius={.018} color={bone} ghost/>
+ <Tube points={[[0,.16,-.03],[side*.35,.05,-.06],[side*.32,-.23,-.06],[side*.15,-.26,-.03]]} radius={.035} color={bone} ghost/>
  <Tube points={[[side*.08,1.57,.06],[side*.3,1.58,.07],[side*.53,1.5,.06]]} radius={.024} color={bone}/>
  {[0,1,2,3,4].map(i=><Tube key={i} points={[[0,1.43-i*.13,-.05],[side*.36,1.45-i*.13,.08],[side*.5,1.27-i*.11,.04],[side*.24,1.17-i*.1,.14]]} radius={.013} color={bone} ghost/>)}
  </group>)}
@@ -84,7 +114,7 @@ function Brain({color}) {
  return <group>
  {[-1,1].map(side=><group key={side}>
  <Part p={[side*.4,.12,0]} s={[.43,.66,.53]} color={color}/>
- {Array.from({length:8},(_,j)=><Tube key={j} points={Array.from({length:12},(_,i)=>{const t=i/11*Math.PI;return [side*(.11+Math.sin(t)*.63),.57-j*.14+Math.sin(t*4+j)*.035,.37*Math.cos(t*.75)+.1];})} radius={.045} color='#d7c7e7'/>)}
+ {Array.from({length:12},(_,j)=><Tube key={j} points={Array.from({length:12},(_,i)=>{const t=i/11*Math.PI;return [side*(.11+Math.sin(t)*.63),.64-j*.10+Math.sin(t*6+j)*.045,.37*Math.cos(t*.75)+.1];})} radius={.045} color='#d7c7e7'/>)}
  <Part p={[side*.26,-.58,-.24]} s={[.28,.23,.3]} color='#aabbd3'/>
  </group>)}
  <Tube points={[[0,-.37,-.1],[0,-.73,-.2],[0,-1.04,-.17]]} radius={.12} color='#9cabc4'/>
@@ -99,7 +129,8 @@ function Muscle({color}) {
 }
 function Kidneys({color}) {
  return <group>{[-1,1].map(side=><group key={side} position={[side*.56,.15,0]} rotation={[0,0,side*.15]}>
- <Part p={[side*.1,.22,0]} s={[.33,.38,.24]} color={color}/><Part p={[side*.1,-.24,0]} s={[.32,.36,.24]} color={color}/><Part p={[side*.25,0,0]} s={[.22,.43,.23]} color={color}/>
+ <Part geometry={kidneyGeometry} p={[side*.1,0,0]} s={[side*.37,.64,.27]} color={color}/>
+ <Tube points={[[side*.09,.29,.24],[-side*.06,.13,.27],[-side*.05,-.14,.27],[side*.08,-.32,.21]]} radius={.035} color='#e4c896'/>
  <Tube points={[[0,.18,.06],[-side*.17,.02,.1],[-side*.1,-.28,.09],[-side*.05,-.98,.1]]} radius={.045} color='#e4c896'/>
  <Tube points={[[side*.07,.13,.15],[-side*.18,.11,.17],[-side*.34,.12,.15]]} radius={.035} color='#de7f8d'/>
  </group>)}</group>;
@@ -126,6 +157,19 @@ function Heart({color}) {
  {[-1,1].map(s=><Tube key={s} points={[[s*.08,.36,.31],[s*.27,.03,.32],[s*.12,-.35,.18]]} radius={.019} color='#ecc6ba'/>)}
  </group>;
 }
+function Circulation({affected,severity,onSelect}) {
+ const tint=useMemo(()=>({affected,severity:Math.round(Math.max(0,Math.min(1,severity))*10)/10}),[affected,severity]);
+ return <AnatomyTint.Provider value={tint}><group onClick={e=>{e.stopPropagation();onSelect?.('blood');}}>
+ <Tube points={[[.035,1.29,.08],[.015,.82,.1],[.015,.24,.11],[0,-.15,.07]]} radius={.027} color='#82c9e7'/>
+ {[-1,1].map(side=><group key={side}>
+ <Tube points={[[.025,1.32,.06],[side*.18,1.64,.03],[side*.13,2.11,.06]]} radius={.019} color='#a8e4e9'/>
+ <Tube points={[[.02,1.29,.06],[side*.49,1.39,.05],[side*.79,1.01,.08],[side*1.01,.49,.08],[side*1.12,-.35,.06]]} radius={.018} color='#aadce4'/>
+ <Tube points={[[0,-.12,.07],[side*.21,-.56,.05],[side*.28,-1.36,.06],[side*.29,-2.09,.06],[side*.29,-2.54,.11]]} radius={.021} color='#b2dee9'/>
+ <Tube points={[[side*.07,.17,-.09],[side*.3,-.63,-.08],[side*.34,-1.39,-.05],[side*.35,-2.13,-.03]]} radius={.012} color='#75b4d7'/>
+ <Tube points={[[0,.76,.12],[side*.32,.85,.12],[side*.41,1.18,.12]]} radius={.014} color='#8bbbd5'/>
+ </group>)}
+ </group></AnatomyTint.Provider>;
+}
 const Assemblies={lungs:Lungs,digestive:Digestive,brain:Brain,muscle:Muscle,renal:Kidneys,endocrine:Endocrine,skin:Skin,blood:Heart};
 function Tissue({target,color}) {
  if(target==='skin') return <Skin color={color}/>;
@@ -139,13 +183,14 @@ function Tissue({target,color}) {
 }
 function Organ({kind,affected,severity,onSelect,reducedMotion,context=false}) {
  const ref=useRef(); const Component=Assemblies[kind];
- useFrame(({clock})=>{if(ref.current){const pulse=affected&&!reducedMotion?1+Math.sin(clock.elapsedTime*1.8)*.006*severity:1;ref.current.scale.setScalar(pulse);}});
+ const tint=useMemo(()=>({affected,severity:Math.round(Math.max(0,Math.min(1,severity))*10)/10}),[affected,severity]);
+ useFrame(({clock})=>{if(ref.current){const pulse=affected&&!reducedMotion?1+Math.sin(clock.elapsedTime*1.8)*.006*(.25+severity*.75):1;ref.current.scale.setScalar(pulse);}});
  const color=affected?new THREE.Color('#f0787d').lerp(new THREE.Color('#ef543c'),Math.round(Math.max(0,Math.min(1,severity))*10)/10).getStyle():context?'#7795a6':COLORS[kind];
- return <group ref={ref} onClick={e=>{e.stopPropagation();onSelect?.(kind);}}><Component color={color}/></group>;
+ return <group ref={ref} onClick={e=>{e.stopPropagation();onSelect?.(kind);}}><AnatomyTint.Provider value={tint}><Component color={color}/></AnatomyTint.Provider></group>;
 }
 export default memo(function AnatomyModel({view='body',target='lungs',affectedOrgans=[],severity=0,onSelect,reducedMotion=false}) {
  const chosen=keys.includes(target)?target:'lungs'; const isAffected=k=>affectedOrgans.includes(k);
- if(view==='tissue')return <Tissue target={chosen} color={isAffected(chosen)?'#f0787d':COLORS[chosen]}/>;
+ if(view==='tissue')return <AnatomyTint.Provider value={{affected:isAffected(chosen),severity:Math.round(Math.max(0,Math.min(1,severity))*10)/10}}><Tissue target={chosen} color={isAffected(chosen)?'#f0787d':COLORS[chosen]}/></AnatomyTint.Provider>;
  if(view==='organ')return <group scale={1.1}><Organ kind={chosen} affected={isAffected(chosen)} severity={severity} onSelect={onSelect} reducedMotion={reducedMotion}/></group>;
- return <group><HumanShell/>{keys.map(kind=><group key={kind} position={POS[kind]} scale={kind==='brain'?.36:kind==='lungs'?.58:kind==='digestive'?.47:kind==='blood'?.33:kind==='muscle'?.43:kind==='skin'?.15:.35}><Organ kind={kind} affected={isAffected(kind)} severity={severity} onSelect={onSelect} reducedMotion={reducedMotion} context={kind!==chosen}/></group>)}</group>;
+ return <group><HumanShell/><Circulation affected={isAffected("blood")} severity={severity} onSelect={onSelect}/>{keys.map(kind=><group key={kind} position={POS[kind]} scale={kind==='brain'?.36:kind==='lungs'?.58:kind==='digestive'?.47:kind==='blood'?.33:kind==='muscle'?.43:kind==='skin'?.15:.35}><Organ kind={kind} affected={isAffected(kind)} severity={severity} onSelect={onSelect} reducedMotion={reducedMotion} context={kind!==chosen}/></group>)}</group>;
 });

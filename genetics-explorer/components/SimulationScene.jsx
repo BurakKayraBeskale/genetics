@@ -1,12 +1,13 @@
 'use client';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import './SimulationScene.css';
 import AnatomyModel from './anatomy/AnatomyModel';
+import AnatomyHud from './anatomy/AnatomyHud';
 import SocietyPeople from './SocietyPeople';
-import { affectedOrgansFor, getOrganEffect } from '../lib/organEducation';
+import { affectedOrgansFor, getOrganEffect, ORGAN_EDUCATION } from '../lib/organEducation';
 
 const INFO = {
  protein: ['Protein işlevi', 'Genetik senaryoda renk yoğunluğu göreli protein işlevini gösterir. Moleküller şematik olup hastalığa özel yapı veya klinik tahmin değildir.'],
@@ -17,7 +18,6 @@ const INFO = {
  rna: ['Genetik materyal', 'Sarmal, genetik materyalin şematik görünümüdür; hastalığa özel bir sekans analizi değildir.'],
 };
 const sphere = new THREE.SphereGeometry(1, 16, 12);
-const box = new THREE.BoxGeometry(1, 1, 1);
 function Particles({ count, color, radius=1.5, size=.08, seed=0, onClick, shell=false }) {
  const ref=useRef(); const dummy=useMemo(()=>new THREE.Object3D(),[]);
  const transforms=useMemo(()=>Array.from({length:count},(_,i)=>{
@@ -59,16 +59,19 @@ function Cell({metrics,onSelect}){return <group>
 const ORGAN_INFO = {lungs:['Akciğerler'],digestive:['Sindirim sistemi'],brain:['Beyin'],muscle:['Kas dokusu'],renal:['Böbrekler'],endocrine:['Endokrin sistem'],skin:['Deri'],blood:['Dolaşım sistemi']};
 function SceneCamera({mode,view}) {
  const {camera}=useThree();
- useEffect(()=>{camera.position.set(0,mode==='body'?0:1.2,mode==='body'?(view==='body'?9.2:6.6):6.6);camera.lookAt(0,0,0);camera.updateProjectionMatrix();},[camera,mode,view]);
+ useEffect(()=>{camera.position.set(0,mode==='body'?0:1.2,mode==='body'?(view==='body'?8.15:5.6):6.6);camera.lookAt(0,0,0);camera.updateProjectionMatrix();},[camera,mode,view]);
  return null;
 }
 export default function SimulationScene({state,mode='cell',outbreak,selectedOrgan,onOrganSelect}){
+ const hudLabel=useRef(null);
  const [selected,setSelected]=useState(null);const [bodyView,setBodyView]=useState('body');const [organ,setOrgan]=useState(null);
  const metrics=state?.metrics??{pathogenLoad:18,infectedCells:8,innateImmunity:12,adaptiveImmunity:0,inflammation:5,tissueDamage:0};
  const noninfectious=!String(state?.scenarioConfig?.mechanism || 'infectious/viral').startsWith('infectious/');
  const genetic=state?.scenarioConfig?.category==='genetic';
  useEffect(()=>{setOrgan(null);setSelected(null);},[state?.diseaseScenarioId]);
  const target=selectedOrgan??organ??affectedOrgansFor(state?.scenarioConfig||{})[0]??'lungs';
+ const affectedOrgans=affectedOrgansFor(state?.scenarioConfig||{});
+ const visualSeverity=getOrganEffect(state?.scenarioConfig||{},metrics,affectedOrgans[0]).severity/100;
  const organEffect=getOrganEffect(state?.scenarioConfig||{},metrics,target);
  const [reducedMotion,setReducedMotion]=useState(false);
  useEffect(()=>{const media=matchMedia('(prefers-reduced-motion: reduce)');const update=()=>setReducedMotion(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
@@ -77,9 +80,11 @@ export default function SimulationScene({state,mode='cell',outbreak,selectedOrga
  const info=ORGAN_INFO[selected]??INFO[selected];
  const wholeBody=mode==='body'&&bodyView==='body';
  if(mode==='society')return <SocietyPeople outbreak={outbreak} day={state?.day||0}/>;
- return <div className="biomedicalScene"><div className="sceneCaption"><span>{titles[mode]}</span><small>Gün {state?.day??0} · Etkileşimli 3B</small></div>
+ return <div className={"biomedicalScene"+(mode==='body'?' holographicAnatomy':'')}><div className="sceneCaption"><span>{titles[mode]}</span><small>Gün {state?.day??0} · Etkileşimli 3B</small></div>
+ {mode==='body'&&<div ref={hudLabel} className={'anatomyDataTag anatomyProjectedTag'+(organEffect.affected?' is-affected':'')}><small>SEÇİLİ SİSTEM</small><strong>{ORGAN_EDUCATION[target]?.name}</strong><span>{organEffect.affected?'ETKİ VURGUSU · '+Math.round(organEffect.severity)+'/100':'ANATOMİK KEŞİF'}</span></div>}
+ {mode==='body'&&<div className="anatomyMonitor" aria-hidden="true"><span>ANATOMİ TARAMASI</span><small>Vücut · Organ · Doku</small><i/></div>}
  {mode==='body'&&<div className="bodyViewSwitcher" aria-label="Anatomi ölçeği">{[['body','Vücut'],['organ','Organ'],['tissue','Hedef Doku']].map(([value,label])=><button key={value} aria-pressed={bodyView===value} onClick={()=>setBodyView(value)}>{label}</button>)}</div>}
- <Canvas dpr={[1,1.4]} camera={{position:[0,0,9.2],fov:42}} gl={{antialias:true,alpha:true}}><SceneCamera mode={mode} view={bodyView}/><ambientLight intensity={.7}/><directionalLight position={[3,5,4]} intensity={2}/><pointLight position={[-3,1,2]} color="#35cfff" intensity={12}/>{mode==='molecular'?(genetic?<GeneticMolecular metrics={metrics} onSelect={select}/>:<>{noninfectious?<GeneticCell metrics={metrics} onSelect={select}/>:<Molecular metrics={metrics} onSelect={select}/>}</>):mode==='body'?<AnatomyModel view={bodyView} target={target} affectedOrgans={affectedOrgansFor(state?.scenarioConfig||{})} severity={organEffect.severity/100} onSelect={select} reducedMotion={reducedMotion}/>:(noninfectious?<GeneticCell metrics={metrics} onSelect={select}/>:<Cell metrics={metrics} onSelect={select}/>)}<OrbitControls key={`${mode}-${bodyView}`} enablePan={false} minDistance={wholeBody?5.6:3.5} maxDistance={12} enableDamping dampingFactor={.08}/></Canvas>
+ <Canvas dpr={[1,1.4]} camera={{position:[0,0,9.2],fov:42}} gl={{antialias:true,alpha:true}}><SceneCamera mode={mode} view={bodyView}/><ambientLight intensity={mode==='body'?.55:.7}/><directionalLight position={[3,5,4]} intensity={mode==='body'?1.4:2}/><pointLight position={[-3,1,2]} color="#35cfff" intensity={mode==='body'?6:12}/>{mode==='molecular'?(genetic?<GeneticMolecular metrics={metrics} onSelect={select}/>:<>{noninfectious?<GeneticCell metrics={metrics} onSelect={select}/>:<Molecular metrics={metrics} onSelect={select}/>}</>):mode==='body'?<><AnatomyModel view={bodyView} target={target} affectedOrgans={affectedOrgans} severity={visualSeverity} onSelect={select} reducedMotion={reducedMotion}/><AnatomyHud target={target} view={bodyView} affected={organEffect.affected} severity={organEffect.severity/100} reducedMotion={reducedMotion} labelRef={hudLabel}/><directionalLight position={[-3,3,-2]} color="#39cef0" intensity={2.5}/></>:(noninfectious?<GeneticCell metrics={metrics} onSelect={select}/>:<Cell metrics={metrics} onSelect={select}/>)}<OrbitControls key={`${mode}-${bodyView}`} enablePan={false} minDistance={wholeBody?5.6:3.5} maxDistance={12} enableDamping dampingFactor={.08}/></Canvas>
  {mode==='body'&&<div className="organTargets" aria-label="Hedef organ seçimi">{Object.entries(ORGAN_INFO).map(([key,[label]])=><button key={key} aria-pressed={target===key} onClick={()=>select(key)}>{label}</button>)}</div>}
  <div className="sceneGesture">Sürükle: döndür · Kaydır: yakınlaş · Modele tıkla: bilgi</div>{!ORGAN_INFO[selected]&&selected&&info&&<div className="sceneExplanation" role="status"><button aria-label="Bilgiyi kapat" onClick={()=>setSelected(null)}>×</button><strong>{info[0]}</strong><p>{info[1]}</p>{ORGAN_INFO[selected]&&<p>İnflamasyon: %{Math.round(metrics.inflammation??0)} · Doku stresi: %{Math.round(metrics.tissueDamage??0)}{genetic&&<> · Protein işlevi: %{Math.round(metrics.proteinFunction??100)}</>}</p>}</div>}<span className="sceneScale">Şematik eğitim modeli · Ölçekler temsilidir</span></div>;
 }

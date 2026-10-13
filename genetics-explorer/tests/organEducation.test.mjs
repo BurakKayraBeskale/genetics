@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { affectedOrgansFor, getOrganEffect, ORGAN_EDUCATION } from '../lib/organEducation.js';
-test('specific systems precede broad systemic effects; influenza airway nuance', () => {
+test('systemic response alone never highlights vessels; influenza airway nuance', () => {
  const p = {id:'influenza', affectedSystems:['systemic','respiratory']};
- assert.deepEqual(affectedOrgansFor(p),['lungs','blood']);
+ assert.deepEqual(affectedOrgansFor(p),['lungs']);
  assert.match(getOrganEffect(p,{inflammation:5,tissueDamage:0},'lungs').explanation,/üst hava yolları/);
  assert.equal(Object.keys(ORGAN_EDUCATION).length,8);
 });

@@ -110,3 +110,6 @@ Tam vücut modeli; vücut, organ ve hedef doku ölçeklerine ayrılır. Etkilene
 `components/anatomy/AnatomyModel.jsx` sekiz sistem için ayrı organ ve hedef doku geometrileri sunar. `OrganDetails` paneli sistemin işlevini, profile bağlı etkilenme nedenini ve kaynakları gösterir; global göstergeler organ hasarı ölçümü olarak sunulmaz. Etkilenen sistem düşük şiddette de kırmızı görünür, yoğunluk arttıkça turuncu-kırmızıya geçer.
 
 `SocietyPeople` tam 10 insan figürü kullanır: hasta kırmızı, sağlıklı mavi, temsili risk sarı, iyileşen gri. Bir figür %10 temsil eder; yuvarlanmış figür oranı gerçek model yüzdesinden ayrı gösterilir. Risk figürleri gerçek temas sayısı değildir. Bulaşıcı olmayan profillerde salgın gösterimi kapatılır.
+
+
+Holografik anatomi görünümünde normal yapılar cyan, açıkça hedeflenen sistemler mercan kırmızısı/turuncudur. Sistemik bağışıklık yanıtı tek başına damar hasarı olarak renklendirilmez. Hafif tarama halkaları ve kamera ile konumu güncellenen organ etiketi 3B etkileşimleri engellemez. Organ malzemeleri paylaşılıp şiddet düzeyi kuantize edilir; azaltılmış hareket tercihinde tarama/nabız hareketi durur.
